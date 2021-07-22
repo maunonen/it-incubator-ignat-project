@@ -1,0 +1,22 @@
+.superInput {
+    padding: 7px 7px;
+    font-size: 1rem;
+    border-radius: 10px;
+    font-family: Tahoma;
+    outline: none;
+    margin-top: 10px;
+    transition: 0.3s;
+    border: 3px solid #373737;
+}
+
+
+
+.errorInput {
+    border: 3px solid #583030;
+    background: #a53f3f;
+    transition: 0.3s;
+}
+
+.error {
+    color: #a53f3f;
+}
