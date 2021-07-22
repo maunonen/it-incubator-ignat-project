@@ -9,13 +9,13 @@ import store from './n1-main/m2-bll/redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-      {/*<HashRouter>*/}
       <Provider store={store}>
-          <BrowserRouter>
+          <HashRouter>
+          {/*<BrowserRouter>*/}
               <App />
-          </BrowserRouter>
+          {/*</BrowserRouter>*/}
+          </HashRouter>
       </Provider>
-      {/*</HashRouter>*/}
   </React.StrictMode>,
   document.getElementById('root')
 );
