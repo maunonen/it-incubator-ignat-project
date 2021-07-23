@@ -8,9 +8,9 @@ function App() {
     console.log('Render App' )
   return (
     <div className="App">
-        <AndreiComponent/>
-        <Header/>
+      <Header/>
       <Routes/>
+      <AndreiComponent/>
     </div>
   );
 }
