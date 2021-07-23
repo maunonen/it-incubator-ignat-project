@@ -2,7 +2,7 @@
   "name": "friday_project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://maunonen.github.io/ignat-friday-project",
+  "homepage": "https://maunonen.github.io/it-incubator-ignat-project",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
