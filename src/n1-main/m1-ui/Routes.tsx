@@ -29,7 +29,7 @@ const  Routes : React.FC = ()  => {
             {/*Switch выбирает первый подходящий роут*/}
             <Switch>
 
-                {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PRE_JUNIOR*/}
+                {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PROFILE*/}
                 {/*exact нужен чтоб указать полное совподение (что после '/' ничего не будет)*/}
                 <Route path={'/'} exact render={() => <Redirect to={PATH.PROFILE}/>}/>
 
@@ -43,6 +43,7 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.ALL_ROUTES} render={() => <TestPage/>}/>
 
                 {/*у этого роута нет пути, он отрисуется если пользователь захочет попасть на несуществующую страницу*/}
+                {/*если бы не было path={PATH.ALL_ROUTES} render={() => */}
                 <Route render={() => <LoginPage/>}/>
             </Switch>
         </div>

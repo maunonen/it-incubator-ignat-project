@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Header/>
       <Routes/>
-          // commit from github.com page interface
+          {/*commit from github.com page interface*/}
     </div>
   );
 }
