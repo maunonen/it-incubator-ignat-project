@@ -36,16 +36,19 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.LOGIN} exact render={() => <LoginPage/>}/>
                 <Route path={PATH.SIGNUP} exact render={() => <SignupPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
-                <Route path={PATH.NOTFOUND} render={() => <NotFoundPage/>}/>
                 <Route path={PATH.RESTORE_PASS} render={() => <RestorePassPage/>}/>
                 <Route path={PATH.NEW_PASS} render={() => <NewPassPage/>}/>
                 <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
-                <Route path={PATH.ALL_ROUTES} render={() => <TestPage/>}/>
+                <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
+                <Redirect from={"*"} to={"NotFoundPage"}/>
+                {/*<Route render={() => <LoginPage/>}/>*/}
+            </Switch>
+
 
                 {/*у этого роута нет пути, он отрисуется если пользователь захочет попасть на несуществующую страницу*/}
                 {/*если бы не было path={PATH.ALL_ROUTES} render={() => */}
-                <Route render={() => <LoginPage/>}/>
-            </Switch>
+
+
         </div>
     )
 }
