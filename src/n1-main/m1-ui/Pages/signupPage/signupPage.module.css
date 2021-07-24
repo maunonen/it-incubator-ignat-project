@@ -1,0 +1,14 @@
+
+.container{
+    width: 50%;
+    min-height: 60vh;
+    background-color: #ededfd;
+    display: block;
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.wrapper {
+    display:inline-block;
+}
