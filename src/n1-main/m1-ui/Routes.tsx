@@ -40,7 +40,7 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.NEW_PASS} render={() => <NewPassPage/>}/>
                 <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
-                <Redirect from={"*"} to={"NotFoundPage"}/>
+                <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
                 {/*<Route render={() => <LoginPage/>}/>*/}
             </Switch>
 

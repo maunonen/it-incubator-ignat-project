@@ -19,6 +19,7 @@ export const LoginPage = () => {
         console.log(email)
         console.log(pass)
         console.log(checkBox)
+
     }
 
     const changeInputEmailHandler=(event:any)=>{
