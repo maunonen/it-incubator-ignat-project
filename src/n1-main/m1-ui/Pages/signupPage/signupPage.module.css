@@ -1,14 +1,19 @@
 
-.container{
-    width: 50%;
-    min-height: 60vh;
+.container {
+    width: 50vh;
+    min-height: 50vh;
     background-color: #ededfd;
+    border-radius: 10px;
+
+
     display: block;
     justify-content: center;
     margin: 0 auto;
-    border-radius: 10px;
 }
 
 .wrapper {
-    display:inline-block;
+    /*display: inline-block;*/
+    margin-top: 50px;
+    padding-right: 120px;
+
 }
