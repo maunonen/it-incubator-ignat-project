@@ -1,4 +1,5 @@
-
+// import {myAPI} from "../dal/Api";
+import {Dispatch} from 'redux';
 
 const initState = {
     isLoggedIn : false
@@ -24,3 +25,24 @@ type CombinedActionType = LoggedInType
 
 export const loggedInAC = (value : boolean): LoggedInType => ({ type : "IS-LOGGED-IN", value });
 
+// thunks-------------------------------------------------------------------
+
+export const loggedInTC = (email:string, password:string, rememberMe:boolean) => {
+    return (dispatch: Dispatch<any>) => {
+
+
+
+        // (async ()=>{
+        //     try {
+        //         // let temp=await myAPI.getCurensysList(currencyListDate)
+        //         // dispatch(addCurrencyListTodayAC([...temp.data], currencyListDate))
+        //     } catch(err) {
+        //         console.log(err);
+        //     }
+        // })();
+
+
+
+        alert(email)
+    }
+}

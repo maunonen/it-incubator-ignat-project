@@ -1,7 +1,8 @@
 
-
 import React, {useState} from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
+import {useDispatch} from "react-redux";
+import {loggedInTC} from "../../m2-bll/redux/auth-reducer"
 
 
 
@@ -10,16 +11,12 @@ export const LoginPage = () => {
     const [email, setEmail] = useState<string>("");
     const [pass, setPass] = useState<string>("");
     const [checkBox, setCheckBox] = useState<boolean>(false);
-
-
-
+     const dispatch=useDispatch()
 
     const submitHandler=(event:any)=>{
         event.preventDefault()
-        console.log(email)
-        console.log(pass)
-        console.log(checkBox)
 
+         dispatch(loggedInTC(email, pass, checkBox))
     }
 
     const changeInputEmailHandler=(event:any)=>{
