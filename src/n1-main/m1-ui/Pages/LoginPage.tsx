@@ -1,22 +1,27 @@
 
 import React, {useState} from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loggedInTC} from "../../m2-bll/redux/auth-reducer"
+import {AppStoreType} from "../../m2-bll/redux/store";
 
 
 
 export const LoginPage = () => {
 
-    const [email, setEmail] = useState<string>("");
-    const [pass, setPass] = useState<string>("");
-    const [checkBox, setCheckBox] = useState<boolean>(false);
+    const isLoggedIn=useSelector<AppStoreType,boolean>(state=>state.auth)
+
+    console.log(isLoggedIn)
+
+    const [email, setEmail] = useState<string>("nya-admin@nya.nya");
+    const [password, setPass] = useState<string>("1qazxcvBG");
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
      const dispatch=useDispatch()
 
     const submitHandler=(event:any)=>{
         event.preventDefault()
 
-         dispatch(loggedInTC(email, pass, checkBox))
+         dispatch(loggedInTC(email, password, rememberMe))
     }
 
     const changeInputEmailHandler=(event:any)=>{
@@ -28,30 +33,29 @@ export const LoginPage = () => {
     }
 
     const changeRememberCheckboxHandler=(event:any)=>{
-        setCheckBox(event.currentTarget.checked)
+        setRememberMe(event.currentTarget.checked)
     }
-
-    //add api request
+    
     return <Grid container justify="center">
         <Grid item xs={4}>
           <form onSubmit={submitHandler}>
             <FormControl>
                 <FormLabel>
-                      Submit user
+                      Login user
                 </FormLabel>
                 <FormGroup>
                     <TextField
                         label="Email"
                         margin="normal"
                         name="Email"
-                        // value="email"
+                        value={email}
                         onChange={changeInputEmailHandler}
                     />
                     <TextField
                         type="password"
                         label="Password"
                         margin="normal"
-                        // value="pass"
+                        value={password}
                         onChange={changeInputPassHandler}
                     />
                     <FormControlLabel
