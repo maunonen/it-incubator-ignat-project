@@ -29,22 +29,26 @@ const  Routes : React.FC = ()  => {
             {/*Switch выбирает первый подходящий роут*/}
             <Switch>
 
-                {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PRE_JUNIOR*/}
+                {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PROFILE*/}
                 {/*exact нужен чтоб указать полное совподение (что после '/' ничего не будет)*/}
                 <Route path={'/'} exact render={() => <Redirect to={PATH.PROFILE}/>}/>
 
                 <Route path={PATH.LOGIN} exact render={() => <LoginPage/>}/>
                 <Route path={PATH.SIGNUP} exact render={() => <SignupPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
-                <Route path={PATH.NOTFOUND} render={() => <NotFoundPage/>}/>
                 <Route path={PATH.RESTORE_PASS} render={() => <RestorePassPage/>}/>
                 <Route path={PATH.NEW_PASS} render={() => <NewPassPage/>}/>
                 <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
-                <Route path={PATH.ALL_ROUTES} render={() => <TestPage/>}/>
+                <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
+                <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
+                {/*<Route render={() => <LoginPage/>}/>*/}
+            </Switch>
+
 
                 {/*у этого роута нет пути, он отрисуется если пользователь захочет попасть на несуществующую страницу*/}
-                <Route render={() => <LoginPage/>}/>
-            </Switch>
+                {/*если бы не было path={PATH.ALL_ROUTES} render={() => */}
+
+
         </div>
     )
 }
