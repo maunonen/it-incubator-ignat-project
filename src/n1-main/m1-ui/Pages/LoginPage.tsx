@@ -9,7 +9,7 @@ import {AppStoreType} from "../../m2-bll/redux/store";
 
 export const LoginPage = () => {
 
-    const isLoggedIn=useSelector<AppStoreType,boolean>(state=>state.auth)
+    const isLoggedIn=useSelector<AppStoreType>(state=>state.auth)
 
     console.log(isLoggedIn)
 
