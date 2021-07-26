@@ -14,6 +14,10 @@ function Header() {
                         className={s.item}
                     >Login</NavLink>
                     <NavLink
+                        to={PATH.SIGNUP}
+                        className={s.item}
+                    >Sign up</NavLink>
+                    <NavLink
                         to={PATH.PROFILE}
                         className={s.item}
                     >Profile</NavLink>

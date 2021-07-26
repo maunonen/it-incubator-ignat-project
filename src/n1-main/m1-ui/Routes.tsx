@@ -1,7 +1,7 @@
 import React from 'react'
 import {Redirect, Switch, Route} from 'react-router-dom'
 import LoginPage from './Pages/LoginPage'
-import SignupPage from "./Pages/SignupPage";
+import SignupPage from "./Pages/signupPage/SignupPage";
 import ProfilePage from "./Pages/ProfilePage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import RestorePassPage from "./Pages/RestorePassPage";
