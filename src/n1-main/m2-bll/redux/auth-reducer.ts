@@ -1,13 +1,13 @@
-// import {myAPI} from "../dal/Api";
+import {acsessAPI} from "../../m3-dal/Api";
 import {Dispatch} from 'redux';
 
-const initState = {
-    isLoggedIn : false
-};
+type InitStateType = {isLoggedIn : boolean};
 
-export type InitialStateType  = typeof initState
+const initState = {isLoggedIn : false};
 
-export const authReducer = (state = initState, action: CombinedActionType): InitialStateType => { // fix any
+// export type InitialStateType  = typeof initState
+
+export const authReducer = (state = initState, action: CombinedActionType): InitStateType => {
     switch (action.type) {
         case "IS-LOGGED-IN": {
             return {...state, isLoggedIn: action.value};
@@ -29,20 +29,13 @@ export const loggedInAC = (value : boolean): LoggedInType => ({ type : "IS-LOGGE
 
 export const loggedInTC = (email:string, password:string, rememberMe:boolean) => {
     return (dispatch: Dispatch<any>) => {
+        //@ts-ignore
+                let userData=acsessAPI.loginUser(email, password, rememberMe)
+                    .then((res) => {
+                        console.log(res.data)
+                        dispatch(loggedInAC(true))
+                    })
 
 
-
-        // (async ()=>{
-        //     try {
-        //         // let temp=await myAPI.getCurensysList(currencyListDate)
-        //         // dispatch(addCurrencyListTodayAC([...temp.data], currencyListDate))
-        //     } catch(err) {
-        //         console.log(err);
-        //     }
-        // })();
-
-
-
-        alert(email)
     }
 }
