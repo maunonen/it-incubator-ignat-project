@@ -1,6 +1,6 @@
 import React from 'react'
 import {FormControl, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
-import s from './signupPage.module.css'
+
 import {useFormik} from "formik";
 
 
@@ -11,7 +11,6 @@ type FormikErrorType = {
 }
 
 const SignupPage: React.FC = () => {
-
 
     const formik = useFormik({
         initialValues: {
@@ -31,8 +30,6 @@ const SignupPage: React.FC = () => {
             } else if (values.password.length < 4) {
                 errors.password = 'Password must be 4 characters or more'
             }
-
-
             return errors;
         },
         onSubmit: values => {
@@ -42,8 +39,8 @@ const SignupPage: React.FC = () => {
 
 
     return (
-        <div className={s.container}>
-            <div className={s.wrapper}>
+        <div >
+            <div >
                 <Grid container justify="center">
                     <Grid item xs={3}>
                         <form onSubmit={formik.handleSubmit}>
@@ -105,12 +102,14 @@ const SignupPage: React.FC = () => {
 
                                 </div>
                             </FormControl>
+
+                            <p>
+                                Already have an account? <a href="/login">Log in here</a>
+                            </p>
                         </form>
 
                     </Grid>
-                    <p>
-                        Already have an account? <a href="/login">Log in here</a>
-                    </p>
+
                 </Grid>
 
             </div>
