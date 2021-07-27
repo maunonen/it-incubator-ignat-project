@@ -13,7 +13,7 @@ const TestPage: React.FC = () => {
     const isLoggedIn = useSelector((state: AppStoreType) => (state.auth.isLoggedIn))
     const dispatch = useDispatch();
     const handleTestButton = () => {
-        dispatch(loggedInAC(!isLoggedIn))
+        dispatch(loggedInAC(!isLoggedIn, "error from"))
     }
     console.log(isLoggedIn)
     return (
