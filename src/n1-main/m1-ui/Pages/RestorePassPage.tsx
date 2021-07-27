@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
-import {Redirect} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import {
     Button,
     Card,
@@ -12,13 +12,33 @@ import {
     FormControlLabel,
     FormGroup,
     FormLabel,
-    Grid, makeStyles,
+    Grid, Link, makeStyles,
     TextField, Theme, Typography
 } from "@material-ui/core";
+import {PATH} from "../Routes";
 
-const useStyles = makeStyles<Theme>( theme => createStyles({
+const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
-        textAlign: "center"
+        textAlign: "center",
+        padding: "30px 30px",
+        maxWidth : "413px",
+    },
+    formTitle: {
+        marginBottom: "30px",
+    },
+    formSubtitle: {
+        marginBottom: "20px",
+    },
+    formDescription : {
+        marginTop : "20px",
+        marginBottom : "40px",
+    },
+    formLinkTitle : {
+        paddingTop: "30px",
+        paddingBottom: "15px",
+    },
+    formButtonBlock : {
+        margin: "0px 35px"
     }
 }))
 
@@ -57,15 +77,21 @@ const RestorePassPage: React.FC = () => {
         container
         justify="center"
         alignItems="center"
-        style={{ minHeight: '100vh' }}
+        style={{minHeight: '100vh'}}
     >
         <Card
             className={classes.root}
         >
-            <Grid item xs={4}>
+            <Grid item>
                 <form onSubmit={formik.handleSubmit}>
-                    <Typography>It-incubator</Typography>
-                    <Typography>Forget your password</Typography>
+                    <Typography
+                        variant={"h1"}
+                        className={classes.formTitle}
+                    >It-incubator</Typography>
+                    <Typography
+                        variant={"h2"}
+                        className={classes.formSubtitle}
+                    >Forget your password</Typography>
                     <FormControl>
                         <FormGroup>
                             <TextField
@@ -78,16 +104,29 @@ const RestorePassPage: React.FC = () => {
                                 formik.touched.email && formik.errors.email &&
                                 <div style={{color: 'red'}}>{formik.errors.email}</div>
                             }
-                            <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
+                            <Typography
+                                variant={"body1"}
+                                className={classes.formDescription}
+                                align={"left"}
+                            >
+                                Enter your email address and we will send you further instructions
+                            </Typography>
+                            <Button
+                                type={'submit'}
+                                variant={'contained'}
+                                className={classes.formButtonBlock}
+                                color={'primary'}>Send instructions</Button>
+                            <Typography
+                                variant={"body1"}
+                                className={classes.formLinkTitle}
+                            >Did you remember your password</Typography>
+                            <Link
+                                component={NavLink}
+                                to={PATH.LOGIN}
+                                color={"textPrimary"}
+                            >Try logging in
+                            </Link>
                         </FormGroup>
-                        <FormLabel>
-                            <p>To log in get registered
-                                <a href={'https://social-network.samuraijs.com/'}
-                                   target={'_blank'}>here
-                                </a>
-                            </p>
-                            <p>Did you remember your password</p>
-                        </FormLabel>
                     </FormControl>
                 </form>
             </Grid>
