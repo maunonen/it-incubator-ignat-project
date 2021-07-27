@@ -17,7 +17,6 @@ import {
 } from "@material-ui/core";
 import {PATH} from "../Routes";
 
-
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center",

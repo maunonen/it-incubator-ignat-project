@@ -7,6 +7,7 @@ import NotFoundPage from "./Pages/NotFoundPage";
 import RestorePassPage from "./Pages/RestorePassPage";
 import NewPassPage from "./Pages/NewPassPage";
 import TestPage from "./Pages/TestPage";
+import RestorePassCheckEmailPage from "./Pages/RestorePassCheckEmailPage";
 
 
 
@@ -16,6 +17,7 @@ export const PATH = {
     PROFILE: '/profile',
     NOTFOUND: '/404',
     RESTORE_PASS: '/restore',
+    RESTORE_PASS_CHECK_EMAIL: '/check_email',
     NEW_PASS: '/newpassword',
     TEST_PAGE: '/test_page',
     ALL_ROUTES : '*',
@@ -37,6 +39,7 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.SIGNUP} exact render={() => <SignupPage/>}/>
                 <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
                 <Route path={PATH.RESTORE_PASS} render={() => <RestorePassPage/>}/>
+                <Route path={PATH.RESTORE_PASS_CHECK_EMAIL} render={() => <RestorePassCheckEmailPage/>}/>
                 <Route path={PATH.NEW_PASS} render={() => <NewPassPage/>}/>
                 <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
