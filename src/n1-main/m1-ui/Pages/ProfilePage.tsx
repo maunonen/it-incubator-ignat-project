@@ -6,8 +6,6 @@ const ProfilePage : React.FC = () => {
 
     const userProfile = useSelector<AppStoreType, any>(state => state.profile)
 
-    console.log(userProfile)
-
 
     return (
         <>
