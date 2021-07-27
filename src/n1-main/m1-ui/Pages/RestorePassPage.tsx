@@ -17,7 +17,6 @@ import {
 } from "@material-ui/core";
 import {PATH} from "../Routes";
 
-
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center",
@@ -43,9 +42,6 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     }
 }))
 
-
-// some comments
-// some comments
 
 const RestorePassPage: React.FC = () => {
 
