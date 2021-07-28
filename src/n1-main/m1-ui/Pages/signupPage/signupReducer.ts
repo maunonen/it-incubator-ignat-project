@@ -9,9 +9,19 @@ const initialState = {
     isFetching: false
 };
 
-export const signupReducer = (state: initialStateType, action: signupReducerActionTypes): initialStateType => {
+export const signupReducer = (state: initialStateType = initialState, action: signupReducerActionTypes): initialStateType => {
     switch (action.type) {
-
+        case "SIGN_UP":
+            return {
+                ...state,
+                email: action.email,
+                password: action.password,
+                error: action.message as string,
+            };
+        case "IS_FETCHING":
+            return {
+                ...state, isFetching: action.isFetching
+            }
 
         default:
             return state

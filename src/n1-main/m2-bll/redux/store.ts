@@ -6,7 +6,7 @@ import {signupReducer} from "../../m1-ui/Pages/signupPage/signupReducer";
 
 const reducers = combineReducers({
     auth: authReducer,
-    signup: signupReducer
+    signup: signupReducer,
 });
 
 export const store = createStore(reducers, applyMiddleware(thunkMiddleware));
