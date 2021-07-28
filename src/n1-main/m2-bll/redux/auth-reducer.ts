@@ -33,11 +33,13 @@ export const loggedInTC = (email: string, password: string, rememberMe: boolean)
         //@ts-ignore
         acsessAPI.loginUser(email, password, rememberMe)
             .then((res) => {
-                console.log(res.data)
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
             }).catch(rej => {
-            dispatch(loggedInAC(false, rej.response.data.error))
-        })
+                // как проверить чтобы ошибка не падала ignat
+                // if (rej.response.data){
+            dispatch(loggedInAC(false, rej.response.data.error))}
+        // }
+        )
     }
 }

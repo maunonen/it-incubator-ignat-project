@@ -18,9 +18,6 @@ const initState:UserProfileType = {_id:"",
 export const profileReducer = (state = initState, action: profileACType): UserProfileType => {
     switch (action.type) {
         case "ADD-PROFILE": {
-            console.log(action.value)
-            console.log(initState)
-
             return {...state, ...action.value};
         }
         default:
