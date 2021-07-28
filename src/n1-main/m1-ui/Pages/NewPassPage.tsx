@@ -4,6 +4,8 @@ import {AppStoreType} from "../../m2-bll/redux/store";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {NavLink, Redirect} from "react-router-dom";
+import { useParams } from 'react-router-dom'
+
 import {
     Button,
     Card,
@@ -53,6 +55,8 @@ const NewPassPage: React.FC = () => {
     const dispatch = useDispatch()
     const isLoggedIn = useSelector((state: AppStoreType) => state.auth.isLoggedIn)
     const [showPassword, setShowPassword] = useState(false)
+    const { token } = useParams<{token: string}>();
+    console.log('Token', token)
 
     type FormikErrorType = {
         password?: string
@@ -90,7 +94,7 @@ const NewPassPage: React.FC = () => {
 
     return <Grid
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{minHeight: '100vh'}}
     >

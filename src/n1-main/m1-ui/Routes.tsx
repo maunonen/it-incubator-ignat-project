@@ -18,7 +18,7 @@ export const PATH = {
     NOTFOUND: '/404',
     RESTORE_PASS: '/restore',
     RESTORE_PASS_CHECK_EMAIL: '/check_email',
-    NEW_PASS: '/newpassword',
+    NEW_PASS: '/set-new-password',
     TEST_PAGE: '/test_page',
     ALL_ROUTES : '*',
 }
@@ -40,7 +40,8 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
                 <Route path={PATH.RESTORE_PASS} render={() => <RestorePassPage/>}/>
                 <Route path={PATH.RESTORE_PASS_CHECK_EMAIL} render={() => <RestorePassCheckEmailPage/>}/>
-                <Route path={PATH.NEW_PASS} render={() => <NewPassPage/>}/>
+                <Route path={PATH.NEW_PASS + '/:token'} component={NewPassPage}/>
+                {/*<Route path={PATH.DESTINATION_LIST_PAGE + '/:id'} exact={true} component={DestinationProfileContainer} />*/}
                 <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
                 <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>

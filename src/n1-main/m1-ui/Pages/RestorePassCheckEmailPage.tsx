@@ -58,7 +58,7 @@ const RestorePassPage: React.FC = () => {
 
     return <Grid
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{minHeight: '100vh'}}
     >
