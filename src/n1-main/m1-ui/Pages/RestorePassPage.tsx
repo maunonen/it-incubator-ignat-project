@@ -16,6 +16,7 @@ import {
     TextField, Theme, Typography
 } from "@material-ui/core";
 import {PATH} from "../Routes";
+import {forgotPassTC} from "../../m2-bll/redux/auth-reducer";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -47,7 +48,10 @@ const RestorePassPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch()
-    const isLoggedIn = useSelector((state: AppStoreType) => state.auth.isLoggedIn)
+    const { isLoggedIn, isPassRequestSent, errorMessage} = useSelector((state: AppStoreType) => state.auth)
+
+
+    console.log(errorMessage)
 
     type FormikErrorType = {
         email?: string
@@ -64,13 +68,16 @@ const RestorePassPage: React.FC = () => {
         validationSchema: restoreSchema,
         onSubmit: values => {
             alert('Submit forgot request')
-            /*dispatch(loginTC(values))*/
+            dispatch(forgotPassTC(formik.values.email))
             formik.resetForm()
         },
     })
 
     if (isLoggedIn) {
         return <Redirect to={'/'}/>
+    }
+    if (isPassRequestSent) {
+        return <Redirect to={PATH.RESTORE_PASS_CHECK_EMAIL}/>
     }
 
     return <Grid
