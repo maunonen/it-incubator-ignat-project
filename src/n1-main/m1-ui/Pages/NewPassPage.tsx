@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import {PATH} from "../Routes";
 import {Visibility, VisibilityOff} from '@material-ui/icons';
+import {setNewPasswordTC} from "../../m2-bll/redux/auth-reducer";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -53,7 +54,7 @@ const NewPassPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch()
-    const isLoggedIn = useSelector((state: AppStoreType) => state.auth.isLoggedIn)
+    const { isLoggedIn, isPassChanged } = useSelector((state: AppStoreType) => state.auth)
     const [showPassword, setShowPassword] = useState(false)
     const { token } = useParams<{token: string}>();
     console.log('Token', token)
@@ -76,7 +77,9 @@ const NewPassPage: React.FC = () => {
         validationSchema: restoreSchema,
         onSubmit: values => {
             alert('Submit forgot request')
-            /*dispatch(loginTC(values))*/
+            if (token) {
+                dispatch(setNewPasswordTC(formik.values.password, token))
+            }
             formik.resetForm()
         },
     })
@@ -90,6 +93,9 @@ const NewPassPage: React.FC = () => {
 
     if (isLoggedIn) {
         return <Redirect to={'/'}/>
+    }
+    if (isPassChanged) {
+        return <Redirect to={PATH.LOGIN}/>
     }
 
     return <Grid

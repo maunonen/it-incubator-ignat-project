@@ -27,6 +27,16 @@ type registrationUserType = {
     error?: string
 }
 
+export type UserForgotPassType = {
+    info: string
+    success: boolean
+    answer: boolean
+    html: boolean
+}
+export type UserNewPasswordType = {
+    info : string
+}
+
 export const acsessAPI = {
     loginUser(email:string, password:string, rememberMe:boolean) {
         try{
@@ -44,6 +54,13 @@ export const acsessAPI = {
         return promise
     }
 
+    },
+    forgotPassword(email: string, from: string, message: string) {
+        return instance.post<UserForgotPassType>("/auth/forgot", {email, from, message});
+    },
+    setNewPassword(password : string , resetPasswordToken : string) {
+        return instance.post<UserNewPasswordType>("/auth/set-new-password" , {password, resetPasswordToken});
+    },
 }
 
 
