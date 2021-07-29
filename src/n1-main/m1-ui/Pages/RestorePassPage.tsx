@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import {PATH} from "../Routes";
 import {forgotPassTC} from "../../m2-bll/redux/restore-pass-reducer";
+import Loading from "../common/c7-Progress/Loading";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -79,7 +80,7 @@ const RestorePassPage: React.FC = () => {
         return <Redirect to={'/'}/>
     }
     if (appStatus === 'loading') {
-        return <div>Loading</div>
+        return <Loading message={"Wait a minute please"} />
     }
     if (isPassRequestSent) {
         return <Redirect to={PATH.RESTORE_PASS_CHECK_EMAIL}/>
