@@ -2,7 +2,7 @@ import React from 'react'
 import {useFormik} from "formik";
 import {registrationThunk} from "./signupReducer";
 import {useDispatch, useSelector} from "react-redux";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {PATH} from "../../Routes";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {
@@ -19,16 +19,13 @@ import {
 } from '@material-ui/core'
 
 
-
-
-
 type FormikErrorType = {
     email?: string
     password?: string
     cfPassword?: string
 }
 
-const useStyles = makeStyles<Theme>( theme => createStyles({
+const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center"
     }
@@ -40,7 +37,7 @@ const SignupPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch();
-    const isFetching = useSelector<AppStoreType>(state=> state.signup.isFetching);
+    const isFetching = useSelector<AppStoreType>(state => state.signup.isFetching);
 
     const formik = useFormik({
         initialValues: {
@@ -63,7 +60,7 @@ const SignupPage: React.FC = () => {
             return errors;
         },
         onSubmit: values => {
-           // alert(JSON.stringify(values));
+            // alert(JSON.stringify(values));
             if (values.email !== '' && values.password !== '' && values.cfPassword !== '') {
                 if (values.password === values.cfPassword) {
                     dispatch(registrationThunk(values.email, values.password))
@@ -71,91 +68,95 @@ const SignupPage: React.FC = () => {
                 }
             }
         },
-
+        // onReset: values =>  {
+        //
+        //     if (values.email !== '' || values.password !== '' || values.cfPassword !== '') {
+        //     formik.resetForm()}
+        // }
     })
 
-    if(isFetching){
+    if (isFetching) {
         return <Redirect to={PATH.LOGIN}/>
     }
 
     return (
 
-                <Grid container
-                      justify="center"
-                      alignItems="center"
-                      style={{ minHeight: '100vh' }}
-                >
-                    <Card
-                        className={classes.root}
-                    >
-                    <Grid item xs={3}>
-                        <form onSubmit={formik.handleSubmit}>
-                            <Typography>It-incubator</Typography>
-                            <Typography>Sign up</Typography>
-                            <FormControl >
+        <Grid container
+              justify="center"
+              alignItems="center"
+              style={{minHeight: '100vh'}}
+        >
+            <Card
+                className={classes.root}
+            >
+                <Grid item xs={3}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Typography>It-incubator</Typography>
+                        <Typography>Sign up</Typography>
+                        <FormControl>
 
-                                <FormGroup>
-                                    <TextField
-                                        type="email"
-                                        label="Email"
-                                        margin="normal"
-
-
-                                        {...formik.getFieldProps('email')}
-                                    />
-                                    {formik.touched.email && formik.errors.email &&
-                                    <div style={{'color': 'red'}}>{formik.errors.email}</div>}
-
-                                    <TextField
-                                        type="password"
-                                        label="Password"
-                                        margin="normal"
-                                        {...formik.getFieldProps('password')}
-                                    />
-                                    {formik.touched.password && formik.errors.password &&
-                                    <div style={{'color': 'red'}}>{formik.errors.password}</div>}
-
-                                    <TextField
-                                        type="password"
-                                        label="Confirm password"
-                                        margin="normal"
-                                        {...formik.getFieldProps('cfPassword')}
-                                    />
-                                    {formik.touched.cfPassword && formik.errors.cfPassword &&
-                                    <div style={{'color': 'red'}}>{formik.errors.cfPassword}</div>}
-
-                                </FormGroup>
+                            <FormGroup>
+                                <TextField
+                                    type="email"
+                                    label="Email"
+                                    margin="normal"
 
 
-                                <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
-                                    <Button
-                                        style={{margin: '5px'}}
-                                        type={'reset'}
-                                        variant={'outlined'}
-                                        color={'secondary'}
-                                        size={'small'}>Cancel</Button>
+                                    {...formik.getFieldProps('email')}
+                                />
+                                {formik.touched.email && formik.errors.email &&
+                                <div style={{'color': 'red'}}>{formik.errors.email}</div>}
 
-                                    <Button
+                                <TextField
+                                    type="password"
+                                    label="Password"
+                                    margin="normal"
+                                    {...formik.getFieldProps('password')}
+                                />
+                                {formik.touched.password && formik.errors.password &&
+                                <div style={{'color': 'red'}}>{formik.errors.password}</div>}
 
-                                        style={{margin: '5px'}}
-                                        type={'submit'}
-                                        variant={'contained'}
-                                        color={'primary'}
-                                        size={'small'}>Register</Button>
+                                <TextField
+                                    type="password"
+                                    label="Confirm password"
+                                    margin="normal"
+                                    {...formik.getFieldProps('cfPassword')}
+                                />
+                                {formik.touched.cfPassword && formik.errors.cfPassword &&
+                                <div style={{'color': 'red'}}>{formik.errors.cfPassword}</div>}
+
+                            </FormGroup>
 
 
-                                </div>
-                            </FormControl>
-                            <FormLabel>
+                            <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
+                                <Button
+                                    onClick={() => {formik.resetForm()}}
+                                    style={{margin: '5px'}}
+                                    type={'reset'}
+                                    variant={'outlined'}
+                                    color={'secondary'}
+                                    size={'small'}>Cancel</Button>
+
+                                <Button
+
+                                    style={{margin: '5px'}}
+                                    type={'submit'}
+                                    variant={'contained'}
+                                    color={'primary'}
+                                    size={'small'}>Register</Button>
+
+                            </div>
+                        </FormControl>
+                        <FormLabel>
                             <p>
-                                Already have an account? <a href="/login">Log in here</a>
+                                Already have an account? <a href="/">Log in here</a>
                             </p>
-                            </FormLabel>
-                        </form>
+                        </FormLabel>
+                    </form>
 
-                    </Grid>
-                    </Card>
                 </Grid>
+            </Card>
+        </Grid>
 
 
     )
