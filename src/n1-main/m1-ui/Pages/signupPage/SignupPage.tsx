@@ -2,7 +2,7 @@ import React from 'react'
 import {useFormik} from "formik";
 import {registrationThunk} from "./signupReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from 'react-router-dom';
+import {NavLink, Redirect} from 'react-router-dom';
 import {PATH} from "../../Routes";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {
@@ -13,9 +13,9 @@ import {
     Button,
     Grid,
     makeStyles,
-    Theme,
+
     createStyles,
-    Card, Typography
+    Card, Typography, Link, Theme
 } from '@material-ui/core'
 
 
@@ -25,9 +25,30 @@ type FormikErrorType = {
     cfPassword?: string
 }
 
+
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
-        textAlign: "center"
+        textAlign: "center",
+        padding: "30px 30px",
+        //maxWidth: "413px",
+         minWidth : "400px",
+    },
+    formTitle: {
+        marginBottom: "30px",
+    },
+    formSubtitle: {
+        marginBottom: "20px",
+    },
+    formDescription: {
+        marginTop: "20px",
+        marginBottom: "40px",
+    },
+    formLinkTitle: {
+        paddingTop: "30px",
+        paddingBottom: "15px",
+    },
+    formButtonBlock: {
+        margin: "0px 35px"
     }
 }))
 
@@ -82,17 +103,23 @@ const SignupPage: React.FC = () => {
     return (
 
         <Grid container
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               style={{minHeight: '100vh'}}
         >
             <Card
                 className={classes.root}
             >
-                <Grid item xs={3}>
+                <Grid item >
                     <form onSubmit={formik.handleSubmit}>
-                        <Typography>It-incubator</Typography>
-                        <Typography>Sign up</Typography>
+                        <Typography
+                            variant={"h1"}
+                            className={classes.formTitle}
+                        >It-incubator</Typography>
+                        <Typography
+                            variant={"h2"}
+                            className={classes.formSubtitle}
+                        >Sign up</Typography>
                         <FormControl>
 
                             <FormGroup>
@@ -128,10 +155,10 @@ const SignupPage: React.FC = () => {
                             </FormGroup>
 
 
-                            <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
+                            <div >
                                 <Button
                                     onClick={() => {formik.resetForm()}}
-                                    style={{margin: '5px'}}
+                                    // style={{margin: '5px'}}
                                     type={'reset'}
                                     variant={'outlined'}
                                     color={'secondary'}
@@ -139,7 +166,7 @@ const SignupPage: React.FC = () => {
 
                                 <Button
 
-                                    style={{margin: '5px'}}
+                                    // style={{margin: '5px'}}
                                     type={'submit'}
                                     variant={'contained'}
                                     color={'primary'}
@@ -148,9 +175,25 @@ const SignupPage: React.FC = () => {
                             </div>
                         </FormControl>
                         <FormLabel>
-                            <p>
-                                Already have an account? <a href="/">Log in here</a>
-                            </p>
+                            {/*<Typography*/}
+                            {/*    variant={"body1"}*/}
+                            {/*    className={classes.formDescription}*/}
+                            {/*    align={"left"}*/}
+                            {/*>*/}
+                            {/*    <p>*/}
+                            {/*        Already have an account? <a href="/">Log in here</a>*/}
+                            {/*    </p>*/}
+                            {/*</Typography>*/}
+                            <Typography
+                                variant={"body1"}
+                                className={classes.formLinkTitle}
+                            >Did you remember your password</Typography>
+                            <Link
+                                component={NavLink}
+                                to={PATH.LOGIN}
+                                color={"textPrimary"}
+                            >Try logging in
+                            </Link>
                         </FormLabel>
                     </form>
 
