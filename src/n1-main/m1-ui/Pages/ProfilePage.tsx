@@ -7,7 +7,7 @@ import {AppStoreType} from "../../m2-bll/redux/store";
 import {Redirect} from "react-router-dom";
 import {PATH} from "../Routes";
 
-
+// commit
 
 export const ProfilePage: React.FC = () => {
 
