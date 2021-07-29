@@ -5,6 +5,8 @@ import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {NavLink, Redirect} from "react-router-dom";
 import { useParams } from 'react-router-dom'
+/*import {setNewPasswordTC} from "../../m2-bll/redux/restore-pass-reducer";*/
+/*import {setNew}*/
 
 import {
     Button,
@@ -19,7 +21,7 @@ import {
 } from "@material-ui/core";
 import {PATH} from "../Routes";
 import {Visibility, VisibilityOff} from '@material-ui/icons';
-import {setNewPasswordTC} from "../../m2-bll/redux/auth-reducer";
+import {setNewPasswordTC} from "../../m2-bll/redux/restore-pass-reducer";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -54,7 +56,9 @@ const NewPassPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch()
-    const { isLoggedIn, isPassChanged } = useSelector((state: AppStoreType) => state.auth)
+    const { isLoggedIn} = useSelector((state: AppStoreType) => state.auth)
+    const { isPassChanged} = useSelector((state: AppStoreType) => state.passRestore)
+    const { appStatus } = useSelector((state: AppStoreType) => state.app)
     const [showPassword, setShowPassword] = useState(false)
     const { token } = useParams<{token: string}>();
     console.log('Token', token)
@@ -76,7 +80,6 @@ const NewPassPage: React.FC = () => {
         },
         validationSchema: restoreSchema,
         onSubmit: values => {
-            alert('Submit forgot request')
             if (token) {
                 dispatch(setNewPasswordTC(formik.values.password, token))
             }
@@ -90,7 +93,9 @@ const NewPassPage: React.FC = () => {
     const handleMouseDownPassword = () => {
         setShowPassword(!showPassword)
     }
-
+    if ( appStatus === 'loading') {
+        return <div>Loading</div>
+    }
     if (isLoggedIn) {
         return <Redirect to={'/'}/>
     }

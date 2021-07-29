@@ -2,11 +2,15 @@ import {combineReducers, createStore, applyMiddleware} from "redux"
 import thunkMiddleware from 'redux-thunk'
 import {authReducer} from "./auth-reducer";
 import {signupReducer} from "../../m1-ui/Pages/signupPage/signupReducer";
+import {appReducer} from "./app-reducer";
+import {passRestoreReducer} from "./restore-pass-reducer";
 
 
 const reducers = combineReducers({
     auth: authReducer,
     signup: signupReducer,
+    app : appReducer,
+    passRestore : passRestoreReducer,
 });
 
 export const store = createStore(reducers, applyMiddleware(thunkMiddleware));
