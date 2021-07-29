@@ -20,31 +20,13 @@ export const ProfilePage: React.FC = () => {
     if (isLoggedIn.isLoggedIn) {
         return (
             <Grid container justify="center">
-
                 <Grid item xs={4}>
-
-
                     <h1>User profile</h1>
                     <h3>Id {userProfile._id}</h3>
                     <h3>Email {userProfile.email}</h3>
                     <h3>Name {userProfile.name}</h3>
                     <h3>Avatar <img src={userProfile.avatar} style={{width: 100}}/> </h3>
                     <h3>PublicCardPacksCount= {userProfile.publicCardPacksCount}</h3>
-
-
-
-                    <FormControl>
-                        <FormLabel>
-                            Login
-                            <br/>
-                        </FormLabel>
-                        <TextField
-                            label="Email"
-                            margin="normal"
-                            name="Email"
-                            value={"email"}
-                        />
-                    </FormControl>
 
                 </Grid>
             </Grid>
