@@ -1,7 +1,22 @@
 import React from 'react'
-import {FormControl, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
-import s from './signupPage.module.css'
 import {useFormik} from "formik";
+import {registrationThunk} from "./signupReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {Redirect} from 'react-router-dom';
+import {PATH} from "../../Routes";
+import {AppStoreType} from "../../../m2-bll/redux/store";
+import {
+    FormControl,
+    FormGroup,
+    FormLabel,
+    TextField,
+    Button,
+    Grid,
+    makeStyles,
+    Theme,
+    createStyles,
+    Card, Typography
+} from '@material-ui/core'
 
 
 type FormikErrorType = {
@@ -10,12 +25,19 @@ type FormikErrorType = {
     cfPassword?: string
 }
 
-//commit//commit
-// commit//commit
+const useStyles = makeStyles<Theme>(theme => createStyles({
+    root: {
+        textAlign: "center"
+    }
+}))
 
 
 const SignupPage: React.FC = () => {
 
+
+    const classes = useStyles()
+    const dispatch = useDispatch();
+    const isFetching = useSelector<AppStoreType>(state => state.signup.isFetching);
 
     const formik = useFormik({
         initialValues: {
@@ -32,93 +54,111 @@ const SignupPage: React.FC = () => {
             }
             if (!values.password) {
                 errors.password = 'Required';
-            } else if (values.password.length < 4) {
-                errors.password = 'Password must be 4 characters or more'
+            } else if (values.password.length < 7) {
+                errors.password = 'Password must be 7 characters or more'
             }
-
-
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            // alert(JSON.stringify(values));
+            if (values.email !== '' && values.password !== '' && values.cfPassword !== '') {
+                if (values.password === values.cfPassword) {
+                    dispatch(registrationThunk(values.email, values.password))
+                    formik.resetForm();
+                }
+            }
         },
+        // onReset: values =>  {
+        //
+        //     if (values.email !== '' || values.password !== '' || values.cfPassword !== '') {
+        //     formik.resetForm()}
+        // }
     })
 
+    if (isFetching) {
+        return <Redirect to={PATH.LOGIN}/>
+    }
 
     return (
-        <div className={s.container}>
-            <div className={s.wrapper}>
-                <Grid container justify="center">
-                    <Grid item xs={3}>
-                        <form onSubmit={formik.handleSubmit}>
-                            <FormControl style={{width: '250px', }}>
-                                <FormLabel>
-                                    <h1>It-incubator</h1>
-                                    <h2>Sign up </h2>
 
-                                </FormLabel>
-                                <FormGroup>
-                                    <TextField
-                                        type="email"
-                                        label="Email"
-                                        margin="normal"
+        <Grid container
+              justify="center"
+              alignItems="center"
+              style={{minHeight: '100vh'}}
+        >
+            <Card
+                className={classes.root}
+            >
+                <Grid item xs={3}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Typography>It-incubator</Typography>
+                        <Typography>Sign up</Typography>
+                        <FormControl>
 
-
-                                        {...formik.getFieldProps('email')}
-                                    />
-                                    {formik.touched.email && formik.errors.email &&
-                                    <div style={{'color': 'red'}}>{formik.errors.email}</div>}
-
-                                    <TextField
-                                        type="password"
-                                        label="Password"
-                                        margin="normal"
-                                        {...formik.getFieldProps('password')}
-                                    />
-                                    {formik.touched.password && formik.errors.password &&
-                                    <div style={{'color': 'red'}}>{formik.errors.password}</div>}
-
-                                    <TextField
-                                        type="password"
-                                        label="Confirm password"
-                                        margin="normal"
-                                        {...formik.getFieldProps('cfPassword')}
-                                    />
-                                    {formik.touched.cfPassword && formik.errors.cfPassword &&
-                                    <div style={{'color': 'red'}}>{formik.errors.cfPassword}</div>}
-
-                                </FormGroup>
+                            <FormGroup>
+                                <TextField
+                                    type="email"
+                                    label="Email"
+                                    margin="normal"
 
 
-                                <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
-                                    <Button
-                                        style={{margin: '5px'}}
-                                        type={'reset'}
-                                        variant={'outlined'}
-                                        color={'secondary'}
-                                        size={'small'}>Cancel</Button>
+                                    {...formik.getFieldProps('email')}
+                                />
+                                {formik.touched.email && formik.errors.email &&
+                                <div style={{'color': 'red'}}>{formik.errors.email}</div>}
 
-                                    <Button
+                                <TextField
+                                    type="password"
+                                    label="Password"
+                                    margin="normal"
+                                    {...formik.getFieldProps('password')}
+                                />
+                                {formik.touched.password && formik.errors.password &&
+                                <div style={{'color': 'red'}}>{formik.errors.password}</div>}
 
-                                        style={{margin: '5px'}}
-                                        type={'submit'}
-                                        variant={'contained'}
-                                        color={'primary'}
-                                        size={'small'}>Register</Button>
+                                <TextField
+                                    type="password"
+                                    label="Confirm password"
+                                    margin="normal"
+                                    {...formik.getFieldProps('cfPassword')}
+                                />
+                                {formik.touched.cfPassword && formik.errors.cfPassword &&
+                                <div style={{'color': 'red'}}>{formik.errors.cfPassword}</div>}
+
+                            </FormGroup>
 
 
-                                </div>
-                            </FormControl>
-                        </form>
+                            <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
+                                <Button
+                                    onClick={() => {formik.resetForm()}}
+                                    style={{margin: '5px'}}
+                                    type={'reset'}
+                                    variant={'outlined'}
+                                    color={'secondary'}
+                                    size={'small'}>Cancel</Button>
 
-                    </Grid>
-                    <p>
-                        Already have an account? <a href="/login">Log in here</a>
-                    </p>
+                                <Button
+
+                                    style={{margin: '5px'}}
+                                    type={'submit'}
+                                    variant={'contained'}
+                                    color={'primary'}
+                                    size={'small'}>Register</Button>
+
+                            </div>
+                        </FormControl>
+                        <FormLabel>
+                            <p>
+                                Already have an account? <a href="/">Log in here</a>
+                            </p>
+                        </FormLabel>
+                    </form>
+
                 </Grid>
+            </Card>
+        </Grid>
 
-            </div>
-        </div>
+
     )
 }
 export default SignupPage

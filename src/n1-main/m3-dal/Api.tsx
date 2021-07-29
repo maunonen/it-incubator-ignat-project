@@ -1,26 +1,28 @@
 import axios from 'axios'
+import {UserProfileType} from '../m2-bll/redux/profile-reducer';
 
 const settings = {
-    withCredentials: true,
-    // headers: {
-    //     'API-KEY': 'dfa3df07-6fe1-42ec-85cb-0092d073f5e2'
-    // }
-}
+    withCredentials: true
+};
 const instance = axios.create({
-    //baseURL: 'http://localhost:7542/2.0/',
+     baseURL: 'http://localhost:7542/2.0/',
     // baseURL: 'https://neko-back.herokuapp.com/',
-    baseURL: 'https://neko-back.herokuapp.com/2.0',
     ...settings
 })
 
 // api
 
 export type UserLoginType = {
-    _id: string;
+    _id:string;
     email: string,
     name: string,
     avatar?: string,
     publicCardPacksCount: number
+}
+
+type registrationUserType = {
+    addedUser: {}
+    error?: string
 }
 
 export type UserForgotPassType = {
@@ -34,15 +36,20 @@ export type UserNewPasswordType = {
 }
 
 export const acsessAPI = {
-    loginUser(email: string, password: string, rememberMe: boolean) {
-        try {
-            const promise = instance.post<UserLoginType>("/auth/login", {email, password, rememberMe});
-            return promise
-        } catch (e) {
-            const error = e.response ?
-                e.response.data.error :
+    loginUser(email:string, password:string, rememberMe:boolean) {
+        try{
+        const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
+        return promise
+        }
+        catch(e) {
+            const error=e.response ?
+                e.response.data.error:
                 (e.message + ', more details in the console');
         }
+    },
+    registrationUser(email: string, password: string) {
+        const promise = instance.post<registrationUserType>("/auth/register", {email, password})
+        return promise
     },
     forgotPassword(email: string, from: string, message: string) {
         return instance.post<UserForgotPassType>("/auth/forgot", {email, from, message});
