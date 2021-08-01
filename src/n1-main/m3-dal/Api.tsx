@@ -5,15 +5,15 @@ const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-     baseURL: 'http://localhost:7542/2.0/',
-    // baseURL: 'https://neko-back.herokuapp.com/',
+    /*baseURL: 'http://localhost:7542/2.0/',*/
+    baseURL: 'https://neko-back.herokuapp.com/2.0',
     ...settings
 })
 
 // api
 
 export type UserLoginType = {
-    _id:string;
+    _id: string;
     email: string,
     name: string,
     avatar?: string,
@@ -32,18 +32,17 @@ export type UserForgotPassType = {
     html: boolean
 }
 export type UserNewPasswordType = {
-    info : string
+    info: string
 }
 
 export const acsessAPI = {
-    loginUser(email:string, password:string, rememberMe:boolean) {
-        try{
-        const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
-        return promise
-        }
-        catch(e) {
-            const error=e.response ?
-                e.response.data.error:
+    loginUser(email: string, password: string, rememberMe: boolean) {
+        try {
+            const promise = instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
+            return promise
+        } catch (e) {
+            const error = e.response ?
+                e.response.data.error :
                 (e.message + ', more details in the console');
         }
     },
@@ -54,9 +53,22 @@ export const acsessAPI = {
     forgotPassword(email: string, from: string, message: string) {
         return instance.post<UserForgotPassType>("/auth/forgot", {email, from, message});
     },
-    setNewPassword(password : string , resetPasswordToken : string) {
-        return instance.post<UserNewPasswordType>("/auth/set-new-password" , {password, resetPasswordToken});
+    setNewPassword(password: string, resetPasswordToken: string) {
+        return instance.post<UserNewPasswordType>("/auth/set-new-password", {password, resetPasswordToken});
     },
+    //sortPack=0updated
+    /*postCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.post<any>("/cards/pack", {});
+    },
+    getCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.get<any>("/cards/pack", {params: {packName: packName}});
+    },
+    deleteCardsPack(id : string ) {
+        return instance.delete<any>("/cards/pack", {params: {id: id}});
+    },
+    updateCardsPack(_id : string ) {
+        return instance.put<any>("/cards/pack", {_id : _id });
+    },*/
 }
 
 

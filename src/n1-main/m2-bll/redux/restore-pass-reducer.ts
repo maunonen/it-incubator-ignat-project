@@ -66,7 +66,7 @@ export const forgotPassTC = (email: string) => {
     return (dispatch: Dispatch<any>) => {
         dispatch(setAppStatusAC('loading'))
         const from = "santari33@gmail.com";
-        const message = "<div>password recovery link: <a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>";
+        const message = "<div>password recovery link: <a href='https://maunonen.github.io/it-incubator-ignat-project/#/set-new-password/$token$'>link</a></div>";
 
         acsessAPI.forgotPassword(email, from, message)
             .then((res) => {
