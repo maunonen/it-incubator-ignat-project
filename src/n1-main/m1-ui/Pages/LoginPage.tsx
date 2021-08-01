@@ -2,10 +2,10 @@ import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {useFormik} from "formik";
+import * as Yup from 'yup';
 import {NavLink, Redirect} from "react-router-dom";
-import {
-    Button, Card, createStyles, FormControl, FormGroup, Checkbox,
-    Grid, makeStyles, TextField, Theme, Typography, FormControlLabel
+import {Button, Card, createStyles, FormControl, FormGroup, Checkbox,
+        Grid, makeStyles, TextField, Theme, Typography, FormControlLabel
 } from "@material-ui/core";
 import {loggedInTC} from "../../m2-bll/redux/auth-reducer";
 
@@ -14,32 +14,32 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center",
         padding: "30px 30px",
-        maxWidth: "413px",
+        maxWidth : "413px",
     },
     formTitle: {
         marginBottom: "30px",
     },
-    formDescription: {
-        marginTop: "20px",
-        marginBottom: "10px",
+    formDescription : {
+        marginTop : "20px",
+        marginBottom : "40px",
     },
-    formButtonBlock: {
+    formButtonBlock : {
         margin: "0px 35px"
     }
 }))
 
 
-type FormikErrorType = {
-    email?: string
-    password?: string
-}
+type FormikErrorType = {email?: string}
 
 const LoginPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch()
     const isLoggedIn = useSelector((state: AppStoreType) => state.auth.isLoggedIn)
-    const isLoggedError = useSelector((state: AppStoreType) => state.auth.error)
+
+    const restoreSchema = Yup.object().shape({
+        email: Yup.string().email('Invalid email').required('Required'),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -47,26 +47,11 @@ const LoginPage: React.FC = () => {
             password: '1qazxcvBG',
             remember: true
         },
-
-        validate: (values) => {
-            const errors: FormikErrorType = {};
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-            if (!values.password) {
-                errors.password = 'Required';
-            } else if (values.password.length < 7) {
-                errors.password = 'Password must be 7 characters or more'
-            }
-            return errors;
-        },
-
-            onSubmit: values => {
+        validationSchema: restoreSchema,
+        onSubmit: values => {
             dispatch(loggedInTC(values.email, values.password, values.remember))
+            formik.resetForm()
         },
-
     })
 
 
@@ -75,10 +60,10 @@ const LoginPage: React.FC = () => {
     }
 
     return <Grid
-        container
-        justify="center"
-        alignItems="center"
-        style={{minHeight: '100vh'}}
+                container
+                justify="center"
+                alignItems="center"
+                style={{minHeight: '100vh'}}
     >
         <Card className={classes.root}>
             <Grid item>
@@ -88,9 +73,8 @@ const LoginPage: React.FC = () => {
                         className={classes.formTitle}
                     >Login
                     </Typography>
-                    <div style={{color: "red"}}>{isLoggedError}</div>
                     <Typography
-                       variant={"body1"}
+                        variant={"body1"}
                         className={classes.formDescription}
                         align={"left"}
                     > Enter your email address and password
@@ -104,8 +88,8 @@ const LoginPage: React.FC = () => {
                                 margin="normal"
                                 {...formik.getFieldProps('email')}
                             />
-                            {formik.touched.email && formik.errors.email &&
-                            <div style={{color: 'red'}}>{formik.errors.email}</div>
+                            { formik.touched.email && formik.errors.email &&
+                              <div style={{color: 'red'}}>{formik.errors.email}</div>
                             }
                             <TextField
                                 type="password"
@@ -113,35 +97,33 @@ const LoginPage: React.FC = () => {
                                 margin="normal"
                                 {...formik.getFieldProps('password')}
                             />
-                            {formik.touched.password && formik.errors.password &&
+
+                             <FormControlLabel
+                                  label={'Remember me'}
+                                  control={<Checkbox/>}
+                                 // onChange={changeRememberCheckboxHandler}
+                                  {...formik.getFieldProps('remember')}
+                                />
+
+
+
+
+
+
+                            {/*-----value less then------------------------*/}
+                            { formik.touched.password && formik.errors.password &&
                             <div style={{color: 'red'}}>{formik.errors.password}</div>
                             }
+                            {/*-----------------------------*/}
 
-                            <FormControlLabel
-                                label={'Remember me'}
-                                control={<Checkbox
-                                checked={formik.values.remember}
-                                {...formik.getFieldProps('remember')}
-                                />}
-                            />
 
-                            <div style={{display: 'flex', justifyContent: "center"}}>
-                                <Button
-                                    type={'submit'}
-                                    variant={'contained'}
-                                    className={classes.formButtonBlock}
-                                    color={'primary'}>
-                                    Loggin
-                                </Button>
-                                <Button
-                                    type={'reset'}
-                                    onClick={() => {formik.resetForm()}}
-                                    variant={'contained'}
-                                    className={classes.formButtonBlock}
-                                    color={'primary'}>
-                                    Reset
-                                </Button>
-                            </div>
+
+
+                            <Button
+                                type={'submit'}
+                                variant={'contained'}
+                                className={classes.formButtonBlock}
+                                color={'primary'}>Loggin</Button>
                         </FormGroup>
                     </FormControl>
                 </form>

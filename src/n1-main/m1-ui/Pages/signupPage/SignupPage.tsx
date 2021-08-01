@@ -2,7 +2,7 @@ import React from 'react'
 import {useFormik} from "formik";
 import {registrationThunk} from "./signupReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from 'react-router-dom';
+import {NavLink, Redirect} from 'react-router-dom';
 import {PATH} from "../../Routes";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {
@@ -15,7 +15,7 @@ import {
     makeStyles,
     Theme,
     createStyles,
-    Card, Typography
+    Card, Typography, Link
 } from '@material-ui/core'
 
 
@@ -27,7 +27,48 @@ type FormikErrorType = {
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
-        textAlign: "center"
+        textAlign: "center",
+        padding: "30px 30px",
+        /*maxWidth: "413px",*/
+        width: "413px",
+    },
+    formTitle: {
+        marginBottom: "30px",
+    },
+    formSubtitle: {
+        marginBottom: "40px",
+    },
+    formDescription: {
+        marginTop: "20px",
+        marginBottom: "40px",
+    },
+    formLinkTitle: {
+        paddingTop: "30px",
+        paddingBottom: "15px",
+    },
+
+    displayStretch: {
+        display: "flex",
+        alignItems: "stretch"
+    },
+    textFieldArea: {
+        margin: "0px 10px"
+    },
+    formButtonBlock: {
+        margin: "0px 35px",
+        display: "flex",
+        alignItems: "",
+    },
+    resetButton: {
+        flex: 1,
+        display: "flex",
+        alignItems: "stretch",
+        marginRight: "15px",
+    },
+    submitButton: {
+        flex: 1,
+        display: "flex",
+        alignItems: "stretch"
     }
 }))
 
@@ -82,83 +123,90 @@ const SignupPage: React.FC = () => {
     return (
 
         <Grid container
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               style={{minHeight: '100vh'}}
         >
-            <Card
-                className={classes.root}
-            >
-                <Grid item xs={3}>
+            <Grid item>
+                <Card
+                    className={classes.root}
+                >
                     <form onSubmit={formik.handleSubmit}>
-                        <Typography>It-incubator</Typography>
-                        <Typography>Sign up</Typography>
-                        <FormControl>
-
-                            <FormGroup>
+                        <Typography
+                            variant={"h1"}
+                            className={classes.formTitle}
+                        >It-incubator</Typography>
+                        <Typography
+                            variant={"h2"}
+                            className={classes.formSubtitle}
+                        >Sign up</Typography>
+                        <FormControl className={classes.displayStretch}>
+                            <FormGroup className={classes.textFieldArea}>
                                 <TextField
                                     type="email"
                                     label="Email"
-                                    margin="normal"
-
-
+                                    margin="dense"
                                     {...formik.getFieldProps('email')}
                                 />
                                 {formik.touched.email && formik.errors.email &&
                                 <div style={{'color': 'red'}}>{formik.errors.email}</div>}
-
                                 <TextField
                                     type="password"
                                     label="Password"
-                                    margin="normal"
+                                    margin="dense"
                                     {...formik.getFieldProps('password')}
                                 />
                                 {formik.touched.password && formik.errors.password &&
                                 <div style={{'color': 'red'}}>{formik.errors.password}</div>}
-
                                 <TextField
                                     type="password"
                                     label="Confirm password"
-                                    margin="normal"
+                                    margin="dense"
                                     {...formik.getFieldProps('cfPassword')}
                                 />
                                 {formik.touched.cfPassword && formik.errors.cfPassword &&
                                 <div style={{'color': 'red'}}>{formik.errors.cfPassword}</div>}
+                                <Typography
+                                    variant={"body1"}
+                                    className={classes.formDescription}
+                                    style={{marginTop: "20px", marginBottom: "30px"}}
+                                    align={"left"}
+                                >Enter your email address and password</Typography>
 
+                                <div className={classes.formButtonBlock}>
+                                    <Button
+                                        onClick={() => {
+                                            formik.resetForm()
+                                        }}
+                                        className={classes.resetButton}
+                                        type={'reset'}
+                                        variant={'outlined'}
+                                        color={'secondary'}
+                                    >Cancel</Button>
+                                    <Button
+                                        type={'submit'}
+                                        variant={'contained'}
+                                        className={classes.submitButton}
+                                        color={'primary'}
+                                    >Register</Button>
+                                </div>
+                                <Typography
+                                    variant={"body1"}
+                                    className={classes.formLinkTitle}
+                                    style={{marginTop: "0px", marginBottom: "15px"}}
+                                >Already have an account?</Typography>
+                                <Link
+                                    component={NavLink}
+                                    to={PATH.LOGIN}
+                                    color={"textPrimary"}
+                                >Log in here
+                                </Link>
                             </FormGroup>
-
-
-                            <div style={{display: 'flex', flexDirection: 'row', marginTop: '40px'}}>
-                                <Button
-                                    onClick={() => {formik.resetForm()}}
-                                    style={{margin: '5px'}}
-                                    type={'reset'}
-                                    variant={'outlined'}
-                                    color={'secondary'}
-                                    size={'small'}>Cancel</Button>
-
-                                <Button
-
-                                    style={{margin: '5px'}}
-                                    type={'submit'}
-                                    variant={'contained'}
-                                    color={'primary'}
-                                    size={'small'}>Register</Button>
-
-                            </div>
                         </FormControl>
-                        <FormLabel>
-                            <p>
-                                Already have an account? <a href="/">Log in here</a>
-                            </p>
-                        </FormLabel>
                     </form>
-
-                </Grid>
-            </Card>
+                </Card>
+            </Grid>
         </Grid>
-
-
     )
 }
 export default SignupPage

@@ -23,13 +23,14 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center",
         padding: "30px 30px",
-        maxWidth: "413px",
+        /*maxWidth: "413px",*/
+        width: "413px",
     },
     formTitle: {
         marginBottom: "30px",
     },
     formSubtitle: {
-        marginBottom: "20px",
+        marginBottom: "40px",
     },
     formDescription: {
         marginTop: "20px",
@@ -41,6 +42,13 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     },
     formButtonBlock: {
         margin: "0px 35px"
+    },
+    displayStretch: {
+        display: "flex",
+        alignItems: "stretch"
+    },
+    textFieldArea: {
+        margin: "0px 10px"
     }
 }))
 
@@ -53,7 +61,7 @@ const RestorePassPage: React.FC = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {isLoggedIn} = useSelector((state: AppStoreType) => state.auth)
-    const { isPassRequestSent,} = useSelector((state: AppStoreType) => state.passRestore)
+    const {isPassRequestSent,} = useSelector((state: AppStoreType) => state.passRestore)
     const {errorMessage, appStatus} = useSelector((state: AppStoreType) => state.app)
 
 
@@ -83,7 +91,7 @@ const RestorePassPage: React.FC = () => {
         return <Redirect to={'/'}/>
     }
     if (appStatus === 'loading') {
-        return <Loading message={"Wait a minute please"} />
+        return <Loading message={"Wait a minute please"}/>
     }
     if (isPassRequestSent) {
         return <Redirect to={PATH.RESTORE_PASS_CHECK_EMAIL}/>
@@ -95,10 +103,10 @@ const RestorePassPage: React.FC = () => {
         alignItems="center"
         style={{minHeight: '100vh'}}
     >
-        <Card
-            className={classes.root}
-        >
-            <Grid item>
+        <Grid item>
+            <Card
+                className={classes.root}
+            >
                 <form onSubmit={formik.handleSubmit}>
                     <Typography
                         variant={"h1"}
@@ -108,8 +116,8 @@ const RestorePassPage: React.FC = () => {
                         variant={"h2"}
                         className={classes.formSubtitle}
                     >Forget your password</Typography>
-                    <FormControl>
-                        <FormGroup>
+                    <FormControl className={classes.displayStretch}>
+                        <FormGroup className={classes.textFieldArea}>
                             <TextField
                                 type="email"
                                 label="Email"
@@ -145,8 +153,8 @@ const RestorePassPage: React.FC = () => {
                         </FormGroup>
                     </FormControl>
                 </form>
-            </Grid>
-        </Card>
+            </Card>
+        </Grid>
     </Grid>
 }
 export default RestorePassPage

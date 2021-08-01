@@ -35,11 +35,17 @@ export type UserNewPasswordType = {
     info : string
 }
 
-            // accessAPI правильно пишется
 export const acsessAPI = {
     loginUser(email:string, password:string, rememberMe:boolean) {
+        try{
         const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
         return promise
+        }
+        catch(e) {
+            const error=e.response ?
+                e.response.data.error:
+                (e.message + ', more details in the console');
+        }
     },
     registrationUser(email: string, password: string) {
         const promise = instance.post<registrationUserType>("/auth/register", {email, password})
@@ -50,9 +56,6 @@ export const acsessAPI = {
     },
     setNewPassword(password : string , resetPasswordToken : string) {
         return instance.post<UserNewPasswordType>("/auth/set-new-password" , {password, resetPasswordToken});
-    },
-    authUser(){
-        return instance.post<any>("/auth/me" , {});
     },
 }
 
