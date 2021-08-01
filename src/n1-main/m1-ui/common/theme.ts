@@ -45,6 +45,8 @@ export const muiTheme = createTheme({
         MuiTextField : {
             root : {
                 fontWeight: 600,
+                /*display : "flex",
+                alignItems : "stretch",*/
                 fontFamily: 'SF UI Display, sans-serif',
                 fontStyle: "normal",
                 fontSize: "16px",

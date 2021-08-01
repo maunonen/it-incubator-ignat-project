@@ -37,15 +37,8 @@ export type UserNewPasswordType = {
 
 export const acsessAPI = {
     loginUser(email:string, password:string, rememberMe:boolean) {
-        try{
         const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
         return promise
-        }
-        catch(e) {
-            const error=e.response ?
-                e.response.data.error:
-                (e.message + ', more details in the console');
-        }
     },
     registrationUser(email: string, password: string) {
         const promise = instance.post<registrationUserType>("/auth/register", {email, password})
@@ -57,6 +50,22 @@ export const acsessAPI = {
     setNewPassword(password : string , resetPasswordToken : string) {
         return instance.post<UserNewPasswordType>("/auth/set-new-password" , {password, resetPasswordToken});
     },
+    authUser(){
+        return instance.post<any>("/auth/me" , {});
+    },
+    //sortPack=0updated
+    /*postCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.post<any>("/cards/pack", {});
+    },
+    getCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.get<any>("/cards/pack", {params: {packName: packName}});
+    },
+    deleteCardsPack(id : string ) {
+        return instance.delete<any>("/cards/pack", {params: {id: id}});
+    },
+    updateCardsPack(_id : string ) {
+        return instance.put<any>("/cards/pack", {_id : _id });
+    },*/
 }
 
 

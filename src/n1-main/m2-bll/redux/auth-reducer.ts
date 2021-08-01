@@ -1,10 +1,11 @@
 import {acsessAPI} from "../../m3-dal/Api";
 import {Dispatch} from 'redux';
-import {profileAC} from './profile-reducer';
+import {profileAC, profileACType} from './profile-reducer';
 
-type InitStateType = { isLoggedIn: boolean, error: string };
 
-const initState = {isLoggedIn: false, error: ""};
+export type InitStateType = { isLoggedIn: boolean, error: string };
+
+const initState: InitStateType = {isLoggedIn: false, error: ""};
 
 export const authReducer = (state = initState, action: CombinedActionType): InitStateType => {
     switch (action.type) {
@@ -22,24 +23,35 @@ export type LoggedInType = {
     error: string
 }
 
-type CombinedActionType = LoggedInType
+type CombinedActionType = LoggedInType | profileACType;
 
 export const loggedInAC = (value: boolean, error: string): LoggedInType => ({type: "IS-LOGGED-IN", value, error});
 
 // thunks-------------------------------------------------------------------
 
 export const loggedInTC = (email: string, password: string, rememberMe: boolean) => {
-    return (dispatch: Dispatch<any>) => {
-        //@ts-ignore
+    return (dispatch: Dispatch<CombinedActionType>) => {
         acsessAPI.loginUser(email, password, rememberMe)
             .then((res) => {
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
             }).catch(rej => {
-                // как проверить чтобы ошибка не падала ignat
-                // if (rej.response.data){
-            dispatch(loggedInAC(false, rej.response.data.error))}
-        // }
-        )
+            // if (rej.response.data){
+            // console.log(rej.response.data.error)
+            dispatch(loggedInAC(false, rej.response.data.error))
+        })
+    }
+}
+
+
+export const authMeTC = () => {
+    return (dispatch: Dispatch<CombinedActionType>) => {
+        acsessAPI.authUser()
+            .then((res) => {
+                dispatch(profileAC(res.data))
+                dispatch(loggedInAC(true, ""))
+            }).catch(rej => {
+            dispatch(loggedInAC(false, rej.response.data.error))
+        })
     }
 }

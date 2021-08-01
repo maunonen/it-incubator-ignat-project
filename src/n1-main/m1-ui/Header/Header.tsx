@@ -90,7 +90,7 @@ const Header: React.FC = () => {
                             onClick={() => history.push(PATH.TEST_PAGE)}
                         >Test Page</Button>
                     </div>
-                    <List
+                    {/*<List
                         component="nav"
                         aria-label="main mailbox folders"
                         className={classes.listBlock}
@@ -107,7 +107,7 @@ const Header: React.FC = () => {
                             </ListItemIcon>
                             <ListItemText primary="Drafts" />
                         </ListItem>
-                    </List>
+                    </List>*/}
                 </Toolbar>
                 {appStatus === 'loading' && <LinearProgress color={"secondary"}/>}
             </AppBar>
