@@ -42,7 +42,10 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
 }))
 
 
-type FormikErrorType = { email?: string }
+type FormikErrorType = {
+    email?: string
+    password?: string
+}
 
 const LoginPage: React.FC = () => {
 
@@ -98,8 +101,8 @@ const LoginPage: React.FC = () => {
                                 margin="dense"
                                 {...formik.getFieldProps('email')}
                             />
-                            {formik.touched.email && formik.errors.email &&
-                            <div style={{color: 'red'}}>{formik.errors.email}</div>
+                            { formik.touched.email && formik.errors.email &&
+                              <div style={{color: 'red'}}>{formik.errors.email}</div>
                             }
                             <TextField
                                 type="password"
@@ -107,12 +110,16 @@ const LoginPage: React.FC = () => {
                                 margin="dense"
                                 {...formik.getFieldProps('password')}
                             />
+                            {formik.touched.password && formik.errors.password &&
+                            <div style={{color: 'red'}}>{formik.errors.password}</div>
+                            }
                             <Typography
                                 variant={"body1"}
                                 className={classes.formDescription}
                                 align={"left"}
                             >Enter your email address and password
                             </Typography>
+
 
                             <FormControlLabel
                                 label={'Remember me'}
@@ -121,18 +128,22 @@ const LoginPage: React.FC = () => {
                                 {...formik.getFieldProps('remember')}
                             />
 
-                            {/*-----value less then------------------------*/}
-                            {formik.touched.password && formik.errors.password &&
-                            <div style={{color: 'red'}}>{formik.errors.password}</div>
-                            }
-                            {/*-----------------------------*/}
 
 
+                            <Button
+                                type={'reset'}
+                                onClick={() => {formik.resetForm()}}
+                                variant={'contained'}
+                                className={classes.formButtonBlock}
+                                color={'primary'}>
+                                Reset
+                            </Button>
                             <Button
                                 type={'submit'}
                                 variant={'contained'}
                                 className={classes.formButtonBlock}
                                 color={'primary'}>Login</Button>
+
                             <Typography
                                 variant={"body1"}
                                 className={classes.formLinkTitle}
