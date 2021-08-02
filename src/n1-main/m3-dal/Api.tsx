@@ -53,7 +53,20 @@ export const acsessAPI = {
     authUser(){
         return instance.post<any>("/auth/me" , {});
     },
+
+    //--------------test api for lesson 2-------------------------------------------------
+
+
+      getCard() {
+        const promise = instance.get<any>("/cards/pack?pageCount=1000&page=4&sortPacks=0updated");
+        return promise
+    },
+
+    //------------------------------------------------------------------------------------
     //sortPack=0updated
+
+
+
     /*postCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
         return instance.post<any>("/cards/pack", {});
     },
