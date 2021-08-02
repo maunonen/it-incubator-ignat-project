@@ -6,6 +6,7 @@ import {appReducer} from "./app-reducer";
 import {passRestoreReducer} from "./restore-pass-reducer";
 import {profileReducer} from "./profile-reducer";
 import {signupReducer} from "../../m1-ui/Pages/signupPage/signupReducer";
+import {packReducer} from "./pack-reducer";
 
 
 const reducers = combineReducers({
@@ -13,7 +14,8 @@ const reducers = combineReducers({
     signup: signupReducer,
     app : appReducer,
     passRestore : passRestoreReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    pack : packReducer,
 });
 
 export const store = createStore(reducers, applyMiddleware(thunkMiddleware));

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 import {UserProfileType} from '../m2-bll/redux/profile-reducer';
 
 const settings = {
@@ -59,7 +59,7 @@ export interface PackDataType extends Omit<PackResponseDataType, 'created' | 'up
 }
 
 export interface GetPackResponseType {
-    cardsPack: Array<PackDataType>
+    cardsPack: Array<PackResponseDataType>
     page: number
     pageCount: number
     cardPacksTotalCount: number
@@ -67,6 +67,9 @@ export interface GetPackResponseType {
     maxCardsCount: number
     token: string
     tokenDeathTime: number
+}
+export interface GetPackResponseWithDateType extends Omit<GetPackResponseType, 'cardsPack'> {
+    cardsPack : Array<PackDataType>
 }
 
 export interface DeletePackResponseType {
@@ -91,7 +94,7 @@ export interface UpdatePackResponseType {
     tokenDeathTime: number
 }
 
-export interface NewPackQueryDataType {
+export interface NewPackObjectDataType {
     cardsPack: {
         name?: string
         path?: string
@@ -148,8 +151,8 @@ export const acsessAPI = {
     authUser() {
         return instance.post<any>("/auth/me", {});
     },
-    //sortPack=0updated
-    postCardsPack(pack: NewPackQueryDataType) {
+
+    postCardsPack(pack: NewPackObjectDataType) {
         return instance.post<NewPackResponseType>("/cards/pack", pack);
     },
     getCardsPack(queryPackObject: GetPackQueryParamsType) {
