@@ -5,7 +5,7 @@ const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
+     baseURL: 'http://localhost:7542/2.0/',
     // baseURL: 'https://neko-back.herokuapp.com/',
     ...settings
 })
@@ -13,7 +13,7 @@ const instance = axios.create({
 // api
 
 export type UserLoginType = {
-    _id: string;
+    _id:string;
     email: string,
     name: string,
     avatar?: string,
@@ -35,104 +35,9 @@ export type UserNewPasswordType = {
     info: string
 }
 
-export interface PackResponseDataType {
-    _id: string
-    user_id: string
-    user_name: string
-    private: boolean
-    name: string
-    path: string
-    grade: number
-    shots: number
-    cardsCount: number
-    type: string
-    rating: number
-    created: string
-    updated: string
-    more_id: string
-    __v: number
-}
-
-export interface PackDataType extends Omit<PackResponseDataType, 'created' | 'updated'> {
-    created: Date
-    updated: Date
-}
-
-export interface GetPackResponseType {
-    cardsPack: Array<PackDataType>
-    page: number
-    pageCount: number
-    cardPacksTotalCount: number
-    minCardsCount: number
-    maxCardsCount: number
-    token: string
-    tokenDeathTime: number
-}
-
-export interface DeletePackResponseType {
-    deletedCardsPack: PackResponseDataType
-    token: string
-    tokenDeathTime: number
-}
-
-export type NewPackResponseType = {
-    newCardsPack: PackResponseDataType,
-    token: string
-    tokenDeathTime: number
-}
-
-export interface PackUpdateResponseDataType extends PackResponseDataType {
-    deckCover : string
-}
-
-export interface UpdatePackResponseType {
-    updatedCardsPack: PackUpdateResponseDataType,
-    token: string
-    tokenDeathTime: number
-}
-
-export interface NewPackQueryDataType {
-    cardsPack: {
-        name?: string
-        path?: string
-        grade?: number
-        shots?: number
-        rating?: number
-        deckCover?: string
-        private?: boolean
-        type?: string
-    }
-}
-
-export interface GetPackQueryParamsType {
-    params?: {
-        packName?: string
-        min?: number
-        max?: number
-        sortPacks?: string
-        page?: number
-        pageCount?: number
-        user_id?: string
-    }
-}
-
-export interface PackUpdateObjectType {
-    cardsPack: {
-        _id: string
-        name?: string
-        path?: string
-        grade?: number
-        shots?: number
-        rating?: number
-        deckCover?: string
-        private?: boolean
-        type?: string
-    }
-}
-
 export const acsessAPI = {
-    loginUser(email: string, password: string, rememberMe: boolean) {
-        const promise = instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
+    loginUser(email:string, password:string, rememberMe:boolean) {
+        const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
         return promise
     },
     registrationUser(email: string, password: string) {
@@ -142,25 +47,38 @@ export const acsessAPI = {
     forgotPassword(email: string, from: string, message: string) {
         return instance.post<UserForgotPassType>("/auth/forgot", {email, from, message});
     },
-    setNewPassword(password: string, resetPasswordToken: string) {
-        return instance.post<UserNewPasswordType>("/auth/set-new-password", {password, resetPasswordToken});
+    setNewPassword(password : string , resetPasswordToken : string) {
+        return instance.post<UserNewPasswordType>("/auth/set-new-password" , {password, resetPasswordToken});
     },
-    authUser() {
-        return instance.post<any>("/auth/me", {});
+    authUser(){
+        return instance.post<any>("/auth/me" , {});
     },
+
+    //--------------test api for lesson 2-------------------------------------------------
+
+
+      getCard() {
+        const promise = instance.get<any>("/cards/pack?pageCount=1000&page=4&sortPacks=0updated");
+        return promise
+    },
+
+    //------------------------------------------------------------------------------------
     //sortPack=0updated
-    postCardsPack(pack: NewPackQueryDataType) {
-        return instance.post<NewPackResponseType>("/cards/pack", pack);
+
+
+
+    /*postCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.post<any>("/cards/pack", {});
     },
-    getCardsPack(queryPackObject: GetPackQueryParamsType) {
-        return instance.get<GetPackResponseType>("/cards/pack", queryPackObject);
+    getCardsPack(packName: string, min: number, max : number, sortPacks : number, page : number, pageCount : number, userId : string  ) {
+        return instance.get<any>("/cards/pack", {params: {packName: packName}});
     },
-    deleteCardsPack(id: string) {
-        return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
+    deleteCardsPack(id : string ) {
+        return instance.delete<any>("/cards/pack", {params: {id: id}});
     },
-    updateCardsPack(_id: string, packUpdateObject: PackUpdateObjectType) {
-        return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
-    },
+    updateCardsPack(_id : string ) {
+        return instance.put<any>("/cards/pack", {_id : _id });
+    },*/
 }
 
 

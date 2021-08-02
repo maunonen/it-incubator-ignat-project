@@ -35,14 +35,17 @@ export const loggedInTC = (email: string, password: string, rememberMe: boolean)
             .then((res) => {
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
-            }).catch(rej => {
-            // if (rej.response.data){
-            // console.log(rej.response.data.error)
-            dispatch(loggedInAC(false, rej.response.data.error))
-        })
+            })
+                .catch(rej => {
+                //    if has response and has data
+                if (rej.response?.data) {
+                    dispatch(loggedInAC(false, rej.response.data.error))
+                } else {
+                    dispatch(loggedInAC(false, "network error"))
+                }
+            })
     }
 }
-
 
 export const authMeTC = () => {
     return (dispatch: Dispatch<CombinedActionType>) => {
@@ -51,7 +54,9 @@ export const authMeTC = () => {
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
             }).catch(rej => {
-            dispatch(loggedInAC(false, rej.response.data.error))
+            const error = rej.response
+                ? rej.response.data.error
+                : (rej.message + ', more details in the console');
+            console.log(error)
         })
-    }
-}
+    }}
