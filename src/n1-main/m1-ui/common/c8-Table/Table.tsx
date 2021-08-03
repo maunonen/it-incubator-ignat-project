@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Card, createStyles, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 import LoadingIcon from "../icons/LoadingIcon";
+import {useSelector} from "react-redux";
+import {AppStoreType} from "../../../m2-bll/redux/store";
 
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
@@ -18,23 +20,17 @@ export type TablePropsType = {
 const Table: React.FC<TablePropsType> = (props) => {
 
     const classes = useStyles()
-    /*const {message} = props*/
+    const pack = useSelector((state: AppStoreType) => state.pack)
 
     return (
-        <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            style={{minHeight: '100vh'}}
-        >
-            <Card
-                className={classes.root}
-            >
-                <Grid item>
-                   Table
-                </Grid>
-            </Card>
-        </Grid>
+        <>
+            <p>Max : {pack.max}</p>
+            <p>Min : {pack.min}</p>
+            <p>Page : {pack.page}</p>
+            <p>Page count : {pack.pageCount}</p>
+
+        Packs : {pack.cardPacks.map(pack => <p>{pack.name}</p>)}
+        </>
     )
 }
 

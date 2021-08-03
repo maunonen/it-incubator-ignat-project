@@ -24,4 +24,4 @@ export default store
 export type AppStoreType = ReturnType<typeof reducers>
 
 // @ts-ignore
-// window.store = store; // for dev
+window.store = store; // for dev

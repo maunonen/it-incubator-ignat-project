@@ -1,7 +1,7 @@
 import {
     acsessAPI,
     GetPackQueryParamsType,
-    GetPackResponseWithDateType,
+    GetPackResponseWithDateType, NewPackObjectDataType,
     PackDataType,
     PackResponseDataType
 } from "../../m3-dal/Api";
@@ -24,20 +24,20 @@ export enum ACTIONS_TYPE {
 }
 
 export interface InitialPackStateType {
-    cardsPack: Array<PackDataType>,
+    cardPacks: Array<PackDataType>,
     /*Query params*/
-    packName: string
+    packName: string | null
     // minCardsCount
-    min: number
+    min: number | null
     // maxCardsCount
-    max: number
+    max: number | null
     // sort params
     //sortPacks: string
     isSortTypeAscending: boolean
     sortField: PackSortFieldType | null
-    page: number
-    pageCount: number
-    user_id: string
+    page: number | null
+    pageCount: number | null
+    user_id: string | null
     /* getting from server */
     cardPacksTotalCount: number
     minCardsCount: number
@@ -45,15 +45,15 @@ export interface InitialPackStateType {
 }
 
 const initialPackState: InitialPackStateType = {
-    cardsPack: [],
+    cardPacks: [],
     packName: '',
-    min: 0,
-    max: 0,
-    isSortTypeAscending: false,
+    min: null,
+    max: null,
+    isSortTypeAscending: true,
     sortField: null,
     user_id: '',
-    page: 0,
-    pageCount: 0,
+    page: null,
+    pageCount: null,
     cardPacksTotalCount: 0,
     minCardsCount: 0,
     maxCardsCount: 0,
@@ -61,6 +61,8 @@ const initialPackState: InitialPackStateType = {
 
 
 export const packReducer = (state: InitialPackStateType = initialPackState, action: CombinedActionType): InitialPackStateType => {
+    console.log('action type', action.type)
+    console.log('action payload', action.payload)
     switch (action.type) {
         case ACTIONS_TYPE.SET_PACK_NAME:
         case ACTIONS_TYPE.SET_PACK_MAX:
@@ -90,13 +92,6 @@ export type PackSortFieldType = 'updated' | 'name' | 'created' |
     'cardsCount' | 'grade' | 'shots' | 'rating' | 'user_name' |
     'shots' | 'type' | 'private'
 
-/*export const SETPackSortFieldType = ( sortField: PackSortFieldType) => ({
-    type: ACTIONS_TYPE.SET_PACK_SORT_FIELD,
-    payload: {
-        sortField
-    }
-})*/
-
 export const setPackSortType = (isSortTypeAscending: boolean, sortField: PackSortFieldType) => ({
     type: ACTIONS_TYPE.SET_PACK_SORT_TYPE,
     payload: {
@@ -111,10 +106,10 @@ export const setCardsPackTotalCountAC = (cardPacksTotalCount: number) => ({
     }
 })
 
-export const setCardsPackAC = (cardsPack: Array<PackDataType>) => ({
+export const setCardsPackAC = (cardPacks: Array<PackDataType>) => ({
     type: ACTIONS_TYPE.SET_CARDS_PACK,
     payload: {
-        cardsPack
+        cardPacks
     }
 })
 
@@ -170,13 +165,13 @@ export type setCardsPackTotalCountType = ReturnType<typeof setCardsPackTotalCoun
 export type SetPackSortType = ReturnType<typeof setPackSortType>
 /*export type SETPackSortFieldType = ReturnType<typeof SETPackSortFieldType>*/
 
-export const addNewPack = (queryPackObject: GetPackQueryParamsType) => {
+export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
     return (dispatch: Dispatch) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.getCardsPack(queryPackObject)
+        acsessAPI.getCardPacks(queryPackObject)
             .then(res => {
-                if (res.data && res.data.cardsPack.length > 0) {
-                    const cardsPackWithDate = res.data.cardsPack.map((pack: PackResponseDataType) => {
+                if (res.data && res.data.cardPacks.length > 0) {
+                    const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
                         return {
                             ...pack,
                             created: new Date(pack.created),
@@ -201,36 +196,31 @@ export const addNewPack = (queryPackObject: GetPackQueryParamsType) => {
     }
 }
 
-/*export const getUsers = (currentPage: number, pageSize: number) => {
-    return (dispatch: any) => {
-        dispatch(toggleIsFetching(true))
-        dispatch(setCurrentPage(currentPage))
-        //@ts-ignore
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
-            dispatch(toggleIsFetching(false))
-            dispatch(setUsers([...data.items]))
-            dispatch(setTotalUsersCount(data.totalCount))
-        }).catch((err: any) => {
-            console.log(err)
-            dispatch(toggleIsFetching(false))
-        });
+export const deletePackByIdTC = (id: string) => {
+    return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
+        acsessAPI.deleteCardsPacks(id)
+            .then( res => {
+                console.log(res);
+                dispatch(setAppStatusAC('succeeded'))
+            })
+            .catch(err => {
+                console.log(err)
+                dispatch(setAppStatusAC('failed'))
+            })
     }
-}*/
-
-
-/*
-const getEventsWithDateType = (events : Array<EventsDataType>) : Array<EventType> => {
-    return events.map(event => {
-            return {
-                ...event,
-                endDate: new Date(event.endDate),
-                startDate: new Date(event.startDate)
-            }
-        }
-    )
 }
-*/
 
-
-
+export const addNewPackTC = (packObject :NewPackObjectDataType ) => {
+    return (dispatch : Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
+        acsessAPI.postCardPacks(packObject)
+            .then(res => {
+                dispatch(setAppStatusAC('succeeded'))
+            })
+            .catch( err => {
+                dispatch(setAppStatusAC('failed'))
+            })
+    }
+}
 

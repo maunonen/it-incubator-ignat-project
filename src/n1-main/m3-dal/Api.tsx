@@ -59,7 +59,7 @@ export interface PackDataType extends Omit<PackResponseDataType, 'created' | 'up
 }
 
 export interface GetPackResponseType {
-    cardsPack: Array<PackResponseDataType>
+    cardPacks: Array<PackResponseDataType>
     page: number
     pageCount: number
     cardPacksTotalCount: number
@@ -68,8 +68,8 @@ export interface GetPackResponseType {
     token: string
     tokenDeathTime: number
 }
-export interface GetPackResponseWithDateType extends Omit<GetPackResponseType, 'cardsPack'> {
-    cardsPack : Array<PackDataType>
+export interface GetPackResponseWithDateType extends Omit<GetPackResponseType, 'cardPacks'> {
+    cardPacks : Array<PackDataType>
 }
 
 export interface DeletePackResponseType {
@@ -152,20 +152,19 @@ export const acsessAPI = {
         return instance.post<any>("/auth/me", {});
     },
 
-    postCardsPack(pack: NewPackObjectDataType) {
+    postCardPacks(pack: NewPackObjectDataType) {
         return instance.post<NewPackResponseType>("/cards/pack", pack);
     },
-    getCardsPack(queryPackObject: GetPackQueryParamsType) {
+    getCardPacks(queryPackObject: GetPackQueryParamsType) {
         return instance.get<GetPackResponseType>("/cards/pack", queryPackObject);
     },
-    deleteCardsPack(id: string) {
+    deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardsPack(_id: string, packUpdateObject: PackUpdateObjectType) {
+    updateCardPacks(_id: string, packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }
-
 
 
 
