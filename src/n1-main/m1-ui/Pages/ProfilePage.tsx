@@ -8,11 +8,6 @@ import {Redirect} from "react-router-dom";
 import {PATH} from "../Routes";
 
 
-
-import {acsessAPI} from "../../m3-dal/Api";
-import {log} from "util";
-
-
 export const ProfilePage: React.FC = () => {
 
     const dispatch = useDispatch()
@@ -25,17 +20,6 @@ export const ProfilePage: React.FC = () => {
             dispatch(authMeTC())
         }
     }, [])
-
-    //--------------------------------------------------------------------
-    const getCard=()=>{
-
-            acsessAPI.getCard()
-                .then(res => console.log(res.data.cardPacks))
-                .catch(rej=>console.log(rej))
-    }
-    //--------------------------------------------------------------------
-
-
 
 
     if (userProfile._id) {
@@ -53,10 +37,6 @@ export const ProfilePage: React.FC = () => {
                     <h3>isAdmin= {userProfile.isAdmin}</h3>
                     <h3>verified= {userProfile.verified}</h3>
                     <h3>rememberMe= {userProfile.rememberMe}</h3>
-
-                    <button onClick={getCard}>get card</button>
-
-
                 </Grid>
             </Grid>
         )

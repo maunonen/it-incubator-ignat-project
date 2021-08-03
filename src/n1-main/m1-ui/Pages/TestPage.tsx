@@ -18,6 +18,7 @@ const TestPage: React.FC = () => {
     console.log(isLoggedIn)
     return (
         <>
+            ddddddddd
             <h1>Test page</h1>
             <p>Is Logged In : {isLoggedIn ? <span>True</span> : <span>False</span>}</p>
             <SuperInputText/>

@@ -58,8 +58,9 @@ export const acsessAPI = {
 
 
       getCard() {
-        const promise = instance.get<any>("/cards/pack?pageCount=1000&page=4&sortPacks=0updated");
+        const promise = instance.get<any>("/cards/pack?pageCount=10&page=4&sortPacks=0updated");
         return promise
+    //  ?packName=someName - search by name
     },
 
     //------------------------------------------------------------------------------------

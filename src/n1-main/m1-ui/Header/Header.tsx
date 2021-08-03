@@ -89,6 +89,16 @@ const Header: React.FC = () => {
                             className={classes.menuItem}
                             onClick={() => history.push(PATH.TEST_PAGE)}
                         >Test Page</Button>
+
+                        {/*------------------ add button PACK in to header -------------- */}
+                        <Button
+                            color="inherit"
+                            className={classes.menuItem}
+                            onClick={() => history.push(PATH.PACK)}
+                        >Pack</Button>
+
+                       {/* -------------------------------------------------------------   */}
+
                     </div>
                     {/*<List
                         component="nav"
