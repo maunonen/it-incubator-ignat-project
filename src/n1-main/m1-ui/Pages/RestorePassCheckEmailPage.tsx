@@ -1,20 +1,14 @@
 import React from 'react'
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
-import {NavLink, Redirect} from "react-router-dom";
-import DraftsIcon from '@material-ui/icons/Drafts';
-import {
-    Button,
-    Card,
-    Checkbox, createStyles,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    Grid, Link, makeStyles,
-    TextField, Theme, Typography
+import { Redirect} from "react-router-dom";
+
+import {Card, createStyles,
+
+    Grid,  makeStyles,
+     Theme, Typography
 } from "@material-ui/core";
 import MessageIcon from '../common/icons/MessageIcon';
 

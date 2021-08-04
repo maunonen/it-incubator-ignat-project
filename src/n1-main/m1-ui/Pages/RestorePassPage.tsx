@@ -6,18 +6,14 @@ import * as Yup from 'yup';
 import {NavLink, Redirect} from "react-router-dom";
 import {
     Button,
-    Card,
-    Checkbox, createStyles,
-    FormControl,
-    FormControlLabel,
+    Card, createStyles, FormControl,
     FormGroup,
-    FormLabel,
     Grid, Link, makeStyles,
     TextField, Theme, Typography
 } from "@material-ui/core";
 import {PATH} from "../Routes";
-import {forgotPassTC} from "../../m2-bll/redux/restore-pass-reducer";
 import Loading from "../common/c7-Progress/Loading";
+import {forgotPassTC} from "../../m2-bll/redux/auth-reducer";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -61,7 +57,7 @@ const RestorePassPage: React.FC = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {isLoggedIn} = useSelector((state: AppStoreType) => state.auth)
-    const {isPassRequestSent,} = useSelector((state: AppStoreType) => state.passRestore)
+    const {isPassRequestSent,} = useSelector((state: AppStoreType) => state.auth)
     const {errorMessage, appStatus} = useSelector((state: AppStoreType) => state.app)
 
 

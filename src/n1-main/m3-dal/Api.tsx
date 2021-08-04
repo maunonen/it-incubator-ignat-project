@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {UserProfileType} from '../m2-bll/redux/profile-reducer';
+
 
 const settings = {
     withCredentials: true
@@ -11,6 +11,20 @@ const instance = axios.create({
 })
 
 // api
+
+export type UserProfileType = {
+    _id:string;
+    email: string,
+    name: string,
+    avatar?: string,
+    publicCardPacksCount: number,
+    created: string,
+    update: string,
+    isAdmin: boolean,
+    verified:boolean,
+    rememberMe:boolean,
+    error: string
+}
 
 export type UserLoginType = {
     _id:string;
