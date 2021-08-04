@@ -102,20 +102,20 @@ export interface NewPackObjectDataType {
         shots?: number
         rating?: number
         deckCover?: string
-        private?: boolean
+        privateDeck?: boolean
         type?: string
     }
 }
 
 export interface GetPackQueryParamsType {
     params?: {
-        packName?: string
-        min?: number
-        max?: number
-        sortPacks?: string
-        page?: number
-        pageCount?: number
-        user_id?: string
+        packName?: string | null
+        min?: number | null
+        max?: number | null
+        sortPacks?: string | null
+        page?: number | null
+        pageCount?: number | null
+        user_id?: string | null
     }
 }
 
@@ -161,7 +161,7 @@ export const acsessAPI = {
     deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardPacks(_id: string, packUpdateObject: PackUpdateObjectType) {
+    updateCardPacks( packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }
