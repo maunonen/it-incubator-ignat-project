@@ -43,6 +43,18 @@ export const loggedInTC = (email: string, password: string, rememberMe: boolean)
     }
 }
 
+export const logoutTC = () =>  (dispatch: Dispatch<CombinedActionType>) => {
+    acsessAPI.logoutUser()
+        .then(res => {
+            //  dispatch(profileAC(res.data))
+            dispatch(loggedInAC(false, ""))
+        }).catch((rej) => {
+        // if (rej.response.data){
+        // console.log(rej.response.data.error)
+        dispatch(loggedInAC(false, rej.response.data.error))
+    })
+}
+
 
 export const authMeTC = () => {
     return (dispatch: Dispatch<CombinedActionType>) => {

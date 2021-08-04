@@ -40,6 +40,10 @@ export const acsessAPI = {
         const promise = instance.post<UserProfileType>("/auth/login",{email, password, rememberMe});
         return promise
     },
+    logoutUser() {
+        const promise = instance.delete<UserProfileType>("/auth/login",);
+        return promise
+    },
     registrationUser(email: string, password: string) {
         const promise = instance.post<registrationUserType>("/auth/register", {email, password})
         return promise
