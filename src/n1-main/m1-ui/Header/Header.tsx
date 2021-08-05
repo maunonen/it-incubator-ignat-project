@@ -90,12 +90,17 @@ const Header: React.FC = () => {
                             onClick={() => history.push(PATH.TEST_PAGE)}
                         >Test Page</Button>
 
-                        {/*------------------ add button PACK in to header -------------- */}
+                        {/*------------------ add PACK and CARDS in to header -------------- */}
                         <Button
                             color="inherit"
                             className={classes.menuItem}
                             onClick={() => history.push(PATH.PACK)}
-                        >Pack</Button>
+                        >Packs</Button>
+                        <Button
+                            color="inherit"
+                            className={classes.menuItem}
+                            onClick={() => history.push(PATH.CARDS)}
+                        >Cards</Button>
 
                        {/* -------------------------------------------------------------   */}
 

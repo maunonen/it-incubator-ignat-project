@@ -10,6 +10,7 @@ import TestPage from "./Pages/TestPage";
 import RestorePassCheckEmailPage from "./Pages/RestorePassCheckEmailPage";
 import Loading from "./common/c7-Progress/Loading";
 import Packs from "./Pages/Pack/Packs";
+import Cards from "./Pages/Cards/Packs";
 
 
 
@@ -22,6 +23,7 @@ export const PATH = {
     RESTORE_PASS_CHECK_EMAIL: '/check_email',
     NEW_PASS: '/set-new-password',
     PACK: '/pack',
+    CARDS: '/cards',
     TEST_PAGE: '/test_page',
     ALL_ROUTES : '*',
 }
@@ -47,6 +49,7 @@ const  Routes : React.FC = ()  => {
                 {/*<Route path={PATH.DESTINATION_LIST_PAGE + '/:id'} exact={true} component={DestinationProfileContainer} />*/}
                 <Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>
                 <Route path={PATH.PACK} render={() => <Packs/>}/>
+                <Route path={PATH.CARDS} render={() => <Cards/>}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
                 <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
                 {/*<Route render={() => <LoginPage/>}/>*/}
