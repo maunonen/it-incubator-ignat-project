@@ -134,11 +134,11 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
                 className={classes.root}
             >
                 <Grid item>
-                    <Button
+                    {/*<Button
                         type={'button'}
                         variant={'contained'}
                         onClick={getAllPacks}
-                        color={'primary'}>GetPacks</Button>
+                        color={'primary'}>GetPacks</Button>*/}
                     {/*<Button
                         type={'button'}
                         variant={'contained'}

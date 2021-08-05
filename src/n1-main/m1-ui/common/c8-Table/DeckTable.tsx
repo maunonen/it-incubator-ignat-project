@@ -1,5 +1,4 @@
-import React from 'react';
-import clsx from 'clsx';
+import React, {useEffect} from 'react';
 import {createStyles, lighten, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,12 +19,19 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import DeckTableHeader from "./DeckTableHeader";
-import {PackDataType} from "../../../m3-dal/Api";
+import {GetPackQueryParamsType, PackDataType} from "../../../m3-dal/Api";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {stat} from "fs";
 import {Button} from "@material-ui/core";
-import {deletePackByIdTC, setPackSortType} from "../../../m2-bll/redux/pack-reducer";
+import {
+    deletePackByIdTC,
+    getAllPack,
+    setPackSortType,
+    setPageAC,
+    setPageCountAC
+} from "../../../m2-bll/redux/pack-reducer";
+import moment from 'moment'
 
 interface Data {
     calories: number;
@@ -128,24 +134,55 @@ const useStyles = makeStyles((theme: Theme) =>
 const DeckTable: React.FC = () => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    /*const [rowsPerPage, setRowsPerPage] = React.useState(5);*/
 
-    const {cardPacks} = useSelector((state: AppStoreType) => state.pack)
+    /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
+    const {pack} = useSelector((state: AppStoreType) => state)
+
     const {_id} = useSelector((state: AppStoreType) => state.profile)
     const dispatch = useDispatch()
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PackDataType) => {
-        /*alert('Sort event', property);*/
-        console.log('property', property )
-        dispatch(setPackSortType(false, property))
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        /*setOrderBy(property);*/
+
+
+        dispatch(setPackSortType(!pack.isSortTypeAscending, property))
+
+        setOrder(pack.isSortTypeAscending ? 'desc' : 'asc');
+
     };
+
+    const getAllPacks = () => {
+        let sortPacks
+        // if sortField set create sortPacks fiedl '0created' '1updated'
+        if (pack.sortField) {
+            sortPacks = +pack.isSortTypeAscending + pack.sortField;
+        }
+
+        const paramsObject: GetPackQueryParamsType = {
+            params: {
+                ...(pack.packName === null && {packName: pack.packName}),
+                ...(pack.min === null && {min: pack.min}),
+                ...(pack.max === null && {max: pack.max}),
+                ...(pack.page && {page: pack.page}),
+                ...(pack.pageCount && {pageCount: pack.pageCount}),
+                ...(pack.user_id === null && {user_id: pack.user_id}),
+                ...(sortPacks && {sortPacks: sortPacks}),
+            }
+        }
+        dispatch(getAllPack(paramsObject))
+    }
+
+
+    useEffect(() => {
+        getAllPacks()
+    }, [])
+
+    useEffect(() => {
+        getAllPacks()
+    }, [pack.isSortTypeAscending, pack.sortField, pack.page, pack.pageCount])
 
     /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -156,7 +193,7 @@ const DeckTable: React.FC = () => {
         setSelected([]);
     };*/
 
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+    /*const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
         const selectedIndex = selected.indexOf(name);
         let newSelected: string[] = [];
 
@@ -174,24 +211,28 @@ const DeckTable: React.FC = () => {
         }
 
         setSelected(newSelected);
-    };
+    };*/
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        dispatch(setPageAC(newPage + 1));
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        dispatch(setPageCountAC(parseInt(event.target.value, 10)))
         setPage(0);
+        /*setRowsPerPage(parseInt(event.target.value, 10));*/
     };
 
-    /*const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDense(event.target.checked);
-    };*/
+    };
+    console.log('cardPacks', pack.cardPacks)
+    console.log('pack', pack)
+
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    /*const emptyRows = pack.pageCount - Math.min(pack.pageCount, rows.length - page * pack.pageCount);*/
 
     return (
         <div className={classes.root}>
@@ -207,15 +248,15 @@ const DeckTable: React.FC = () => {
                         <DeckTableHeader
                             /*classes={classes}*/
                             numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
+                            /*order={order}*/
+                            /*orderBy={orderBy}*/
                             /*onSelectAllClick={handleSelectAllClick}*/
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                         />
                         <TableBody>
                             {
-                                cardPacks
+                                pack.cardPacks
                                     .map((deck, index) => {
                                         const isItemSelected = isSelected(deck.name);
                                         const labelId = `enhanced-table-checkbox-${index}`;
@@ -226,50 +267,55 @@ const DeckTable: React.FC = () => {
                                                 role="checkbox"
                                                 aria-checked={isItemSelected}
                                                 tabIndex={-1}
-                                                key={deck.name}
+                                                /*key={deck.name}*/
+                                                key={index}
                                                 selected={isItemSelected}
                                             >
                                                 <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                    {deck.name}
+                                                    {deck.name.length > 20 ? deck.name.slice(0, 20) + '...' : deck.name}
                                                 </TableCell>
                                                 <TableCell align="right">{deck.cardsCount}</TableCell>
-                                                <TableCell align="right">{deck.updated}</TableCell>
+                                                <TableCell align="right">{ moment(deck.updated).format("DD.MM.YYYY")}</TableCell>
                                                 <TableCell align="right">{deck.user_name}</TableCell>
                                                 <TableCell align="right">
                                                     {
                                                         deck.user_id === _id &&
-                                                            <>
-                                                                <Button onClick={() => dispatch(deletePackByIdTC(deck._id))  }>Delete</Button>
-                                                                <Button>Edit</Button>
-                                                            </>
+                                                        <>
+                                                            <Button
+                                                                onClick={() => dispatch(deletePackByIdTC(deck._id))}>Delete</Button>
+                                                            <Button>Edit</Button>
+                                                        </>
                                                     }
                                                     <Button>Learn</Button>
                                                 </TableCell>
                                             </TableRow>
                                         );
                                     })}
-                            {emptyRows > 0 && (
+                            {/*{emptyRows > 0 && (
                                 <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
                                     <TableCell colSpan={6}/>
                                 </TableRow>
-                            )}
+                            )}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/*<TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 15]}
                     component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
+                    // total number of rows from server side
+                    count={pack.cardPacksTotalCount}
+                    // rows per page
+                    rowsPerPage={pack.pageCount}
+                    // current page from server side
+                    page={pack.page - 1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                />*/}
+                />
             </Paper>
-            {/*<FormControlLabel
+            <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="Dense padding"
-            />*/}
+            />
         </div>
     );
 }

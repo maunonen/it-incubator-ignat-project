@@ -36,11 +36,11 @@ export interface InitialPackStateType {
     //sortPacks: string
     isSortTypeAscending: boolean
     sortField: keyof PackDataType | null
-    page: number | null
-    pageCount: number | null
+    page: number
+    pageCount: number
     user_id: string | null
     /* getting from server */
-    cardPacksTotalCount: number | null
+    cardPacksTotalCount: number
     minCardsCount: number | null
     maxCardsCount: number | null
 }
@@ -51,11 +51,11 @@ const initialPackState: InitialPackStateType = {
     min: null,
     max: null,
     isSortTypeAscending: false,
-    sortField: null,
+    sortField: "name",
     user_id: null,
-    page: null,
-    pageCount: null,
-    cardPacksTotalCount: null,
+    page: 0,
+    pageCount: 5,
+    cardPacksTotalCount: 0,
     minCardsCount: null,
     maxCardsCount: null,
 }
@@ -63,16 +63,24 @@ const initialPackState: InitialPackStateType = {
 
 export const packReducer = (state: InitialPackStateType = initialPackState, action: CombinedActionType): InitialPackStateType => {
     console.log('action type', action.type)
-    console.log('action payload', action.payload)
+    /*console.log('action payload', action.payload)*/
+
     switch (action.type) {
+        case ACTIONS_TYPE.SET_CARDS_PACK:
+            /*debugger*/
+            return {
+                ...state,
+                cardPacks : [],
+                ...action.payload,
+            }
         case ACTIONS_TYPE.SET_PACK_NAME:
         case ACTIONS_TYPE.SET_PACK_MAX:
         case ACTIONS_TYPE.SET_PACK_MIN:
         case ACTIONS_TYPE.SET_PACK_PAGE:
         case ACTIONS_TYPE.SET_PACK_PAGE_COUNT:
         case ACTIONS_TYPE.SET_PACK_USER_ID:
-        case ACTIONS_TYPE.SET_CARDS_PACK:
         case ACTIONS_TYPE.SET_PACK_SORT_TYPE:
+        case ACTIONS_TYPE.SET_PACK_TOTAL_COUNT:
             return {
                 ...state,
                 ...action.payload,
@@ -81,6 +89,8 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
             return state;
     }
 };
+
+/*...(pack.pageCount === null && {pageCount: pack.pageCount}),*/
 
 export const setUserIdAC = (user_id: string) => ({
     type: ACTIONS_TYPE.SET_PACK_USER_ID,
@@ -109,10 +119,11 @@ export const setCardsPackTotalCountAC = (cardPacksTotalCount: number) => ({
 
 export const setCardsPackAC = (cardPacks: Array<PackResponseDataType>) => ({
     type: ACTIONS_TYPE.SET_CARDS_PACK,
+    /*cardPacks*/
     payload: {
         cardPacks
     }
-})
+} as const)
 
 export const setPageCountAC = (pageCount: number) => ({
     type: ACTIONS_TYPE.SET_PACK_PAGE_COUNT,
@@ -172,18 +183,19 @@ export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
         acsessAPI.getCardPacks(queryPackObject)
             .then(res => {
                 if (res.data && res.data.cardPacks.length > 0) {
-                    const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
+                    dispatch(setCardsPackAC(res.data.cardPacks))
+                 /*   const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
                         return {
                             ...pack,
                             created: new Date(pack.created),
                             updated: new Date(pack.updated)
                         }
-                    })
+                    })*/
                     /*dispatch(setCardsPackAC(cardsPackWithDate))*/
                 } else {
-                    /*dispatch(setCardsPackAC([]))*/
+                    dispatch(setCardsPackAC([]))
                 }
-                dispatch(setCardsPackAC(res.data.cardPacks))
+
                 dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
                 dispatch(setMinCardsCountAC(res.data.minCardsCount))
                 dispatch(setPageAC(res.data.page))

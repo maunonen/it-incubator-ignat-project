@@ -6,6 +6,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {PackDataType} from "../../../m3-dal/Api";
+import {useSelector} from "react-redux";
+import {AppStoreType} from "../../../m2-bll/redux/store";
 
 interface Data {
     calories: number;
@@ -15,17 +17,17 @@ interface Data {
     protein: number;
 }
 
-function createData(
+/*function createData(
     name: string,
     calories: number,
     fat: number,
     carbs: number,
     protein: number,
 ): Data {
-    return { name, calories, fat, carbs, protein };
-}
+    return {name, calories, fat, carbs, protein};
+}*/
 
-const rows = [
+/*const rows = [
     createData('Cupcake', 305, 3.7, 67, 4.3),
     createData('Donut', 452, 25.0, 51, 4.9),
     createData('Eclair', 262, 16.0, 24, 6.0),
@@ -39,7 +41,7 @@ const rows = [
     createData('Marshmallow', 318, 0, 81, 2.0),
     createData('Nougat', 360, 19.0, 9, 37.0),
     createData('Oreo', 437, 18.0, 63, 4.0),
-];
+];*/
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -90,8 +92,8 @@ interface DeckTableHeaderPropsType {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof PackDataType) => void;
     onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    order: Order;
-    orderBy: string;
+    /*order?: Order;*/
+    /*orderBy?: string;*/
     rowCount: number;
 }
 
@@ -123,12 +125,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const DeckTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
-    /*const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;*/
     const classes = useStyles()
-    const { order, orderBy, numSelected, rowCount, onRequestSort} = props;
+    const { numSelected, rowCount, onRequestSort} = props;
     const createSortHandler = (property: keyof PackDataType) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+    const {sortField, isSortTypeAscending} = useSelector((state: AppStoreType) => state.pack)
 
     return (
         <TableHead>
@@ -138,17 +140,18 @@ const DeckTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
+                        /*sortDirection={sortField === headCell.id ? order : false}*/
+                        sortDirection={isSortTypeAscending ? 'asc' : 'desc'}
                     >
                         <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
+                            active={sortField === headCell.id}
+                            direction={isSortTypeAscending ? 'asc' : 'desc'}
                             onClick={createSortHandler(headCell.id)}
                         >
                             {headCell.label}
-                            {orderBy === headCell.id ? (
+                            {sortField === headCell.id ? (
                                 <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {isSortTypeAscending ? 'sorted descending' : 'sorted ascending'}
                 </span>
                             ) : null}
                         </TableSortLabel>
