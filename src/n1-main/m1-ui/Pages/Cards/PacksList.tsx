@@ -23,25 +23,24 @@ export default function CenteredGrid() {
 
   return (
     <div className={classes.root}>
-        
+
           <Grid container direction="row" justifyContent="center" alignItems="center" >
 
-            <Grid container direction="column" justifyContent="center" alignItems="center" >    
+            <Grid container direction="column" justifyContent="center" alignItems="center" >
                 <Typography variant="h6" gutterBottom>
-                    Packs list
+                    Cards list
                 </Typography>
-                
-                <Search/>
-            </Grid>  
-            
-            <Grid item xs={12} className={classes.root} >
-                <Table/>             
+
             </Grid>
-          
-            <Pagination/> 
-          
-          </Grid>               
-         
+
+            <Grid item xs={12} className={classes.root} >
+                <Table/>
+            </Grid>
+
+            <Pagination/>
+
+          </Grid>
+
     </div>
   );
 }

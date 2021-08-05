@@ -6,7 +6,7 @@ import { Maximize } from '@material-ui/icons';
 import { maxHeaderSize } from 'http';
 import RangeShowCard from './RangeShowCard';
 import PackList from './PacksList'
-import { green } from '@material-ui/core/colors';
+
 
 
 
@@ -20,20 +20,18 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function CenteredGrid() {
+export default function Cards() {
   const classes = useStyles();
 
   return (
           <div>
-              
-            <Grid container direction="row"  justifyContent="center" alignItems="stretch" className={classes.root}>   
-                                    
-                <RangeShowCard/>
-              
+
+            <Grid container direction="row"  justifyContent="center" alignItems="stretch" className={classes.root}>
+
                 <Grid item xs={8} >
                    <PackList/>
                 </Grid>
-            
+
             </Grid>
 
           </div>
