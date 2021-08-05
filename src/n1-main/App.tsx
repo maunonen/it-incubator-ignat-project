@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Routes from './m1-ui/Routes';
 import Header from "./m1-ui/Header/Header";
-import Packs from "./m1-ui/Pages/Packs";
 
 
 function App() {

@@ -9,7 +9,7 @@ import NewPassPage from "./Pages/NewPassPage";
 import TestPage from "./Pages/TestPage";
 import RestorePassCheckEmailPage from "./Pages/RestorePassCheckEmailPage";
 import Loading from "./common/c7-Progress/Loading";
-import Packs from "./Pages/Packs";
+import Packs from "./Pages/Pack/Packs";
 
 
 
