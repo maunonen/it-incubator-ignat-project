@@ -1,14 +1,12 @@
 import React from 'react'
 import {useFormik} from "formik";
-import {registrationThunk} from "./signupReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink, Redirect} from 'react-router-dom';
-import {PATH} from "../../Routes";
-import {AppStoreType} from "../../../m2-bll/redux/store";
+import {PATH} from "../Routes";
+import {AppStoreType} from "../../m2-bll/redux/store";
 import {
     FormControl,
     FormGroup,
-    FormLabel,
     TextField,
     Button,
     Grid,
@@ -17,6 +15,7 @@ import {
     createStyles,
     Card, Typography, Link
 } from '@material-ui/core'
+import {registrationThunk} from "../../m2-bll/redux/auth-reducer";
 
 
 type FormikErrorType = {
@@ -78,7 +77,7 @@ const SignupPage: React.FC = () => {
 
     const classes = useStyles()
     const dispatch = useDispatch();
-    const isFetching = useSelector<AppStoreType>(state => state.signup.isFetching);
+    const isFetching = useSelector<AppStoreType>(state => state.auth.isFetching);
 
     const formik = useFormik({
         initialValues: {
@@ -150,6 +149,7 @@ const SignupPage: React.FC = () => {
                                 />
                                 {formik.touched.email && formik.errors.email &&
                                 <div style={{'color': 'red'}}>{formik.errors.email}</div>}
+
                                 <TextField
                                     type="password"
                                     label="Password"
@@ -158,6 +158,7 @@ const SignupPage: React.FC = () => {
                                 />
                                 {formik.touched.password && formik.errors.password &&
                                 <div style={{'color': 'red'}}>{formik.errors.password}</div>}
+
                                 <TextField
                                     type="password"
                                     label="Confirm password"

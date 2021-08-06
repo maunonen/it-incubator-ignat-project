@@ -1,19 +1,33 @@
-import axios, {AxiosResponse} from 'axios'
-import {UserProfileType} from '../m2-bll/redux/profile-reducer';
+import axios from 'axios'
+/*import {UserProfileType} from '../m2-bll/redux/profile-reducer';*/
 
 const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    /*baseURL: 'https://neko-back.herokuapp.com/',*/
+     baseURL: 'http://localhost:7542/2.0/',
+    // baseURL: 'https://neko-back.herokuapp.com/',
     ...settings
 })
 
 // api
 
+export type UserProfileType = {
+    _id:string;
+    email: string,
+    name: string,
+    avatar?: string,
+    publicCardPacksCount: number,
+    created: string,
+    update: string,
+    isAdmin: boolean,
+    verified:boolean,
+    rememberMe:boolean,
+    error: string
+}
+
 export type UserLoginType = {
-    _id: string;
+    _id:string;
     email: string,
     name: string,
     avatar?: string,
@@ -139,6 +153,10 @@ export const acsessAPI = {
         const promise = instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
         return promise
     },
+    logoutUser() {
+        const promise = instance.delete<UserProfileType>("/auth/login",);
+        return promise
+    },
     registrationUser(email: string, password: string) {
         const promise = instance.post<registrationUserType>("/auth/register", {email, password})
         return promise
@@ -166,6 +184,7 @@ export const acsessAPI = {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }
+
 
 
 
