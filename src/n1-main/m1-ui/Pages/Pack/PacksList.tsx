@@ -35,7 +35,10 @@ export default function CenteredGrid() {
             </Grid>  
             
             <Grid item xs={12} className={classes.root} >
-                <Table/>             
+                {/*-------------------------*/}
+                <h1>some table </h1>
+                <Table/>
+                {/*-------------------------*/}
             </Grid>
           
             <Pagination/> 
