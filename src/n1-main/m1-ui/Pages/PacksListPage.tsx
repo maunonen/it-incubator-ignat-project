@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Button, Card, createStyles, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
-import {GetPackQueryParamsType, NewPackObjectDataType} from "../../m3-dal/Api";
+import {GetPackQueryParamsType, NewPackObjectDataType, PackUpdateObjectType} from "../../m3-dal/Api";
 import {
     addNewPackTC,
     deletePackByIdTC,
@@ -12,15 +12,16 @@ import {
     setMinCardsCountAC,
     setPackNameAC, setPackSortType, setPageAC,
     setPageCountAC,
-    setUserIdAC
+    setUserIdAC, updateCardPack
 } from "../../m2-bll/redux/pack-reducer";
 import Table from "../common/c8-Table/Table";
+import DeckTable from "../common/c8-Table/DeckTable";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         textAlign: "center",
         padding: "30px 30px",
-        maxWidth: "413px",
+        /*maxWidth: "413px",*/
     },
 
 }))
@@ -38,12 +39,13 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
     console.log('Render pack list page', pack)
     // new Pack Object Fields
     const [type, setType] = useState<string>('')
-    const [name, setName] = useState<string>('')
+    const [name, setName] = useState<string>('first deck updated')
+    const [path, setPath] = useState<string>('')
     const [grade, setGrade] = useState<number>(0)
     const [shots, setShots] = useState<number>(0)
     const [rating, setRating] = useState<number>(0)
     const [deckCover, setDeckCover] = useState<string>('')
-    const [privatePack, setPrivatePack] = useState<boolean>(false)
+    const [privateDeck, setPrivateDeck] = useState<boolean>(false)
 
     /*type? : string
     name? : string
@@ -56,39 +58,61 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
 
     const getAllPacks = () => {
         let sortPacks
+        // if sortField set create sortPacks fiedl '0created' '1updated'
         if (pack.sortField) {
             sortPacks = +pack.isSortTypeAscending + pack.sortField;
         }
 
         const paramsObject: GetPackQueryParamsType = {
             params: {
-                ...(pack.packName && {packName: pack.packName}),
-                ...(pack.min && {min: pack.min}),
-                ...(pack.max && {max: pack.max}),
-                ...(pack.page && {page: pack.page}),
-                ...(pack.pageCount && {pageCount: pack.pageCount}),
-                ...(pack.user_id && {user_id: pack.user_id}),
+                ...(pack.packName === null && {packName: pack.packName}),
+                ...(pack.min === null && {min: pack.min}),
+                ...(pack.max === null && {max: pack.max}),
+                ...(pack.page === null && {page: pack.page}),
+                ...(pack.pageCount === null && {pageCount: pack.pageCount}),
+                ...(pack.user_id === null && {user_id: pack.user_id}),
                 ...(sortPacks && {sortPacks: sortPacks}),
             }
         }
         dispatch(getAllPack(paramsObject))
     }
+
     const deletePackById = () => {
-        let id = "610952e52433800004e45c2e";
+        let id = "610a4f0684e42f00045c32e5";
+
         dispatch(deletePackByIdTC(id))
     }
 
-    let newObject= {
-        cardsPack : {
-            name : ''
+    const updatePack = () => {
+        let _id = '610a53b49906843f45c0f280';
+        let updatePackObject: PackUpdateObjectType = {
+            cardsPack: {
+                _id : _id,
+                ...(name && {name: name}),
+                ...(path && {path: path}),
+                ...(grade && {grade: grade}),
+                ...(shots && {shots: shots}),
+                ...(rating && {rating: rating}),
+                ...(deckCover && {deckCover: deckCover}),
+                /*...( privateDeck && { private: privateDeck}),*/
+                ...(type && {typeDeck: type}),
+            }
         }
+        dispatch(updateCardPack(updatePackObject))
     }
-    /*let name = 'name'*/
+
+
     const addPack = () => {
         let newPackObject: NewPackObjectDataType = {
             cardsPack: {
-                /*...(newObject.cardsPack.name && { name: newObject.cardsPack.name}),*/
-                ...(name && { name: name}),
+                ...(name && {name: name}),
+                ...(path && {path: path}),
+                ...(grade && {grade: grade}),
+                ...(shots && {shots: shots}),
+                ...(rating && {rating: rating}),
+                ...(deckCover && {deckCover: deckCover}),
+                /*...( privateDeck && { private: privateDeck}),*/
+                ...(type && {typeDeck: type}),
             }
         }
         dispatch(addNewPackTC(newPackObject))
@@ -110,11 +134,11 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
                 className={classes.root}
             >
                 <Grid item>
-                    <Button
+                    {/*<Button
                         type={'button'}
                         variant={'contained'}
                         onClick={getAllPacks}
-                        color={'primary'}>GetPacks</Button>
+                        color={'primary'}>GetPacks</Button>*/}
                     <Button
                         type={'button'}
                         variant={'contained'}
@@ -125,9 +149,18 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
                         variant={'contained'}
                         onClick={addPack}
                         color={'primary'}>Add pack</Button>
-                    <Table/>
+                    <Button
+                        type={'button'}
+                        variant={'contained'}
+                        onClick={updatePack}
+                        color={'primary'}>Update pack</Button>
+                    {/*<Table/>*/}
+                </Grid>
+                <Grid item>
+                    <DeckTable/>
                 </Grid>
             </Card>
+
         </Grid>
     )
 }

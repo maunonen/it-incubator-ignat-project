@@ -4,7 +4,7 @@
 # IntellijIdea files
 .idea
 
-
+tsconfig.json
 
 # dependencies
 /node_modules
@@ -16,7 +16,7 @@
 
 # production
 /build
-
+yarn
 # misc
 .DS_Store
 .env

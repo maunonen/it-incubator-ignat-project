@@ -45,8 +45,6 @@ export const muiTheme = createTheme({
         MuiTextField : {
             root : {
                 fontWeight: 600,
-                /*display : "flex",
-                alignItems : "stretch",*/
                 fontFamily: 'SF UI Display, sans-serif',
                 fontStyle: "normal",
                 fontSize: "16px",
@@ -82,6 +80,14 @@ export const muiTheme = createTheme({
             fontSize: "22px",
             lineHeight: "33px",
             fontFamily: "Poppins",
+            color: "#2D2E46",
+        },
+        h3: {
+            fontWeight: 600,
+            fontStyle: "normal",
+            fontSize: "16px",
+            lineHeight: "19px",
+            fontFamily: 'SF UI Display, sans-serif',
             color: "#2D2E46",
         },
         body1: {

@@ -1,16 +1,29 @@
-import axios, {AxiosResponse} from 'axios'
-import {UserProfileType} from '../m2-bll/redux/profile-reducer';
+import axios from 'axios'
 
 const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    // baseURL: 'https://neko-back.herokuapp.com/',
+    /*baseURL: 'http://localhost:7542/2.0/',*/
+    baseURL: 'https://neko-back.herokuapp.com/2.0',
     ...settings
 })
 
 // api
+
+export type UserProfileType = {
+    _id:string;
+    email: string,
+    name: string,
+    avatar?: string,
+    publicCardPacksCount: number,
+    created: string,
+    update: string,
+    isAdmin: boolean,
+    verified:boolean,
+    rememberMe:boolean,
+    error: string
+}
 
 export type UserLoginType = {
     _id: string;
@@ -68,8 +81,9 @@ export interface GetPackResponseType {
     token: string
     tokenDeathTime: number
 }
+
 export interface GetPackResponseWithDateType extends Omit<GetPackResponseType, 'cardPacks'> {
-    cardPacks : Array<PackDataType>
+    cardPacks: Array<PackDataType>
 }
 
 export interface DeletePackResponseType {
@@ -102,20 +116,20 @@ export interface NewPackObjectDataType {
         shots?: number
         rating?: number
         deckCover?: string
-        private?: boolean
+        privateDeck?: boolean
         type?: string
     }
 }
 
 export interface GetPackQueryParamsType {
     params?: {
-        packName?: string
-        min?: number
-        max?: number
-        sortPacks?: string
-        page?: number
-        pageCount?: number
-        user_id?: string
+        packName?: string | null
+        min?: number | null
+        max?: number | null
+        sortPacks?: string | null
+        page?: number | null
+        pageCount?: number | null
+        user_id?: string | null
     }
 }
 
@@ -136,6 +150,10 @@ export interface PackUpdateObjectType {
 export const acsessAPI = {
     loginUser(email: string, password: string, rememberMe: boolean) {
         const promise = instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
+        return promise
+    },
+    logoutUser() {
+        const promise = instance.delete<UserProfileType>("/auth/login",);
         return promise
     },
     registrationUser(email: string, password: string) {
@@ -161,10 +179,11 @@ export const acsessAPI = {
     deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardPacks(_id: string, packUpdateObject: PackUpdateObjectType) {
+    updateCardPacks(packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }
+
 
 
 

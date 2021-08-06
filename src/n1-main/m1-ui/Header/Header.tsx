@@ -16,10 +16,11 @@ import {
     Typography
 } from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import CardsIcon from "../common/icons/CardsIcon";
 import ProfileIcon from "../common/icons/ProfileIcon";
+import { logoutTC } from '../../m2-bll/redux/auth-reducer';
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
@@ -41,6 +42,10 @@ const Header: React.FC = () => {
     const {appStatus} = useSelector((state: AppStoreType) => state.app)
     const history = useHistory()
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppStoreType, boolean>((state) => state.auth.isLoggedIn)
+
+
     return (
         <div>
             <AppBar
@@ -59,11 +64,18 @@ const Header: React.FC = () => {
                         It-Incubator
                     </Typography>
                     <div>
-                        <Button
-                            color="inherit"
-                            className={classes.menuItem}
-                            onClick={() => history.push(PATH.LOGIN)}
-                        >Login</Button>
+                        {!isLoggedIn
+                            ? <Button
+                                color="inherit"
+                                className={classes.menuItem}
+                                onClick={() => history.push(PATH.LOGIN)}
+                            >Login</Button>
+                            :   <Button
+                                color="inherit"
+                                className={classes.menuItem}
+                                onClick={() =>  dispatch(logoutTC())}
+                            >Log out</Button>}
+
                         <Button
                             color="inherit"
                             className={classes.menuItem}

@@ -1,7 +1,6 @@
 import React from 'react'
 import {Redirect, Switch, Route} from 'react-router-dom'
 import LoginPage from './Pages/LoginPage'
-import SignupPage from "./Pages/signupPage/SignupPage";
 import ProfilePage from "./Pages/ProfilePage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import RestorePassPage from "./Pages/RestorePassPage";
@@ -9,7 +8,9 @@ import NewPassPage from "./Pages/NewPassPage";
 import TestPage from "./Pages/TestPage";
 import RestorePassCheckEmailPage from "./Pages/RestorePassCheckEmailPage";
 import Loading from "./common/c7-Progress/Loading";
-import PacksListPage from "./Pages/PacksListPage";
+import Packs from "./Pages/Pack/Packs";
+import Cards from "./Pages/Cards/Packs";
+import SignupPage from "./Pages/SignupPage";
 
 
 
@@ -21,6 +22,8 @@ export const PATH = {
     RESTORE_PASS: '/restore',
     RESTORE_PASS_CHECK_EMAIL: '/check_email',
     NEW_PASS: '/set-new-password',
+    PACK: '/pack',
+    CARDS: '/cards',
     TEST_PAGE: '/test_page',
     ALL_ROUTES : '*',
 }
@@ -44,8 +47,9 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.RESTORE_PASS_CHECK_EMAIL} render={() => <RestorePassCheckEmailPage/>}/>
                 <Route path={PATH.NEW_PASS + '/:token'} component={NewPassPage}/>
                 {/*<Route path={PATH.DESTINATION_LIST_PAGE + '/:id'} exact={true} component={DestinationProfileContainer} />*/}
-                {/*<Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>*/}
-                <Route path={PATH.TEST_PAGE} render={() => <PacksListPage/>}/>
+                <Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>
+                <Route path={PATH.PACK} render={() => <Packs/>}/>
+                <Route path={PATH.CARDS} render={() => <Cards/>}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
                 <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
                 {/*<Route render={() => <LoginPage/>}/>*/}
