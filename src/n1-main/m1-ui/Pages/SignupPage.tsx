@@ -2,8 +2,8 @@ import React from 'react'
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink, Redirect} from 'react-router-dom';
-import {PATH} from "../../Routes";
-import {AppStoreType} from "../../../m2-bll/redux/store";
+import {PATH} from "../Routes";
+import {AppStoreType} from "../../m2-bll/redux/store";
 import {
     FormControl,
     FormGroup,
@@ -15,7 +15,7 @@ import {
     createStyles,
     Card, Typography, Link
 } from '@material-ui/core'
-import {registrationThunk} from "../../../m2-bll/redux/auth-reducer";
+import {registrationThunk} from "../../m2-bll/redux/auth-reducer";
 
 
 type FormikErrorType = {

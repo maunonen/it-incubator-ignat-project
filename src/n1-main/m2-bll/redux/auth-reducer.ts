@@ -1,6 +1,6 @@
 import {acsessAPI, UserProfileType} from "../../m3-dal/Api";
 import {Dispatch} from 'redux';
-import {setAppStatusAC, setMessageErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
 
 
 export type InitStateType = typeof initState;
@@ -134,6 +134,8 @@ export const registrationThunk = (email: string, password: string) => {
             .catch(error => {
                 const message = error.response.data.error
                 dispatch(signupAC(email, password, message))
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC("failed"))
             })
     }
 }
