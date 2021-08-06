@@ -1,11 +1,11 @@
 import axios from 'axios'
-/*import {UserProfileType} from '../m2-bll/redux/profile-reducer';*/
+import {UserProfileType} from '../m2-bll/redux/profile-reducer';
 
 const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-     baseURL: 'http://localhost:7542/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
     // baseURL: 'https://neko-back.herokuapp.com/',
     ...settings
 })
@@ -27,7 +27,7 @@ export type UserProfileType = {
 }
 
 export type UserLoginType = {
-    _id:string;
+    _id: string;
     email: string,
     name: string,
     avatar?: string,
@@ -100,7 +100,7 @@ export type NewPackResponseType = {
 }
 
 export interface PackUpdateResponseDataType extends PackResponseDataType {
-    deckCover: string
+    deckCover : string
 }
 
 export interface UpdatePackResponseType {
@@ -180,7 +180,7 @@ export const acsessAPI = {
     deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardPacks(packUpdateObject: PackUpdateObjectType) {
+    updateCardsPack(_id: string, packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }

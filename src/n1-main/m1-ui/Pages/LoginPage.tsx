@@ -1,3 +1,5 @@
+
+
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
@@ -30,7 +32,9 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
         marginBottom: "40px",
     },
     formButtonBlock: {
-        margin: "0px 35px"
+        margin: "0px 35px",
+        display: "flex",
+        alignItems: "",
     },
     displayStretch: {
         display: "flex",
@@ -38,7 +42,7 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     },
     textFieldArea: {
         margin: "0px 10px"
-    }
+    },
 }))
 
 
@@ -52,6 +56,7 @@ const LoginPage: React.FC = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const isLoggedIn = useSelector((state: AppStoreType) => state.auth.isLoggedIn)
+    const isLoggedError = useSelector((state: AppStoreType) => state.auth.error)
 
     const restoreSchema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Required'),
@@ -59,8 +64,8 @@ const LoginPage: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: '',
-            password: '',
+            email: 'nya-admin@nya.nya',
+            password: '1qazxcvBG',
             remember: false
         },
         validationSchema: restoreSchema,
@@ -93,6 +98,7 @@ const LoginPage: React.FC = () => {
                         variant={"h2"}
                         className={classes.formSubtitle}
                     >Signin</Typography>
+                    <div style={{color: "red"}}>{isLoggedError}</div>
                     <FormControl className={classes.displayStretch}>
                         <FormGroup className={classes.textFieldArea}>
                             <TextField
@@ -102,7 +108,7 @@ const LoginPage: React.FC = () => {
                                 {...formik.getFieldProps('email')}
                             />
                             { formik.touched.email && formik.errors.email &&
-                              <div style={{color: 'red'}}>{formik.errors.email}</div>
+                            <div style={{color: 'red'}}>{formik.errors.email}</div>
                             }
                             <TextField
                                 type="password"
@@ -128,8 +134,7 @@ const LoginPage: React.FC = () => {
                                 {...formik.getFieldProps('remember')}
                             />
 
-
-
+                            <div className={classes.formButtonBlock}>
                             <Button
                                 type={'reset'}
                                 onClick={() => {formik.resetForm()}}
@@ -142,7 +147,10 @@ const LoginPage: React.FC = () => {
                                 type={'submit'}
                                 variant={'contained'}
                                 className={classes.formButtonBlock}
-                                color={'primary'}>Login</Button>
+                                color={'primary'}>
+                                Login
+                            </Button>
+                            </div>
 
                             <Typography
                                 variant={"body1"}
@@ -163,5 +171,3 @@ const LoginPage: React.FC = () => {
     </Grid>
 }
 export default LoginPage
-
-

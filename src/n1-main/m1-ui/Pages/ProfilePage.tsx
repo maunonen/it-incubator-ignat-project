@@ -22,6 +22,7 @@ export const ProfilePage: React.FC = () => {
         }
     }, [])
 
+
     if (userProfile._id) {
         return (
             <Grid container justify="center">
