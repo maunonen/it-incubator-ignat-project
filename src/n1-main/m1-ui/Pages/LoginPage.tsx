@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'nya-admin@nya.nya',
+            email: '',
             password: '',
             remember: false
         },
