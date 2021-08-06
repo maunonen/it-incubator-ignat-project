@@ -68,8 +68,9 @@ export interface GetPackResponseType {
     token: string
     tokenDeathTime: number
 }
+
 export interface GetPackResponseWithDateType extends Omit<GetPackResponseType, 'cardPacks'> {
-    cardPacks : Array<PackDataType>
+    cardPacks: Array<PackDataType>
 }
 
 export interface DeletePackResponseType {
@@ -85,7 +86,7 @@ export type NewPackResponseType = {
 }
 
 export interface PackUpdateResponseDataType extends PackResponseDataType {
-    deckCover : string
+    deckCover: string
 }
 
 export interface UpdatePackResponseType {
@@ -161,7 +162,7 @@ export const acsessAPI = {
     deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardPacks( packUpdateObject: PackUpdateObjectType) {
+    updateCardPacks(packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }

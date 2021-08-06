@@ -139,7 +139,7 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
                         variant={'contained'}
                         onClick={getAllPacks}
                         color={'primary'}>GetPacks</Button>*/}
-                    {/*<Button
+                    <Button
                         type={'button'}
                         variant={'contained'}
                         onClick={deletePackById}
@@ -153,7 +153,7 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
                         type={'button'}
                         variant={'contained'}
                         onClick={updatePack}
-                        color={'primary'}>Update pack</Button>*/}
+                        color={'primary'}>Update pack</Button>
                     {/*<Table/>*/}
                 </Grid>
                 <Grid item>

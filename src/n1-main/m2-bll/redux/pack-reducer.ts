@@ -70,7 +70,7 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
             /*debugger*/
             return {
                 ...state,
-                cardPacks : [],
+                cardPacks: [],
                 ...action.payload,
             }
         case ACTIONS_TYPE.SET_PACK_NAME:
@@ -89,8 +89,6 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
             return state;
     }
 };
-
-/*...(pack.pageCount === null && {pageCount: pack.pageCount}),*/
 
 export const setUserIdAC = (user_id: string) => ({
     type: ACTIONS_TYPE.SET_PACK_USER_ID,
@@ -184,13 +182,13 @@ export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
             .then(res => {
                 if (res.data && res.data.cardPacks.length > 0) {
                     dispatch(setCardsPackAC(res.data.cardPacks))
-                 /*   const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
-                        return {
-                            ...pack,
-                            created: new Date(pack.created),
-                            updated: new Date(pack.updated)
-                        }
-                    })*/
+                    /*   const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
+                           return {
+                               ...pack,
+                               created: new Date(pack.created),
+                               updated: new Date(pack.updated)
+                           }
+                       })*/
                     /*dispatch(setCardsPackAC(cardsPackWithDate))*/
                 } else {
                     dispatch(setCardsPackAC([]))
@@ -250,16 +248,15 @@ export const addNewPackTC = (packObject: NewPackObjectDataType) => {
     }
 }
 
-export const updateCardPack = ( packUpdateObject: PackUpdateObjectType) => {
+export const updateCardPack = (packUpdateObject: PackUpdateObjectType) => {
     return (dispatch: Dispatch) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.updateCardPacks( packUpdateObject)
+        acsessAPI.updateCardPacks(packUpdateObject)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
             })
             .then(err => {
                 console.log(err)
-
                 dispatch(setAppStatusAC('failed'))
             })
     }
