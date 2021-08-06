@@ -107,7 +107,7 @@ const DeckTable: React.FC = () => {
     /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
     const {pack} = useSelector((state: AppStoreType) => state)
 
-    const {_id} = useSelector((state: AppStoreType) => state.profile)
+    const {_id} = useSelector((state: AppStoreType) => state.auth)
     const dispatch = useDispatch()
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PackDataType) => {
@@ -144,7 +144,7 @@ const DeckTable: React.FC = () => {
 
     useEffect(() => {
         getAllPacks()
-    }, [pack.isSortTypeAscending, pack.sortField, pack.page, pack.pageCount])
+    }, [pack.isSortTypeAscending, pack.sortField, pack.page, pack.pageCount, pack.packName])
 
     /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -199,7 +199,8 @@ const DeckTable: React.FC = () => {
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        /*size={dense ? 'small' : 'medium'}*/
+                        size={'small'}
                         aria-label="enhanced table"
                     >
                         <DeckTableHeader
@@ -270,10 +271,10 @@ const DeckTable: React.FC = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
+            {/*<FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="Dense padding"
-            />
+            />*/}
         </div>
     );
 }

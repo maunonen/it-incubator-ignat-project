@@ -16,7 +16,7 @@ tsconfig.json
 
 # production
 /build
-
+yarn
 # misc
 .DS_Store
 .env

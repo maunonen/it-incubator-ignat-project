@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {UserProfileType} from '../m2-bll/redux/profile-reducer';
 
 const settings = {
     withCredentials: true
@@ -180,7 +179,7 @@ export const acsessAPI = {
     deleteCardsPacks(id: string) {
         return instance.delete<DeletePackResponseType>("/cards/pack", {params: {id}});
     },
-    updateCardsPack(_id: string, packUpdateObject: PackUpdateObjectType) {
+    updateCardPacks(packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
 }

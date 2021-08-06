@@ -1,8 +1,8 @@
 import {combineReducers, createStore, applyMiddleware} from "redux"
 import thunkMiddleware from 'redux-thunk'
 import {authReducer} from "./auth-reducer";
-/*import {signupReducer} from "../../m1-ui/Pages/signupPage/signupReducer";*/
 import {appReducer} from "./app-reducer";
+import {packReducer} from "./pack-reducer";
 
 
 

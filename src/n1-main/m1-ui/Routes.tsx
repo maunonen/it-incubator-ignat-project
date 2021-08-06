@@ -1,7 +1,6 @@
 import React from 'react'
 import {Redirect, Switch, Route} from 'react-router-dom'
 import LoginPage from './Pages/LoginPage'
-import SignupPage from "./Pages/signupPage/SignupPage";
 import ProfilePage from "./Pages/ProfilePage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import RestorePassPage from "./Pages/RestorePassPage";
@@ -11,6 +10,7 @@ import RestorePassCheckEmailPage from "./Pages/RestorePassCheckEmailPage";
 import Loading from "./common/c7-Progress/Loading";
 import Packs from "./Pages/Pack/Packs";
 import Cards from "./Pages/Cards/Packs";
+import SignupPage from "./Pages/SignupPage";
 
 
 

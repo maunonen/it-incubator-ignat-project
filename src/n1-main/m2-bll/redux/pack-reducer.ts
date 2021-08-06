@@ -7,7 +7,6 @@ import {
 } from "../../m3-dal/Api";
 import {AppStatusType, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
 import {Dispatch} from "redux";
-import {setPassRequestAC} from "./restore-pass-reducer";
 
 export enum ACTIONS_TYPE {
     SET_CARDS_PACK = 'PackReducer/SET_CARDS_PACK',
@@ -62,7 +61,7 @@ const initialPackState: InitialPackStateType = {
 
 
 export const packReducer = (state: InitialPackStateType = initialPackState, action: CombinedActionType): InitialPackStateType => {
-    console.log('action type', action.type)
+    /*console.log('action type', action.type)*/
     /*console.log('action payload', action.payload)*/
 
     switch (action.type) {
@@ -148,7 +147,7 @@ export const setMinCardsCountAC = (min: number) => ({
         min
     }
 })
-export const setPackNameAC = (packName: string) => ({
+export const setPackNameAC = (packName: string | null) => ({
     type: ACTIONS_TYPE.SET_PACK_NAME,
     payload: {
         packName
