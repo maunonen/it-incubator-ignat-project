@@ -3,7 +3,7 @@
 
 # IntellijIdea files
 .idea
-package-lock.json
+
 tsconfig.json
 
 # dependencies
