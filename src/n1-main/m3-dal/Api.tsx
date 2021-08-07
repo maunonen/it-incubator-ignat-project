@@ -80,12 +80,12 @@ export interface PostCardQueryType {
 // Types for Get Card Query
 export interface GetCardQueryType {
     params: {
-        cardsPack_id: string | null
+        cardsPack_id: string
         cardAnswer?: string | null
         cardQuestion?: string | null
         min?: number | null
         max?: number | null
-        sortCards?: number | null
+        sortCards?: string | null
         page?: number | null
         pageCount?: number | null
     }

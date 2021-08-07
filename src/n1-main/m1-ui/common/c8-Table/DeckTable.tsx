@@ -120,6 +120,7 @@ const DeckTable: React.FC = () => {
         let sortPacks
         // if sortField set create sortPacks field '0created' '1updated'
         if (pack.sortField) {
+            /*sortPacks = (+pack.isSortTypeAscending).toString().concat(pack.sortField) ;*/
             sortPacks = +pack.isSortTypeAscending + pack.sortField;
         }
 

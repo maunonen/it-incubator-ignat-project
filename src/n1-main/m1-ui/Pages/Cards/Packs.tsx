@@ -8,6 +8,9 @@ import RangeShowCard from './RangeShowCard';
 import PackList from './PacksList'
 import {Button} from "@material-ui/core";
 import {acsessAPI} from "../../../m3-dal/Api";
+import {useDispatch, useSelector} from "react-redux";
+import {getAllCardsTS} from "../../../m2-bll/redux/card-reducer";
+import {AppStoreType} from "../../../m2-bll/redux/store";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,18 +25,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Cards() {
     const classes = useStyles();
+    const dispatch = useDispatch()
+    const {cards, cardsTotalCount} = useSelector((state: AppStoreType) => state.card)
 
+    console.log('cardsTotalCount', cardsTotalCount)
+    console.log('cards thunk', cards)
     const getAllCards = () => {
-        const queryObject = {
+        dispatch(getAllCardsTS("610a8f3184e42f00045c32e9"))
+        /*const queryObject = {
             params: {
                 cardsPack_id: '610a8f3184e42f00045c32e9'
             }
         }
-        acsessAPI.getAllCards(queryObject);
+        acsessAPI.getAllCards(queryObject);*/
 
     }
     const addNewCard = () => {
-        const newCardObject =   {
+        const newCardObject = {
             card: {
                 cardsPack_id: "610a8f3184e42f00045c32e9",
                 question: "Question test add new card",
