@@ -1,12 +1,12 @@
 import {
     acsessAPI,
-    GetPackQueryParamsType,
-    GetPackResponseWithDateType, NewPackObjectDataType,
+    GetPackQueryParamsType, NewPackObjectDataType,
     PackDataType,
     PackResponseDataType, PackUpdateObjectType
 } from "../../m3-dal/Api";
-import {AppStatusType, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
 import {Dispatch} from "redux";
+
 
 export enum ACTIONS_TYPE {
     SET_CARDS_PACK = 'PackReducer/SET_CARDS_PACK',
@@ -201,8 +201,9 @@ export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
                 dispatch(setAppStatusAC('succeeded'))
             })
             .catch(error => {
-                dispatch(setAppStatusAC('failed'))
                 dispatch(setMessageErrorAC('Something went wrong'))
+                //   dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC('failed'))
                 /*if (error.response && error.response.status) {
                     dispatch(setMessageErrorAC(error.response.data.error))
                 } else {
@@ -226,8 +227,8 @@ export const deletePackByIdTC = (id: string) => {
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
             })
-            .catch(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }
@@ -240,8 +241,8 @@ export const addNewPackTC = (packObject: NewPackObjectDataType) => {
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
             })
-            .catch(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }
@@ -254,8 +255,8 @@ export const updateCardPack = (packUpdateObject: PackUpdateObjectType) => {
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
             })
-            .then(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }

@@ -149,16 +149,16 @@ export interface PackUpdateObjectType {
 
 export const acsessAPI = {
     loginUser(email: string, password: string, rememberMe: boolean) {
-        const promise = instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
-        return promise
+        return instance.post<UserProfileType>("/auth/login", {email, password, rememberMe});
+
     },
     logoutUser() {
-        const promise = instance.delete<UserProfileType>("/auth/login",);
-        return promise
+        return instance.delete<UserProfileType>("/auth/login",);
+
     },
     registrationUser(email: string, password: string) {
-        const promise = instance.post<registrationUserType>("/auth/register", {email, password})
-        return promise
+        return instance.post<registrationUserType>("/auth/register", {email, password})
+
     },
     forgotPassword(email: string, from: string, message: string) {
         return instance.post<UserForgotPassType>("/auth/forgot", {email, from, message});
