@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredGrid() {
     const classes = useStyles();
 
+    const myButtonClickHandler=()=>{
+        alert("my cards show")
+    };
+    const allButtonClickHandler=()=>{
+        alert("ALL cards show")
+    };
+
 
     return (
         <div className={classes.root}>
@@ -58,6 +65,7 @@ export default function CenteredGrid() {
                     justifyContent="space-evenly"
                     alignItems="center"
                 >*/}
+
                 <ButtonGroup
                     variant="text"
                     color="primary"
@@ -65,13 +73,14 @@ export default function CenteredGrid() {
                     /*aria-label="outlined primary button group"*/
                     className={classes.privateModeBlock}
                 >
-                    <Button
+                    <Button onClick={myButtonClickHandler}
                         className={classes.modeButton}
                     >My</Button>
-                    <Button
+                    <Button onClick={allButtonClickHandler}
                         className={classes.modeButton}
-                    >ALl</Button>
+                    >ALL</Button>
                 </ButtonGroup>
+
                 {/*<Button variant="contained" color="primary">
                     My
                   </Button>
@@ -86,7 +95,20 @@ export default function CenteredGrid() {
                 >
                     Number of cards
                 </Typography>
+
+                {/* < ---------------------*/}
+                {/*{useCallback(()=> {*/}
+
+
                 <RangeSlider/>
+
+
+
+
+                {/*}, [])};*/}
+                {/* < ---------------------*/}
+
+
             </Grid>
         </div>
     );

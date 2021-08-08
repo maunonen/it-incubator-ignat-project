@@ -66,10 +66,11 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
 
     switch (action.type) {
         case ACTIONS_TYPE.SET_CARDS_PACK:
-            /*debugger*/
+            // debugger
             return {
                 ...state,
-                cardPacks: [],
+                // удалить ??
+                // cardPacks: [],
                 ...action.payload,
             }
         case ACTIONS_TYPE.SET_PACK_NAME:
@@ -100,6 +101,7 @@ export type PackSortFieldType = 'updated' | 'name' | 'created' |
     'cardsCount' | 'grade' | 'shots' | 'rating' | 'user_name' |
     'shots' | 'type' | 'private'
 
+ // исправить название функции ?
 export const setPackSortType = (isSortTypeAscending: boolean, sortField: keyof PackDataType) => ({
     type: ACTIONS_TYPE.SET_PACK_SORT_TYPE,
     payload: {

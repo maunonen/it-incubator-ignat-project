@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { maxHeaderSize } from 'http';
 import Search from './Search' ;
 import Table from './Table';
-import Pagination from './Pagination';
+import Pagination from './DellPagination';
 import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({

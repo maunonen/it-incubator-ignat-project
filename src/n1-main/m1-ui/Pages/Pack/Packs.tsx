@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import RangeShowCard from './RangeShowCard';
-import PackList from './PacksList'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
-
 import {Redirect} from "react-router-dom";
 import {PATH} from "../../Routes";
 import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
@@ -18,7 +16,6 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        /*flexGrow: 1,*/
         marginTop: "40px",
     },
     paper: {
@@ -91,6 +88,7 @@ export default function Pack() {
 
     return (
         <div className={classes.root}>
+
             <Paper
                 elevation={4}
                 className={classes.paper}
