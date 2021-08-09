@@ -50,7 +50,7 @@ export default function RangeSlider() {
     }, [value]);
 
 
-    //------------------------------------------------------
+    //--------------------------------------------------------
 
     const handleChange = (event: any, newValue: number | number[]) => {
         setValue(newValue as number[]);
