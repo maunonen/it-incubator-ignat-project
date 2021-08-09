@@ -64,16 +64,18 @@ export default function RangeSlider() {
     }, [pack]);
 
 
-    // useEffect(() => {
-    //     console.log("request from RangeSlider -> setValue in slider ")
-    //         const setTO = setTimeout(() => {
-    //             getAllPacks()
-    //         }, 1500)
-    //         return () => {
-    //             clearTimeout(setTO)
-    //         }
-    //     }, [value]
-    // );
+    useEffect(() => {
+        console.log("request from RangeSlider -> setValue in slider ")
+            const setTO = setTimeout(() => {
+                getAllPacks()
+            }, 1500)
+            return () => {
+                clearTimeout(setTO)
+            }
+        }, [value]
+    );
+
+    console.log(value)
 
     return (
         <>
