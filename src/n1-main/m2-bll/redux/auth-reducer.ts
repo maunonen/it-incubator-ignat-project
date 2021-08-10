@@ -91,7 +91,7 @@ export const loggedInTC = (email: string, password: string, rememberMe: boolean)
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
             })
-                .catch(rej => {
+            .catch(rej => {
                 //    if has response and has data
                 if (rej.response?.data) {
                     dispatch(loggedInAC(false, rej.response.data.error))
@@ -127,7 +127,8 @@ export const authMeTC = () => {
                 : (rej.message + ', more details in the console');
             console.log(error)
         })
-    }}
+    }
+}
 
 export const registrationThunk = (email: string, password: string) => {
     return (dispatch: Dispatch) => {
@@ -135,13 +136,14 @@ export const registrationThunk = (email: string, password: string) => {
             .then(() => {
                 dispatch(signupAC(email, password));
                 dispatch(setIsFetchingSignupAC(true));
-
             })
             .catch(error => {
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC('failed'))
                 const message = error.response.data.error
                 dispatch(signupAC(email, password, message))
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setAppStatusAC("failed"))
+                //  dispatch(setAppErrorAC(error.message))
+                //   dispatch(setAppStatusAC("failed"))
             })
     }
 }
@@ -157,6 +159,7 @@ export const setNewPasswordTC = (password: string, resetPasswordToken: string) =
                 }
             })
             .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
                 if (error.response && error.response.status) {
                     if (error.response?.data?.error) {
@@ -187,7 +190,7 @@ export const forgotPassTC = (email: string) => {
                 }
             })
             .catch(error => {
-                console.log('Thunk error', error)
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
                 if (error.response && error.response.status) {
                     dispatch(setMessageErrorAC(error.response.data.error))

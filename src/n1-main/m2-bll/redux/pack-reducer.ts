@@ -5,10 +5,11 @@ import {
     PackDataType,
     PackResponseDataType, PackUpdateFieldsType, PackUpdateObjectType
 } from "../../m3-dal/Api";
-import {AppStatusType, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
 import {AnyAction, Dispatch} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {AppStoreType} from "./store";
+
 
 export enum ACTIONS_TYPE {
     SET_CARDS_PACK = 'PackReducer/SET_CARDS_PACK',
@@ -226,8 +227,8 @@ export const deletePackByIdTC = (packId: string) => {
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(getAllPack())
             })
-            .catch(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }
@@ -246,8 +247,8 @@ export const addNewPackTC = (addNewPackObject: NewPackFieldsType) => {
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(getAllPack())
             })
-            .catch(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }
@@ -264,8 +265,8 @@ export const updateCardPack = (packId: string, packUpdateObject: PackUpdateField
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(getAllPack())
             })
-            .then(err => {
-                console.log(err)
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
                 dispatch(setAppStatusAC('failed'))
             })
     }
