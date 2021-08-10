@@ -11,6 +11,7 @@ import Loading from "./common/c7-Progress/Loading";
 import Packs from "./Pages/Pack/Packs";
 import Cards from "./Pages/Cards/Packs";
 import SignupPage from "./Pages/SignupPage";
+import CardListPage from "./Pages/Cards/CardListPage";
 
 
 
@@ -49,7 +50,7 @@ const  Routes : React.FC = ()  => {
                 {/*<Route path={PATH.DESTINATION_LIST_PAGE + '/:id'} exact={true} component={DestinationProfileContainer} />*/}
                 <Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>
                 <Route path={PATH.PACK} render={() => <Packs/>}/>
-                <Route path={PATH.CARDS} render={() => <Cards/>}/>
+                <Route path={PATH.CARDS + '/:packId'}  component={CardListPage}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
                 <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
                 {/*<Route render={() => <LoginPage/>}/>*/}

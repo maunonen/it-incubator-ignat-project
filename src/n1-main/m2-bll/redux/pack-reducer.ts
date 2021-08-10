@@ -204,8 +204,8 @@ export const getAllPack = () => {
                 } else {
                     dispatch(setCardsPackAC([]))
                 }
-                dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
-                dispatch(setMinCardsCountAC(res.data.minCardsCount))
+                /*dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
+                dispatch(setMinCardsCountAC(res.data.minCardsCount))*/
                 dispatch(setPageAC(res.data.page))
                 dispatch(setPageCountAC(res.data.pageCount))
                 dispatch(setCardsPackTotalCountAC(res.data.cardPacksTotalCount))
