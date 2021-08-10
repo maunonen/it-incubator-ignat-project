@@ -18,20 +18,29 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import DeckTableHeader from "./DeckTableHeader";
-import {GetPackQueryParamsType, PackDataType} from "../../../m3-dal/Api";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType} from "../../../m2-bll/redux/store";
 import {stat} from "fs";
 import {Button} from "@material-ui/core";
-import {
+/*import {
     deletePackByIdTC,
     getAllPack,
     setPackSortType,
     setPageAC,
     setPageCountAC
-} from "../../../m2-bll/redux/pack-reducer";
+} from "../../../m2-bll/redux/pack-reducer";*/
 import moment from 'moment'
+import DeckTableHeader from '../../common/c8-Table/DeckTableHeader';
+import {
+    getAllCardsTS,
+    setPageAC,
+    setPageCountAC,
+    setSortDirectionAscAC,
+    setSortFieldAC
+} from '../../../m2-bll/redux/card-reducer';
+import { AppStoreType } from '../../../m2-bll/redux/store';
+import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
+import {CardType, PackResponseDataType} from "../../../m3-dal/Api";
+import {useParams} from "react-router-dom";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -96,38 +105,32 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const DeckTable: React.FC = () => {
+const CardListPage: React.FC = () => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
+    const {packId} = useParams<{packId : string}>()
     /*const [rowsPerPage, setRowsPerPage] = React.useState(5);*/
 
     /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
-    const {pack} = useSelector((state: AppStoreType) => state)
+    console.log('packId', packId )
+    const {card} = useSelector((state: AppStoreType) => state)
 
     const {_id} = useSelector((state: AppStoreType) => state.auth)
     const dispatch = useDispatch()
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PackDataType) => {
-        dispatch(setPackSortType(!pack.isSortTypeAscending, property))
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof CardType) => {
+        dispatch(setSortDirectionAscAC(!card.isSortTypeAscending))
+        dispatch(setSortFieldAC(property))
         /*setOrder(pack.isSortTypeAscending ? 'desc' : 'asc');*/
 
     };
 
-    const getAllPacks = () => {
-        dispatch(getAllPack())
-    }
-
-
     useEffect(() => {
-        getAllPacks()
-    }, [])
-
-    useEffect(() => {
-        getAllPacks()
-    }, [pack.isSortTypeAscending, pack.sortField, pack.page, pack.pageCount, pack.packName])
+        dispatch(getAllCardsTS(packId))
+    }, [card.isSortTypeAscending, card.sortField, card.page, card.pageCount])
 
     /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -186,16 +189,16 @@ const DeckTable: React.FC = () => {
                         size={'small'}
                         aria-label="enhanced table"
                     >
-                        <DeckTableHeader
+                        {/*<DeckTableHeader
                             numSelected={selected.length}
-                            /*onSelectAllClick={handleSelectAllClick}*/
+                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={pack.cardPacksTotalCount}
-                        />
+                            rowCount={card.cardsTotalCount}
+                        />*/}
                         <TableBody>
                             {
-                                pack.cardPacks
-                                    .map((deck, index) => {
+                                card.cards.length > 0 && card.cards
+                                    .map((card, index) => {
                                         /*const isItemSelected = isSelected(deck.name);*/
                                         const labelId = `enhanced-table-checkbox-${index}`;
                                         return (
@@ -210,26 +213,14 @@ const DeckTable: React.FC = () => {
                                                 className={classes.tableRow}
                                             >
                                                 <TableCell component="th" id={labelId} scope="row" padding="normal">
-                                                    {deck.name.length > 20 ? deck.name.slice(0, 20) + '...' : deck.name}
+                                                    {card.question.length > 20 ? card.question.slice(0, 20) + '...' : card.question}
                                                 </TableCell>
-                                                <TableCell align="right">{deck.cardsCount}</TableCell>
-                                                <TableCell
-                                                    align="right">{moment(deck.updated).format("DD.MM.YYYY")}</TableCell>
-                                                <TableCell align="right">{deck.user_name}</TableCell>
                                                 <TableCell align="right">
-                                                    {
-                                                        deck.user_id === _id &&
-                                                        <>
-                                                            <Button
-                                                                onClick={() => {
-                                                                    dispatch(deletePackByIdTC(deck._id));
-                                                                    getAllPacks();
-                                                                }}>Delete</Button>
-                                                            <Button>Edit</Button>
-                                                        </>
-                                                    }
-                                                    <Button>Learn</Button>
+                                                    {card.answer.length > 20 ? card.answer.slice(0, 20) + '...' : card.answer}
                                                 </TableCell>
+                                                <TableCell
+                                                    align="right">{moment(card.updated).format("DD.MM.YYYY")}</TableCell>
+                                                <TableCell align="right">{card.grade}</TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -241,18 +232,18 @@ const DeckTable: React.FC = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
+                {/*<TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"
                     // total number of rows from server side
-                    count={pack.cardPacksTotalCount}
+                    count={card.cardsTotalCount}
                     // rows per page
-                    rowsPerPage={pack.pageCount}
+                    rowsPerPage={card.pageCount}
                     // current page(starts from 0) from server side - 1
-                    page={pack.page - 1}
+                    page={card.page - 1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                />*/}
             </Paper>
             {/*<FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
@@ -261,4 +252,4 @@ const DeckTable: React.FC = () => {
         </div>
     );
 }
-export default DeckTable
+export default CardListPage

@@ -9,10 +9,126 @@ const instance = axios.create({
     ...settings
 })
 
-// api
+// Types for delete card object
+
+export interface DeleteCardResponseType {
+    deletedCard: UpdateCardType
+    token: string
+    tokenDeathTime: number
+}
+
+// Types for post card object
+export interface PostCardResponseType {
+    newCard: CardType
+    token: string
+    tokenDeathTime: number
+}
+
+// Types for Update Card Request
+export interface UpdateCardType extends CardType {
+    answerImg: string
+    answerVideo: string
+    questionImg: string
+    questionVideo: string
+}
+
+// Types for Update Card Request
+export interface UpdateCardResponseType {
+    updatedCard: UpdateCardType
+    token: string
+    tokenDeathTime: number
+}
+
+// Types for Update card request
+
+// Update Card Fields
+export interface UpdateCardFieldsType {
+    _id?: string
+    question?: string
+    answer?: string
+    comments?: string
+    grade?: number
+    shots?: number
+    type?: string
+    /*more_id? : "6101043d9906843f45c0f27f",*/
+    __v?: 0,
+    answerImg?: string
+    answerVideo?: string
+    questionImg?: string
+    questionVideo?: string
+}
+
+export interface UpdateCardQueryType {
+    card: UpdateCardFieldsType
+}
+
+// Types for post card object
+
+export interface PostCardFieldsType {
+    cardsPack_id?: string
+    question?: string
+    answer?: string
+    grade?: 0 | 1 | 3 | 4 | 5
+    shots?: number
+    rating?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?: string
+    answerVideo?: string
+    type?: string
+}
+
+export interface PostCardQueryType {
+    card: PostCardFieldsType
+}
+
+// Types for Get Card Query
+export interface GetCardQueryType {
+    params: {
+        cardsPack_id: string
+        cardAnswer?: string | null
+        cardQuestion?: string | null
+        min?: number | null
+        max?: number | null
+        sortCards?: string | null
+        page?: number | null
+        pageCount?: number | null
+    }
+}
+
+// Types for Get Card Query
+export interface CardType {
+    _id: string
+    cardsPack_id: string
+    user_id: string
+    answer: string
+    question: string
+    grade: number
+    shots: number
+    comments: string
+    type: string
+    rating: number
+    more_id: string
+    created: string
+    updated: string
+    __v: number
+}
+
+// Types for Get Card Query
+export interface GetCardResponseType {
+    cards: Array<CardType>
+    packUserId: string
+    page: number
+    pageCount: number
+    cardsTotalCount: number
+    minGrade: number
+    maxGrade: number
+    token: string
+    tokenDeathTime: number
+}
 
 export type UserProfileType = {
-    _id:string;
+    _id: string;
     email: string,
     name: string,
     avatar?: string,
@@ -20,8 +136,8 @@ export type UserProfileType = {
     created: string,
     update: string,
     isAdmin: boolean,
-    verified:boolean,
-    rememberMe:boolean,
+    verified: boolean,
+    rememberMe: boolean,
     error: string
 }
 
@@ -99,7 +215,7 @@ export type NewPackResponseType = {
 }
 
 export interface PackUpdateResponseDataType extends PackResponseDataType {
-    deckCover : string
+    deckCover: string
 }
 
 export interface UpdatePackResponseType {
@@ -108,17 +224,19 @@ export interface UpdatePackResponseType {
     tokenDeathTime: number
 }
 
+export interface NewPackFieldsType {
+    name?: string
+    path?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    deckCover?: string
+    privateDeck?: boolean
+    type?: string
+}
+
 export interface NewPackObjectDataType {
-    cardsPack: {
-        name?: string
-        path?: string
-        grade?: number
-        shots?: number
-        rating?: number
-        deckCover?: string
-        privateDeck?: boolean
-        type?: string
-    }
+    cardsPack: NewPackFieldsType
 }
 
 export interface GetPackQueryParamsType {
@@ -133,18 +251,20 @@ export interface GetPackQueryParamsType {
     }
 }
 
+ export interface PackUpdateFieldsType {
+     _id?: string
+     name?: string
+     path?: string
+     grade?: number
+     shots?: number
+     rating?: number
+     deckCover?: string
+     private?: boolean
+     type?: string
+ }
+
 export interface PackUpdateObjectType {
-    cardsPack: {
-        _id: string
-        name?: string
-        path?: string
-        grade?: number
-        shots?: number
-        rating?: number
-        deckCover?: string
-        private?: boolean
-        type?: string
-    }
+    cardsPack: PackUpdateFieldsType
 }
 
 export const acsessAPI = {
@@ -182,7 +302,21 @@ export const acsessAPI = {
     updateCardPacks(packUpdateObject: PackUpdateObjectType) {
         return instance.put<PackUpdateResponseDataType>("/cards/pack", packUpdateObject);
     },
+    // API for cards
+    getAllCards(queryCardsObject: GetCardQueryType) {
+        return instance.get<GetCardResponseType>("/cards/card", queryCardsObject);
+    },
+    postCard(newCardObject: PostCardQueryType) {
+        return instance.post<PostCardResponseType>("/cards/card", newCardObject);
+    },
+    updateCardById(cardUpdateObject: UpdateCardQueryType) {
+        return instance.put<UpdateCardResponseType>("/cards/card", cardUpdateObject);
+    },
+    deleteCardByID(id: string) {
+        return instance.delete<DeleteCardResponseType>("/cards/card", {params: {id}});
+    },
 }
+
 
 
 

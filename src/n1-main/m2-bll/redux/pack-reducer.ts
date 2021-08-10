@@ -1,12 +1,14 @@
 import {
     acsessAPI,
     GetPackQueryParamsType,
-    GetPackResponseWithDateType, NewPackObjectDataType,
+    GetPackResponseWithDateType, NewPackFieldsType, NewPackObjectDataType,
     PackDataType,
-    PackResponseDataType, PackUpdateObjectType
+    PackResponseDataType, PackUpdateFieldsType, PackUpdateObjectType
 } from "../../m3-dal/Api";
 import {AppStatusType, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
-import {Dispatch} from "redux";
+import {AnyAction, Dispatch} from "redux";
+import {ThunkDispatch} from "redux-thunk";
+import {AppStoreType} from "./store";
 
 export enum ACTIONS_TYPE {
     SET_CARDS_PACK = 'PackReducer/SET_CARDS_PACK',
@@ -40,30 +42,31 @@ export interface InitialPackStateType {
     user_id: string | null
     /* getting from server */
     cardPacksTotalCount: number
-    minCardsCount: number | null
-    maxCardsCount: number | null
+    /*minCardsCount: number | null
+    maxCardsCount: number | null*/
 }
 
 const initialPackState: InitialPackStateType = {
     cardPacks: [],
     packName: null,
+    // minCardsCount, maxCardsCount
     min: null,
     max: null,
     isSortTypeAscending: false,
     sortField: "name",
     user_id: null,
+    // current page
     page: 0,
+    // packs per page
     pageCount: 5,
+    // packs total count
     cardPacksTotalCount: 0,
-    minCardsCount: null,
-    maxCardsCount: null,
 }
 
 
 export const packReducer = (state: InitialPackStateType = initialPackState, action: CombinedActionType): InitialPackStateType => {
     /*console.log('action type', action.type)*/
     /*console.log('action payload', action.payload)*/
-
     switch (action.type) {
         case ACTIONS_TYPE.SET_CARDS_PACK:
             /*debugger*/
@@ -96,10 +99,6 @@ export const setUserIdAC = (user_id: string) => ({
     }
 })
 
-export type PackSortFieldType = 'updated' | 'name' | 'created' |
-    'cardsCount' | 'grade' | 'shots' | 'rating' | 'user_name' |
-    'shots' | 'type' | 'private'
-
 export const setPackSortType = (isSortTypeAscending: boolean, sortField: keyof PackDataType) => ({
     type: ACTIONS_TYPE.SET_PACK_SORT_TYPE,
     payload: {
@@ -116,7 +115,6 @@ export const setCardsPackTotalCountAC = (cardPacksTotalCount: number) => ({
 
 export const setCardsPackAC = (cardPacks: Array<PackResponseDataType>) => ({
     type: ACTIONS_TYPE.SET_CARDS_PACK,
-    /*cardPacks*/
     payload: {
         cardPacks
     }
@@ -174,27 +172,40 @@ export type setCardsPackTotalCountType = ReturnType<typeof setCardsPackTotalCoun
 export type SetPackSortType = ReturnType<typeof setPackSortType>
 /*export type SETPackSortFieldType = ReturnType<typeof SETPackSortFieldType>*/
 
-export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
-    return (dispatch: Dispatch) => {
+export const getAllPack = () => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.getCardPacks(queryPackObject)
+        let {
+            packName, page, pageCount,
+            min, max, user_id, sortField,
+            isSortTypeAscending,
+        } = getState().pack;
+        let sortPacks
+        // if sortField set create sortPacks field '0created' '1updated'
+        if (sortField) {
+            sortPacks = +isSortTypeAscending + sortField;
+        }
+        // create GET query params object from state
+        const getPackQueryObject: GetPackQueryParamsType = {
+            params: {
+                ...(packName !== null && {packName}),
+                ...(min !== null && {min}),
+                ...(max !== null && {max}),
+                ...(page && {page: page}),
+                ...(pageCount && {pageCount}),
+                ...(user_id !== null && {user_id}),
+                ...(sortPacks && {sortPacks: sortPacks}),
+            }
+        }
+        acsessAPI.getCardPacks(getPackQueryObject)
             .then(res => {
                 if (res.data && res.data.cardPacks.length > 0) {
                     dispatch(setCardsPackAC(res.data.cardPacks))
-                    /*   const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
-                           return {
-                               ...pack,
-                               created: new Date(pack.created),
-                               updated: new Date(pack.updated)
-                           }
-                       })*/
-                    /*dispatch(setCardsPackAC(cardsPackWithDate))*/
                 } else {
                     dispatch(setCardsPackAC([]))
                 }
-
-                dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
-                dispatch(setMinCardsCountAC(res.data.minCardsCount))
+                /*dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
+                dispatch(setMinCardsCountAC(res.data.minCardsCount))*/
                 dispatch(setPageAC(res.data.page))
                 dispatch(setPageCountAC(res.data.pageCount))
                 dispatch(setCardsPackTotalCountAC(res.data.cardPacksTotalCount))
@@ -203,28 +214,17 @@ export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
             .catch(error => {
                 dispatch(setAppStatusAC('failed'))
                 dispatch(setMessageErrorAC('Something went wrong'))
-                /*if (error.response && error.response.status) {
-                    dispatch(setMessageErrorAC(error.response.data.error))
-                } else {
-                    dispatch(setMessageErrorAC("Something went wrong"))
-                    dispatch(setPassRequestAC(false))
-                    if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log('Error', error.message);
-                    }
-                }*/
-
             })
     }
 }
 
-export const deletePackByIdTC = (id: string) => {
-    return (dispatch: Dispatch) => {
+export const deletePackByIdTC = (packId: string) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.deleteCardsPacks(id)
+        acsessAPI.deleteCardsPacks(packId)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(getAllPack())
             })
             .catch(err => {
                 console.log(err)
@@ -233,12 +233,18 @@ export const deletePackByIdTC = (id: string) => {
     }
 }
 
-export const addNewPackTC = (packObject: NewPackObjectDataType) => {
-    return (dispatch: Dispatch) => {
+export const addNewPackTC = (addNewPackObject: NewPackFieldsType) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.postCardPacks(packObject)
+        const newPackObject: NewPackObjectDataType = {
+            cardsPack: {
+                ...addNewPackObject
+            }
+        }
+        acsessAPI.postCardPacks(newPackObject)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(getAllPack())
             })
             .catch(err => {
                 console.log(err)
@@ -247,12 +253,16 @@ export const addNewPackTC = (packObject: NewPackObjectDataType) => {
     }
 }
 
-export const updateCardPack = (packUpdateObject: PackUpdateObjectType) => {
-    return (dispatch: Dispatch) => {
+export const updateCardPack = (packId: string, packUpdateObject: PackUpdateFieldsType) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>) => {
+        const updatePackQueryObject = {
+            cardsPack: packUpdateObject
+        }
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.updateCardPacks(packUpdateObject)
+        acsessAPI.updateCardPacks(updatePackQueryObject)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(getAllPack())
             })
             .then(err => {
                 console.log(err)

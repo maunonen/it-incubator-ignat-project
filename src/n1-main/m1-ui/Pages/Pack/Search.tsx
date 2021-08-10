@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {useDispatch} from "react-redux";
 import {addNewPackTC, setPackNameAC} from "../../../m2-bll/redux/pack-reducer";
-import {NewPackObjectDataType} from "../../../m3-dal/Api";
+import {NewPackFieldsType, NewPackObjectDataType} from "../../../m3-dal/Api";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,8 +46,7 @@ export default function FullWidthGrid() {
     };
 
     const addPack = () => {
-        let newPackObject: NewPackObjectDataType = {
-            cardsPack: {
+        let newPackObject: NewPackFieldsType = {
                 ...(name && {name: name}),
                 ...(path && {path: path}),
                 ...(grade && {grade: grade}),
@@ -56,7 +55,6 @@ export default function FullWidthGrid() {
                 ...(deckCover && {deckCover: deckCover}),
                 /*...( privateDeck && { private: privateDeck}),*/
                 ...(type && {typeDeck: type}),
-            }
         }
         dispatch(addNewPackTC(newPackObject))
     }

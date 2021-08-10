@@ -58,23 +58,7 @@ export default function Pack() {
     const dispatch = useDispatch();
 
     const getAllPacks = () => {
-        let sortPacks
-        if (pack.sortField) {
-            sortPacks = +pack.isSortTypeAscending + pack.sortField;
-        }
-
-        const paramsObject: GetPackQueryParamsType = {
-            params: {
-                ...(pack.packName && {packName: pack.packName}),
-                ...(pack.min && {min: pack.min}),
-                ...(pack.max && {max: pack.max}),
-                ...(pack.page && {page: pack.page}),
-                ...(pack.pageCount && {pageCount: pack.pageCount}),
-                ...(pack.user_id && {user_id: pack.user_id}),
-                ...(sortPacks && {sortPacks: sortPacks}),
-            }
-        }
-        dispatch(getAllPack(paramsObject))
+        dispatch(getAllPack())
     };
 
     useEffect(() => {
