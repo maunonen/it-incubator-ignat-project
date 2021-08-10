@@ -137,9 +137,9 @@ const DeckTable: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        getAllPacks()
-    }, [])
+    // useEffect(() => {
+    //     getAllPacks()
+    // }, [])
 
     useEffect(() => {
         getAllPacks()

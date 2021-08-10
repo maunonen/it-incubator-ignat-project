@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import {AppStoreType} from "../../../m2-bll/redux/store";
@@ -18,18 +18,16 @@ function valuetext(value: number) {
 
 export default function RangeSlider() {
 
-
-
     const classes = useStyles();
     const pack = useSelector((state: AppStoreType) => state.pack);
     const [value, setValue] = React.useState<number[]>([20, 37]);
 
 
-    //------------------------------------------------------
+    //------------------ вынести в отдельную компоненту ------------------------------------
 
     const dispatch = useDispatch();
 
-    const getAllPacks = useCallback( () => {
+    const getAllPacks = () => {
         let sortPacks
         if (pack.sortField) {
             sortPacks = +pack.isSortTypeAscending + pack.sortField;
@@ -47,9 +45,7 @@ export default function RangeSlider() {
             }
         }
         dispatch(getAllPack(paramsObject))
-    }, [value]);
-
-
+    };
     //--------------------------------------------------------
 
     const handleChange = (event: any, newValue: number | number[]) => {
@@ -64,8 +60,8 @@ export default function RangeSlider() {
     }, [pack]);
 
 
+
     useEffect(() => {
-        console.log("request from RangeSlider -> setValue in slider ")
             const setTO = setTimeout(() => {
                 getAllPacks()
             }, 1500)
@@ -73,9 +69,9 @@ export default function RangeSlider() {
                 clearTimeout(setTO)
             }
         }, [value]
+
     );
 
-    console.log(value)
 
     return (
         <>

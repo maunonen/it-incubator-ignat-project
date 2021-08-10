@@ -1,6 +1,5 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import RangeSlider from './RangeSlider' ;
@@ -43,12 +42,11 @@ export default function CenteredGrid() {
     const classes = useStyles();
 
     const myButtonClickHandler=()=>{
-        alert("my cards show")
+        alert("MY cards show")
     };
     const allButtonClickHandler=()=>{
         alert("ALL cards show")
     };
-
 
     return (
         <div className={classes.root}>
@@ -80,13 +78,12 @@ export default function CenteredGrid() {
                         className={classes.modeButton}
                     >ALL</Button>
                 </ButtonGroup>
-
-                {/*<Button variant="contained" color="primary">
-                    My
-                  </Button>
-                  <Button variant="contained" color="secondary">
-                    All
-                  </Button>*/}
+                    {/*<Button variant="contained" color="primary">*/}
+                    {/*    My*/}
+                    {/*  </Button>*/}
+                    {/*  <Button variant="contained" color="secondary">*/}
+                    {/*    All*/}
+                    {/*  </Button>*/}
                 {/*</Grid>*/}
                 <Typography
                     variant="h3"
@@ -95,20 +92,7 @@ export default function CenteredGrid() {
                 >
                     Number of cards
                 </Typography>
-
-                {/* < ---------------------*/}
-                {/*{useCallback(()=> {*/}
-
-
                 <RangeSlider/>
-
-
-
-
-                {/*}, [])};*/}
-                {/* < ---------------------*/}
-
-
             </Grid>
         </div>
     );
