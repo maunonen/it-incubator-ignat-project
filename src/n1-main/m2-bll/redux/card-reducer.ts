@@ -1,12 +1,19 @@
 import {
-    acsessAPI, CardType, GetCardQueryType,
+    acsessAPI,
+    CardType,
+    GetCardQueryType,
     GetPackQueryParamsType,
     NewPackObjectDataType,
     PackDataType,
-    PackResponseDataType, PackUpdateObjectType
+    PackResponseDataType,
+    PackUpdateObjectType,
+    PostCardFieldsType,
+    PostCardQueryType,
+    UpdateCardFieldsType,
+    UpdateCardQueryType
 } from "../../m3-dal/Api";
 import {AppStatusType, setAppStatusAC, setMessageErrorAC} from "./app-reducer";
-import {Dispatch} from "redux";
+import {AnyAction, Dispatch} from "redux";
 import store from '../redux/store'
 
 
@@ -23,22 +30,22 @@ export enum ACTIONS_TYPE {
     SET_CARDS_TOTAL_COUNT = 'CardReducer/SET_CARDS_TOTAL_COUNT',
     SET_MIN_GRADE = 'CardReducer/SET_MIN_GRADE',
     SET_MAX_GRADE = 'CardReducer/SET_MAX_GRADE',
-
 }
 
 export interface InitialCardStateType {
     cards: Array<CardType>
+    // current Pack id
     packUserId: string
     // for sort card in table
     isSortTypeAscending: boolean
     sortField: keyof CardType | null
     // for pagination
-    page: number
-    pageCount: number
-    cardsTotalCount: number
+    page: number | null
+    pageCount: number | null
+    cardsTotalCount: number | null
     // card grade
-    minGrade: number
-    maxGrade: number
+    minGrade: number | null
+    maxGrade: number | null
 }
 
 const initialCardState: InitialCardStateType = {
@@ -47,11 +54,11 @@ const initialCardState: InitialCardStateType = {
     // Get card Query parameter
     sortField: 'question',
     isSortTypeAscending: false,
-    page: 0,
-    pageCount: 5,
-    cardsTotalCount: 0,
-    minGrade: 0,
-    maxGrade: 0,
+    page: null,
+    pageCount: null,
+    cardsTotalCount: null,
+    minGrade: null,
+    maxGrade: null
 }
 
 
@@ -160,7 +167,7 @@ export const setCardsArrayAC = (cards: Array<CardType>) => ({
 
 
 export const getAllCardsTS = (packId: string) => {
-    return (dispatch: Dispatch, getState :  () => AppStoreType) => {
+    return (dispatch: Dispatch, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
         // create sort field
         let sortCards
@@ -178,11 +185,11 @@ export const getAllCardsTS = (packId: string) => {
         const cardsQueryObject: GetCardQueryType = {
             params: {
                 cardsPack_id: packId,
-                ...(page && {page: page}),
-                ...(pageCount && {pageCount: pageCount}),
-                ...(minGrade && {min: minGrade}),
-                ...(maxGrade && {max: maxGrade}),
-                ...(cardsTotalCount && {cardsTotalCount: cardsTotalCount}),
+                ...(page !== null && {page: page}),
+                ...(pageCount !== null && {pageCount: pageCount}),
+                ...(minGrade !== null && {min: minGrade}),
+                ...(maxGrade !== null && {max: maxGrade}),
+                ...(cardsTotalCount !== null && {cardsTotalCount: cardsTotalCount}),
                 ...(sortCards && {sortCards: sortCards}),
             }
         }
@@ -204,110 +211,64 @@ export const getAllCardsTS = (packId: string) => {
             .catch(error => {
                 dispatch(setAppStatusAC('failed'))
                 dispatch(setMessageErrorAC('Something went wrong'))
-                /*
-                if (error.response && error.response.status) {
-                    dispatch(setMessageErrorAC(error.response.data.error))
-                } else {
-                    dispatch(setMessageErrorAC("Something went wrong"))
-                    dispatch(setPassRequestAC(false))
-                    if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log('Error', error.message);
-                    }
-                }
-                */
-
             })
     }
 }
 
-/*
-export const getAllPack = (queryPackObject: GetPackQueryParamsType) => {
-    return (dispatch: Dispatch) => {
+export const deleteCardByIdTC = (id: string) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.getCardPacks(queryPackObject)
-            .then(res => {
-                if (res.data && res.data.cardPacks.length > 0) {
-                    dispatch(setCardsPackAC(res.data.cardPacks))
-                    /!*   const cardsPackWithDate = res.data.cardPacks.map((pack: PackResponseDataType) => {
-                           return {
-                               ...pack,
-                               created: new Date(pack.created),
-                               updated: new Date(pack.updated)
-                           }
-                       })*!/
-                    /!*dispatch(setCardsPackAC(cardsPackWithDate))*!/
-                } else {
-                    dispatch(setCardsPackAC([]))
-                }
-
-                dispatch(setMaxCardsCountAC(res.data.maxCardsCount))
-                dispatch(setMinCardsCountAC(res.data.minCardsCount))
-                dispatch(setPageAC(res.data.page))
-                dispatch(setPageCountAC(res.data.pageCount))
-                dispatch(setCardsPackTotalCountAC(res.data.cardPacksTotalCount))
-                dispatch(setAppStatusAC('succeeded'))
-            })
-            .catch(error => {
-                dispatch(setAppStatusAC('failed'))
-                dispatch(setMessageErrorAC('Something went wrong'))
-                /!*if (error.response && error.response.status) {
-                    dispatch(setMessageErrorAC(error.response.data.error))
-                } else {
-                    dispatch(setMessageErrorAC("Something went wrong"))
-                    dispatch(setPassRequestAC(false))
-                    if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log('Error', error.message);
-                    }
-                }*!/
-
-            })
-    }
-}
-*/
-
-/*export const deletePackByIdTC = (id: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC('loading'))
-        acsessAPI.deleteCardsPacks(id)
+        acsessAPI.deleteCardByID(id)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(getAllCardsTS(getState().card.packUserId))
             })
             .catch(err => {
                 console.log(err)
                 dispatch(setAppStatusAC('failed'))
             })
     }
-}*/
+}
 
-/*export const addNewPackTC = (packObject: NewPackObjectDataType) => {
-    return (dispatch: Dispatch) => {
+export const addNewCardTC = (packId: string, newCardFields: PostCardFieldsType) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
+        // Combine post object from state
+        const newCardObject: PostCardQueryType = {
+            card: {
+                cardsPack_id: packId,
+                ...newCardFields
+            }
+        }
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.postCardPacks(packObject)
+        acsessAPI.postCard(newCardObject)
             .then(res => {
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'));
+                dispatch(getAllCardsTS(packId));
             })
             .catch(err => {
                 console.log(err)
                 dispatch(setAppStatusAC('failed'))
             })
     }
-}*/
+}
 
-/*
-export const updateCardPack = (packUpdateObject: PackUpdateObjectType) => {
-    return (dispatch: Dispatch) => {
+export const updateCardTC = (_id: string, updatedCardFields: UpdateCardFieldsType) => {
+    return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
+        let updatedCardQuery: UpdateCardQueryType = {
+            card: {
+                _id,
+                ...updatedCardFields
+            }
+        }
         dispatch(setAppStatusAC('loading'))
-        acsessAPI.updateCardPacks(packUpdateObject)
+        acsessAPI.updateCardById(updatedCardQuery)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(getAllCardsTS(getState().card.packUserId))
             })
-            .then(err => {
+            .catch(err => {
                 console.log(err)
                 dispatch(setAppStatusAC('failed'))
             })
     }
-}*/
+}

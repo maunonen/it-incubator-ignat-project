@@ -117,25 +117,7 @@ const DeckTable: React.FC = () => {
     };
 
     const getAllPacks = () => {
-        let sortPacks
-        // if sortField set create sortPacks field '0created' '1updated'
-        if (pack.sortField) {
-            /*sortPacks = (+pack.isSortTypeAscending).toString().concat(pack.sortField) ;*/
-            sortPacks = +pack.isSortTypeAscending + pack.sortField;
-        }
-
-        const paramsObject: GetPackQueryParamsType = {
-            params: {
-                ...(pack.packName !== null && {packName: pack.packName}),
-                ...(pack.min !== null && {min: pack.min}),
-                ...(pack.max !== null && {max: pack.max}),
-                ...(pack.page && {page: pack.page}),
-                ...(pack.pageCount && {pageCount: pack.pageCount}),
-                ...(pack.user_id !== null && {user_id: pack.user_id}),
-                ...(sortPacks && {sortPacks: sortPacks}),
-            }
-        }
-        dispatch(getAllPack(paramsObject))
+        dispatch(getAllPack())
     }
 
 
