@@ -2,7 +2,9 @@ import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import {AppStoreType} from "../../../m2-bll/redux/store";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {GetPackQueryParamsType} from "../../../m3-dal/Api";
+import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
 
 const useStyles = makeStyles({
     root: {
@@ -15,19 +17,60 @@ function valuetext(value: number) {
 }
 
 export default function RangeSlider() {
+
     const classes = useStyles();
     const pack = useSelector((state: AppStoreType) => state.pack);
     const [value, setValue] = React.useState<number[]>([20, 37]);
+
+
+    //------------------ вынести в отдельную компоненту ------------------------------------
+
+    const dispatch = useDispatch();
+
+    const getAllPacks = () => {
+        let sortPacks
+        if (pack.sortField) {
+            sortPacks = +pack.isSortTypeAscending + pack.sortField;
+        }
+
+        const paramsObject: GetPackQueryParamsType = {
+            params: {
+                ...(pack.packName && {packName: pack.packName}),
+                ...(pack.min !== null && {min: value[0]}),
+                ...(pack.max !== null && {max: value[1]}),
+                ...(pack.page && {page: pack.page}),
+                ...(pack.pageCount && {pageCount: pack.pageCount}),
+                ...(pack.user_id && {user_id: pack.user_id}),
+                ...(sortPacks && {sortPacks: sortPacks}),
+            }
+        }
+        dispatch(getAllPack(paramsObject))
+    };
+    //--------------------------------------------------------
 
     const handleChange = (event: any, newValue: number | number[]) => {
         setValue(newValue as number[]);
     };
 
+
     useEffect(() => {
-        if ((pack.min != null) && pack.max) {
+        if ((pack.min != null) && pack.min !== value[0]  && pack.max && pack.max !== value[1]) {
             setValue([pack.min, pack.max])
         }
     }, [pack]);
+
+
+
+    useEffect(() => {
+            const setTO = setTimeout(() => {
+                getAllPacks()
+            }, 1500)
+            return () => {
+                clearTimeout(setTO)
+            }
+        }, [value]
+
+    );
 
 
     return (
@@ -39,6 +82,7 @@ export default function RangeSlider() {
                 aria-labelledby="range-slider"
                 getAriaValueText={valuetext}
             />
+
         </>
     );
 }

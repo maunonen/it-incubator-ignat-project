@@ -1,5 +1,3 @@
-
-
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
@@ -19,7 +17,6 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
         textAlign: "center",
         padding: "30px 30px",
         width: "413px",
-        /*maxWidth : "413px",*/
     },
     formTitle: {
         marginBottom: "30px",
@@ -28,7 +25,6 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
         marginBottom: "40px",
     },
     formDescription: {
-        /*marginTop : "20px",*/
         marginBottom: "40px",
     },
     formButtonBlock: {
@@ -44,12 +40,6 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
         margin: "0px 10px"
     },
 }))
-
-
-type FormikErrorType = {
-    email?: string
-    password?: string
-}
 
 const LoginPage: React.FC = () => {
 

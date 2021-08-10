@@ -75,6 +75,7 @@ export default function Pack() {
 
     return (
         <div className={classes.root}>
+
             <Paper
                 elevation={4}
                 className={classes.paper}

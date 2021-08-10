@@ -113,7 +113,6 @@ const DeckTable: React.FC = () => {
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PackDataType) => {
         dispatch(setPackSortType(!pack.isSortTypeAscending, property))
         /*setOrder(pack.isSortTypeAscending ? 'desc' : 'asc');*/
-
     };
 
     const getAllPacks = () => {
@@ -121,9 +120,9 @@ const DeckTable: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        getAllPacks()
-    }, [])
+    // useEffect(() => {
+    //     getAllPacks()
+    // }, [])
 
     useEffect(() => {
         getAllPacks()
