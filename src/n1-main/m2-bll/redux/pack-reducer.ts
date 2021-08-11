@@ -28,7 +28,7 @@ export enum ACTIONS_TYPE {
 
 export interface InitialPackStateType {
     cardPacks: Array<PackResponseDataType>,
-    /*Query params*/
+    /*Search Query params*/
     packName: string | null
     // minCardsCount
     min: number | null

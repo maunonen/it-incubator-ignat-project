@@ -23,7 +23,7 @@ import {GetPackQueryParamsType, PackDataType} from "../../../m3-dal/Api";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {stat} from "fs";
-import {Button} from "@material-ui/core";
+import {Button, Link} from "@material-ui/core";
 import {
     deletePackByIdTC,
     getAllPack,
@@ -32,6 +32,8 @@ import {
     setPageCountAC
 } from "../../../m2-bll/redux/pack-reducer";
 import moment from 'moment'
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../Routes";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -209,7 +211,14 @@ const DeckTable: React.FC = () => {
                                                 className={classes.tableRow}
                                             >
                                                 <TableCell component="th" id={labelId} scope="row" padding="normal">
+                                                    <Link
+                                                        variant={"body1"}
+                                                        component={NavLink}
+                                                        to={`${PATH.CARDS}/${deck._id}`}
+                                                        color={"textPrimary"}
+                                                    >
                                                     {deck.name.length > 20 ? deck.name.slice(0, 20) + '...' : deck.name}
+                                                    </Link>
                                                 </TableCell>
                                                 <TableCell align="right">{deck.cardsCount}</TableCell>
                                                 <TableCell

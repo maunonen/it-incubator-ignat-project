@@ -4,32 +4,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import {useDispatch, useSelector} from "react-redux";
-import {stat} from "fs";
-import {Button} from "@material-ui/core";
-/*import {
-    deletePackByIdTC,
-    getAllPack,
-    setPackSortType,
-    setPageAC,
-    setPageCountAC
-} from "../../../m2-bll/redux/pack-reducer";*/
 import moment from 'moment'
-import DeckTableHeader from '../../common/c8-Table/DeckTableHeader';
 import {
     getAllCardsTS,
     setPageAC,
@@ -37,10 +15,11 @@ import {
     setSortDirectionAscAC,
     setSortFieldAC
 } from '../../../m2-bll/redux/card-reducer';
-import { AppStoreType } from '../../../m2-bll/redux/store';
-import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
-import {CardType, PackResponseDataType} from "../../../m3-dal/Api";
+import {AppStoreType} from '../../../m2-bll/redux/store';
+import {CardType} from "../../../m3-dal/Api";
 import {useParams} from "react-router-dom";
+import CardTableHeader from './CardTableHeader';
+import {TablePagination} from "@material-ui/core";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -73,7 +52,6 @@ function getComparator<Key extends keyof any>(
     return stabilizedThis.map((el) => el[0]);
 }*/
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -105,18 +83,19 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const CardListPage: React.FC = () => {
+const CardTable: React.FC = () => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const {packId} = useParams<{packId : string}>()
+    const {packId} = useParams<{ packId: string }>()
     /*const [rowsPerPage, setRowsPerPage] = React.useState(5);*/
 
     /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
-    console.log('packId', packId )
     const {card} = useSelector((state: AppStoreType) => state)
+    console.log('packId', packId)
+    console.log('card', card)
 
     const {_id} = useSelector((state: AppStoreType) => state.auth)
     const dispatch = useDispatch()
@@ -124,13 +103,15 @@ const CardListPage: React.FC = () => {
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof CardType) => {
         dispatch(setSortDirectionAscAC(!card.isSortTypeAscending))
         dispatch(setSortFieldAC(property))
-        /*setOrder(pack.isSortTypeAscending ? 'desc' : 'asc');*/
-
     };
 
     useEffect(() => {
-        dispatch(getAllCardsTS(packId))
-    }, [card.isSortTypeAscending, card.sortField, card.page, card.pageCount])
+            dispatch(getAllCardsTS(packId))
+        }, [
+            card.isSortTypeAscending, card.sortField,
+            card.page, card.pageCount, card.page
+        ]
+    )
 
     /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -189,12 +170,12 @@ const CardListPage: React.FC = () => {
                         size={'small'}
                         aria-label="enhanced table"
                     >
-                        {/*<DeckTableHeader
+                        <CardTableHeader
                             numSelected={selected.length}
-                            onSelectAllClick={handleSelectAllClick}
+                            /*onSelectAllClick={handleSelectAllClick}*/
                             onRequestSort={handleRequestSort}
-                            rowCount={card.cardsTotalCount}
-                        />*/}
+                            rowCount={card.cardsTotalCount || 0}
+                        />
                         <TableBody>
                             {
                                 card.cards.length > 0 && card.cards
@@ -219,7 +200,8 @@ const CardListPage: React.FC = () => {
                                                     {card.answer.length > 20 ? card.answer.slice(0, 20) + '...' : card.answer}
                                                 </TableCell>
                                                 <TableCell
-                                                    align="right">{moment(card.updated).format("DD.MM.YYYY")}</TableCell>
+                                                    align="right">{moment(card.updated).format("DD.MM.YYYY")}
+                                                </TableCell>
                                                 <TableCell align="right">{card.grade}</TableCell>
                                             </TableRow>
                                         );
@@ -232,18 +214,18 @@ const CardListPage: React.FC = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/*<TablePagination
+                <TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"
                     // total number of rows from server side
-                    count={card.cardsTotalCount}
+                    count={card.cardsTotalCount || 0}
                     // rows per page
-                    rowsPerPage={card.pageCount}
+                    rowsPerPage={card.pageCount || 5}
                     // current page(starts from 0) from server side - 1
-                    page={card.page - 1}
+                    page={(card.page && (card.page - 1)) || 0}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                />*/}
+                />
             </Paper>
             {/*<FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
@@ -252,4 +234,4 @@ const CardListPage: React.FC = () => {
         </div>
     );
 }
-export default CardListPage
+export default CardTable

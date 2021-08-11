@@ -82,18 +82,21 @@ export interface PostCardQueryType {
     card: PostCardFieldsType
 }
 
+// Get Card Query Fields
+export interface GetCardQueryFields {
+    cardsPack_id?: string
+    cardAnswer?: string | null
+    cardQuestion?: string | null
+    min?: number | null
+    max?: number | null
+    sortCards?: string | null
+    page?: number | null
+    pageCount?: number | null
+}
+
 // Types for Get Card Query
 export interface GetCardQueryType {
-    params: {
-        cardsPack_id: string
-        cardAnswer?: string | null
-        cardQuestion?: string | null
-        min?: number | null
-        max?: number | null
-        sortCards?: string | null
-        page?: number | null
-        pageCount?: number | null
-    }
+    params: GetCardQueryFields
 }
 
 // Types for Get Card Query
