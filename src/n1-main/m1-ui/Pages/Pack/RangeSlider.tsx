@@ -28,23 +28,7 @@ export default function RangeSlider() {
     const dispatch = useDispatch();
 
     const getAllPacks = () => {
-        let sortPacks
-        if (pack.sortField) {
-            sortPacks = +pack.isSortTypeAscending + pack.sortField;
-        }
-
-        const paramsObject: GetPackQueryParamsType = {
-            params: {
-                ...(pack.packName && {packName: pack.packName}),
-                ...(pack.min !== null && {min: value[0]}),
-                ...(pack.max !== null && {max: value[1]}),
-                ...(pack.page && {page: pack.page}),
-                ...(pack.pageCount && {pageCount: pack.pageCount}),
-                ...(pack.user_id && {user_id: pack.user_id}),
-                ...(sortPacks && {sortPacks: sortPacks}),
-            }
-        }
-        dispatch(getAllPack(paramsObject))
+        dispatch(getAllPack())
     };
     //--------------------------------------------------------
 
