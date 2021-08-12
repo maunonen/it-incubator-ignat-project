@@ -227,7 +227,7 @@ const DeckTable: React.FC = () => {
                                                             <Button>Edit</Button>
                                                         </>
                                                     }
-                                                    <Button>Learn</Button>
+                                                    <Button onClick={()=>alert("learn")}>Learn</Button>
                                                 </TableCell>
                                             </TableRow>
                                         );

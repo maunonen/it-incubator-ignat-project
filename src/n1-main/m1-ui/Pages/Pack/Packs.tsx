@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import RangeShowCard from './RangeShowCard';
-import PackList from './PacksList'
+// import PackList from './PacksList'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 
@@ -57,13 +57,13 @@ export default function Pack() {
     const pack = useSelector((state: AppStoreType) => state.pack);
     const dispatch = useDispatch();
 
-    const getAllPacks = () => {
-        dispatch(getAllPack())
-    };
-
-    useEffect(() => {
-        getAllPacks();
-    }, []);
+    // const getAllPacks = () => {
+    //     dispatch(getAllPack())
+    // };
+    //
+    // useEffect(() => {
+    //     getAllPacks();
+    // }, []);
 
 
     /*if (!_id) {

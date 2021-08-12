@@ -17,7 +17,8 @@ import {
     setMinCardsCountAC,
     setPackNameAC, setPackSortType, setPageAC,
     setPageCountAC,
-    setUserIdAC, updateCardPack
+    setUserIdAC,
+    updateCardPack
 } from "../../m2-bll/redux/pack-reducer";
 import Table from "../common/c8-Table/Table";
 import DeckTable from "../common/c8-Table/DeckTable";

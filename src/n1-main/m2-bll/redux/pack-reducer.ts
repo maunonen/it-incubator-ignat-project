@@ -55,7 +55,7 @@ const initialPackState: InitialPackStateType = {
     max: null,
     isSortTypeAscending: false,
     sortField: "name",
-    user_id: null,
+    user_id: "6113f19767851c0004b0d0d4",
     // current page
     page: 0,
     // packs per page
