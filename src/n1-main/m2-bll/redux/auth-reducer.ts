@@ -25,7 +25,6 @@ const initState = {
 };
 
 export const authReducer = (state: InitStateType = initState, action: CombinedActionType): InitStateType => {
-    console.log(state)
     switch (action.type) {
         case "IS-LOGGED-IN": {
             return {...state, isLoggedIn: action.value, error: action.error};

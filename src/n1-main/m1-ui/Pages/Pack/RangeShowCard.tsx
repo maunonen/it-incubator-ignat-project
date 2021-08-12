@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CenteredGrid() {
+export default function RangeShowCard() {
     const classes = useStyles();
 
     const pack = useSelector((state: AppStoreType) => state.pack);
