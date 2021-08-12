@@ -19,7 +19,8 @@ import {AppStoreType} from '../../../m2-bll/redux/store';
 import {CardType} from "../../../m3-dal/Api";
 import {useParams} from "react-router-dom";
 import CardTableHeader from './CardTableHeader';
-import {TablePagination} from "@material-ui/core";
+import {Button, TablePagination} from "@material-ui/core";
+import {deletePackByIdTC} from "../../../m2-bll/redux/pack-reducer";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -90,9 +91,7 @@ const CardTable: React.FC = () => {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const {packId} = useParams<{ packId: string }>()
-    /*const [rowsPerPage, setRowsPerPage] = React.useState(5);*/
 
-    /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
     const {card} = useSelector((state: AppStoreType) => state)
     console.log('packId', packId)
     console.log('card', card)
@@ -113,34 +112,6 @@ const CardTable: React.FC = () => {
         ]
     )
 
-    /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };*/
-
-    /*const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected: string[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
-    };*/
 
     const handleChangePage = (event: unknown, newPage: number) => {
         dispatch(setPageAC(newPage + 1));
@@ -154,10 +125,6 @@ const CardTable: React.FC = () => {
     const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDense(event.target.checked);
     };
-
-    /*const isSelected = (name: string) => selected.indexOf(name) !== -1;*/
-
-    /*const emptyRows = pack.pageCount - Math.min(pack.pageCount, rows.length - page * pack.pageCount);*/
 
     return (
         <div className={classes.root}>
@@ -196,21 +163,22 @@ const CardTable: React.FC = () => {
                                                 <TableCell component="th" id={labelId} scope="row" padding="normal">
                                                     {card.question.length > 20 ? card.question.slice(0, 20) + '...' : card.question}
                                                 </TableCell>
-                                                <TableCell align="right">
+                                                <TableCell align="left">
                                                     {card.answer.length > 20 ? card.answer.slice(0, 20) + '...' : card.answer}
                                                 </TableCell>
                                                 <TableCell
                                                     align="right">{moment(card.updated).format("DD.MM.YYYY")}
                                                 </TableCell>
                                                 <TableCell align="right">{card.grade}</TableCell>
+                                                {
+                                                    card.user_id === _id &&
+                                                    <>
+                                                        <Button>Edit</Button>
+                                                    </>
+                                                }
                                             </TableRow>
                                         );
                                     })}
-                            {/*{emptyRows > 0 && (
-                                <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -227,10 +195,6 @@ const CardTable: React.FC = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            {/*<FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Dense padding"
-            />*/}
         </div>
     );
 }

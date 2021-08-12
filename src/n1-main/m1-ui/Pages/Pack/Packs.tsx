@@ -2,14 +2,9 @@ import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import RangeShowCard from './RangeShowCard';
-/*import PackList from './PacksList'*/
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 
-import {Redirect} from "react-router-dom";
-import {PATH} from "../../Routes";
-import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
-import {GetPackQueryParamsType, UserProfileType} from "../../../m3-dal/Api";
 import {Card, Paper} from "@material-ui/core";
 import DeckTable from "../../common/c8-Table/DeckTable";
 import Search from './Search';
@@ -20,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         /*flexGrow: 1,*/
         marginTop: "40px",
+        marginBottom: "40px",
     },
     paper: {
         margin: 'auto',
@@ -55,23 +51,6 @@ export default function Pack() {
 
     const {_id} = useSelector((state: AppStoreType) => state.auth);
     const pack = useSelector((state: AppStoreType) => state.pack);
-    const dispatch = useDispatch();
-
-    const getAllPacks = () => {
-        dispatch(getAllPack())
-    };
-
-    useEffect(() => {
-        getAllPacks();
-    }, []);
-
-
-    /*if (!_id) {
-        return (
-            <Redirect from={PATH.ALL_ROUTES} to="/login"/>
-        )
-    }*/
-
 
     return (
         <div className={classes.root}>

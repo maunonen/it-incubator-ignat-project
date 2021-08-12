@@ -54,7 +54,7 @@ const initialPackState: InitialPackStateType = {
     min: null,
     max: null,
     isSortTypeAscending: false,
-    sortField: "name",
+    sortField: "updated",
     user_id: null,
     // current page
     page: 0,
@@ -257,7 +257,10 @@ export const addNewPackTC = (addNewPackObject: NewPackFieldsType) => {
 export const updateCardPack = (packId: string, packUpdateObject: PackUpdateFieldsType) => {
     return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>) => {
         const updatePackQueryObject = {
-            cardsPack: packUpdateObject
+            cardsPack: {
+                _id : packId,
+                ...packUpdateObject
+            }
         }
         dispatch(setAppStatusAC('loading'))
         acsessAPI.updateCardPacks(updatePackQueryObject)

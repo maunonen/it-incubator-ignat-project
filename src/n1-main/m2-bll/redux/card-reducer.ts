@@ -185,12 +185,12 @@ export const getAllCardsTS = (packId: string, searchFields?: GetCardQueryFields)
         const cardsQueryObject: GetCardQueryType = {
             params: {
                 cardsPack_id: packId,
-                ...(page !== null && {page: page}),
-                ...(pageCount !== null && {pageCount: pageCount}),
+                ...(page !== null && {page}),
+                ...(pageCount !== null && {pageCount}),
                 ...(minGrade !== null && {min: minGrade}),
                 ...(maxGrade !== null && {max: maxGrade}),
-                ...(cardsTotalCount !== null && {cardsTotalCount: cardsTotalCount}),
-                ...(sortCards && {sortCards: sortCards}),
+                ...(cardsTotalCount !== null && {cardsTotalCount}),
+                ...(sortCards && {sortCards}),
                 ...(searchFields && searchFields)
             }
         }

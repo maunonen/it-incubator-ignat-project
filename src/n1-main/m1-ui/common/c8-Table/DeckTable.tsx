@@ -1,71 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStyles, lighten, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import DeckTableHeader from "./DeckTableHeader";
-import {GetPackQueryParamsType, PackDataType} from "../../../m3-dal/Api";
+import {PackDataType, PackUpdateFieldsType} from "../../../m3-dal/Api";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
-import {stat} from "fs";
 import {Button, Link} from "@material-ui/core";
 import {
     deletePackByIdTC,
     getAllPack,
     setPackSortType,
     setPageAC,
-    setPageCountAC
+    setPageCountAC, updateCardPack
 } from "../../../m2-bll/redux/pack-reducer";
 import moment from 'moment'
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../Routes";
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-/*function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}*/
-
+import ModalForm from "../c9-Modal/ModalForm";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -100,64 +58,37 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DeckTable: React.FC = () => {
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [selected, setSelected] = React.useState<string[]>([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    /*const [rowsPerPage, setRowsPerPage] = React.useState(5);*/
+    const [selected, setSelected] = useState<string[]>([]);
+    const [dense, setDense] = useState(false);
+    const [packName, setPackName] = useState<string | null>(null)
 
-    /*const {cardPacks, isSortTypeAscending, sortField} = useSelector((state: AppStoreType) => state.pack)*/
+    // Open status of modal for add, delete, edit modals
+    const [modalDeleteStatus, setModalDeleteStatus] = useState<boolean>(false);
+    const [modalEditStatus, setModalEditStatus] = useState<boolean>(false);
+
+
     const {pack} = useSelector((state: AppStoreType) => state)
-
     const {_id} = useSelector((state: AppStoreType) => state.auth)
     const dispatch = useDispatch()
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PackDataType) => {
         dispatch(setPackSortType(!pack.isSortTypeAscending, property))
-        /*setOrder(pack.isSortTypeAscending ? 'desc' : 'asc');*/
     };
 
-    const getAllPacks = () => {
-        dispatch(getAllPack())
-    }
-
-
-    // useEffect(() => {
-    //     getAllPacks()
-    // }, [])
-
     useEffect(() => {
-        getAllPacks()
+        dispatch(getAllPack())
     }, [pack.isSortTypeAscending, pack.sortField, pack.page, pack.pageCount, pack.packName])
 
-    /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
-            setSelected(newSelecteds);
-            return;
+    const handleDeletePack = (deckId: string) => {
+        dispatch(deletePackByIdTC(deckId))
+    }
+
+    const handleEditDeck = (deckId: string) => {
+        const updateObjectFileds: PackUpdateFieldsType = {
+            ...(packName && {name: packName}),
         }
-        setSelected([]);
-    };*/
-
-    /*const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected: string[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
-    };*/
+        dispatch(updateCardPack(deckId, updateObjectFileds))
+    }
 
     const handleChangePage = (event: unknown, newPage: number) => {
         dispatch(setPageAC(newPage + 1));
@@ -168,28 +99,23 @@ const DeckTable: React.FC = () => {
         /*setPage(0);*/
     };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
-    };
-
-    /*const isSelected = (name: string) => selected.indexOf(name) !== -1;*/
-
-    /*const emptyRows = pack.pageCount - Math.min(pack.pageCount, rows.length - page * pack.pageCount);*/
+    const handlePackNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPackName(event.target.value)
+    }
 
     return (
         <div className={classes.root}>
+            {/*<Button onClick={() => dispatch(deletePackByIdTC("6114f04f0030860004fc05a9"))}>TEST DELETE PACK</Button>*/}
             <Paper className={classes.paper}>
                 <TableContainer>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
-                        /*size={dense ? 'small' : 'medium'}*/
                         size={'small'}
                         aria-label="enhanced table"
                     >
                         <DeckTableHeader
                             numSelected={selected.length}
-                            /*onSelectAllClick={handleSelectAllClick}*/
                             onRequestSort={handleRequestSort}
                             rowCount={pack.cardPacksTotalCount}
                         />
@@ -197,17 +123,12 @@ const DeckTable: React.FC = () => {
                             {
                                 pack.cardPacks
                                     .map((deck, index) => {
-                                        /*const isItemSelected = isSelected(deck.name);*/
                                         const labelId = `enhanced-table-checkbox-${index}`;
                                         return (
                                             <TableRow
-                                                /*hover*/
-                                                /*onClick={(event) => handleClick(event, pack.name)}*/
                                                 role="checkbox"
-                                                /*aria-checked={isItemSelected}*/
                                                 tabIndex={-1}
                                                 key={index}
-                                                /*selected={isItemSelected}*/
                                                 className={classes.tableRow}
                                             >
                                                 <TableCell component="th" id={labelId} scope="row" padding="normal">
@@ -217,7 +138,7 @@ const DeckTable: React.FC = () => {
                                                         to={`${PATH.CARDS}/${deck._id}`}
                                                         color={"textPrimary"}
                                                     >
-                                                    {deck.name.length > 20 ? deck.name.slice(0, 20) + '...' : deck.name}
+                                                        {deck.name.length > 20 ? deck.name.slice(0, 20) + '...' : deck.name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="right">{deck.cardsCount}</TableCell>
@@ -230,10 +151,45 @@ const DeckTable: React.FC = () => {
                                                         <>
                                                             <Button
                                                                 onClick={() => {
-                                                                    dispatch(deletePackByIdTC(deck._id));
-                                                                    getAllPacks();
+                                                                    setModalDeleteStatus(true)
                                                                 }}>Delete</Button>
-                                                            <Button>Edit</Button>
+                                                            <Button
+                                                                onClick={() => {
+                                                                    setModalEditStatus(true)
+                                                                }
+                                                                }
+                                                            >Edit</Button>
+                                                            <ModalForm
+                                                                modalTitle={"Edit Pack"}
+                                                                /*modalText={"Do you really want to delete pack"}*/
+                                                                openStatus={modalEditStatus}
+                                                                handleCloseModal={setModalEditStatus}
+                                                                modalActionCallback={() => {
+                                                                    handleEditDeck(deck._id)
+                                                                }}
+                                                                actionButtonTitle={"Edit"}
+                                                            >
+                                                                <TextField
+                                                                    value={packName === null ? deck.name : packName}
+                                                                    onChange={handlePackNameChange}
+                                                                    margin="dense"
+                                                                    id="packName"
+                                                                    label="Pack name"
+                                                                    type="string"
+                                                                    fullWidth
+                                                                />
+
+                                                            </ModalForm>
+                                                            <ModalForm
+                                                                modalTitle={"Delete Pack"}
+                                                                modalText={"Do you really want to delete pack"}
+                                                                openStatus={modalDeleteStatus}
+                                                                handleCloseModal={setModalDeleteStatus}
+                                                                modalActionCallback={() => {
+                                                                    handleDeletePack(deck._id)
+                                                                }}
+                                                                actionButtonTitle={"Delete"}
+                                                            />
                                                         </>
                                                     }
                                                     <Button>Learn</Button>
@@ -241,11 +197,6 @@ const DeckTable: React.FC = () => {
                                             </TableRow>
                                         );
                                     })}
-                            {/*{emptyRows > 0 && (
-                                <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -262,10 +213,6 @@ const DeckTable: React.FC = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            {/*<FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Dense padding"
-            />*/}
         </div>
     );
 }

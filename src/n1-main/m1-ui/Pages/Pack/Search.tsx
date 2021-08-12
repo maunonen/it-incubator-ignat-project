@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {useDispatch} from "react-redux";
 import {addNewPackTC, setPackNameAC} from "../../../m2-bll/redux/pack-reducer";
-import {NewPackFieldsType, NewPackObjectDataType} from "../../../m3-dal/Api";
+import ModalForm from '../../common/c9-Modal/ModalForm';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
         search: {
             display: "flex",
             alignItems: "stretch",
-            /*marginRight: 40,*/
             backgroundColor: "#e2dfef"
         },
         searchInputBlock: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function FullWidthGrid() {
+export default function Search() {
     const classes = useStyles();
     const dispatch = useDispatch()
     const [search, setSearch] = React.useState('');
@@ -40,43 +39,25 @@ export default function FullWidthGrid() {
     const [rating, setRating] = useState<number>(0)
     const [deckCover, setDeckCover] = useState<string>('')
     const [privateDeck, setPrivateDeck] = useState<boolean>(false)
+    const [modalAddStatus, setModalAddStatus] = useState<boolean>(false);
+    const [packName, setPackName] = useState<string>('')
 
     const inputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
     };
 
-    const addPack = () => {
-        let newPackObject: NewPackFieldsType = {
-                ...(name && {name: name}),
-                ...(path && {path: path}),
-                ...(grade && {grade: grade}),
-                ...(shots && {shots: shots}),
-                ...(rating && {rating: rating}),
-                ...(deckCover && {deckCover: deckCover}),
-                /*...( privateDeck && { private: privateDeck}),*/
-                ...(type && {typeDeck: type}),
+    const handleAddPAck = () => {
+        if (packName) {
+            let newObject = {
+                name : packName
+            }
+            dispatch(addNewPackTC(newObject))
         }
-        dispatch(addNewPackTC(newPackObject))
     }
 
-    const buttonClickHandler = () => {
-        addPack();
-        // dispatch(ignatBackRequest(value))
-    };
-
-
-
-
-    const handlePressEnter = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('Event', event)
-        /*if (event && event == 'Enter') {
-            //this.sendMessage();
-        }*/
+    const handlePackNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPackName(event.target.value)
     }
-    /*const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value);
-    };*/
-
 
     return (
         <div
@@ -102,9 +83,9 @@ export default function FullWidthGrid() {
                         onChange={inputHandleChange}
                         /*onKeyDown={handlePressEnter}*/
                         onKeyUp={(event) => {
-                            console.log('Event', event )
-                            if ( event.key === 'Enter'){
-                                if (!search){
+                            console.log('Event', event)
+                            if (event.key === 'Enter') {
+                                if (!search) {
                                     dispatch(setPackNameAC(null))
                                 }
                                 console.log('Enter');
@@ -121,10 +102,30 @@ export default function FullWidthGrid() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={buttonClickHandler}
+                        onClick={() => setModalAddStatus(true)}
                     >
                         Add new pack
                     </Button>
+                    <ModalForm
+                        modalTitle={"Add Pack"}
+                        modalText={"Please specify pack name"}
+                        openStatus={modalAddStatus}
+                        handleCloseModal={setModalAddStatus}
+                        modalActionCallback={() => {
+                            handleAddPAck()
+                        }}
+                        actionButtonTitle={"Add pack"}
+                    >
+                        <TextField
+                            value={packName}
+                            onChange={handlePackNameChange}
+                            margin="dense"
+                            id="packName"
+                            label="Pack name"
+                            type="string"
+                            fullWidth
+                        />
+                    </ModalForm>
                 </Grid>
             </Grid>
         </div>
