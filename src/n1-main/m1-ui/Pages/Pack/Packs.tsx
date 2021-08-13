@@ -6,9 +6,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 
 import {Card, Paper} from "@material-ui/core";
+import {Redirect} from "react-router-dom";
+import {PATH} from "../../Routes";
+import {acsessAPI, UserProfileType} from "../../../m3-dal/Api";
+import {Paper} from "@material-ui/core";
 import DeckTable from "../../common/c8-Table/DeckTable";
 import Search from './Search';
 import Typography from "@material-ui/core/Typography";
+import {authMeTC} from "../../../m2-bll/redux/auth-reducer";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,54 +56,84 @@ export default function Pack() {
 
     const {_id} = useSelector((state: AppStoreType) => state.auth);
     const pack = useSelector((state: AppStoreType) => state.pack);
+    const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
+    const dispatch = useDispatch();
 
-    return (
-        <div className={classes.root}>
 
-            <Paper
-                elevation={4}
-                className={classes.paper}
-                square={false}
-            >
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
+    useEffect(() => {
+        if (!userProfile._id) {
+              dispatch(authMeTC())
+           }
+    }, []);
+
+
+    // if (!userProfile._id) {
+    //     async function f() {
+    //         dispatch(authMeTC())
+    //    }
+    //
+    //     f().then(
+    //      if (!userProfile._id){ Redirect from={PATH.ALL_ROUTES} to="/login"/  }
+    //      );
+    // }
+
+
+
+
+     if (userProfile._id) {
+        return (
+            <div className={classes.root}>
+                <Paper
+                    elevation={4}
+                    className={classes.paper}
+                    square={false}
                 >
                     <Grid
-                        item
-                        className={classes.filterBlock}
-                    >
-                        <RangeShowCard/>
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.mainBlock}
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="stretch"
                     >
                         <Grid
                             item
-                            className={classes.mainSearchBlock}
-                            alignItems={"stretch"}
+                            className={classes.filterBlock}
                         >
-                            <Typography
-                                variant={"h2"}
-                                className={classes.mainSearchHeader}
+                            <RangeShowCard/>
+                        </Grid>
+                        <Grid
+                            item
+                            className={classes.mainBlock}
+                        >
+                            <Grid
+                                item
+                                className={classes.mainSearchBlock}
+                                alignItems={"stretch"}
                             >
-                                Packs list
-                            </Typography>
-                            <Search/>
-                        </Grid>
-                        <Grid
-                            item
-                            className={classes.mainTableBlock}
-                            alignItems={"stretch"}
-                        >
-                            <DeckTable/>
+                                <Typography
+                                    variant={"h2"}
+                                    className={classes.mainSearchHeader}
+                                >
+                                    Packs list
+                                </Typography>
+                                <Search/>
+                            </Grid>
+                            <Grid
+                                item
+                                className={classes.mainTableBlock}
+                                alignItems={"stretch"}
+                            >
+                                <DeckTable/>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Paper>
-        </div>
-    );
+                </Paper>
+            </div>
+
+        )
+    } else {
+        return (
+            <Redirect from={PATH.ALL_ROUTES} to="/login"/>
+        )
+    }
+
 }

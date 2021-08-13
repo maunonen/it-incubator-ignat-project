@@ -80,6 +80,10 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
         dispatch(addNewPackTC(newPackObject))
     }
 
+    useEffect(() => {
+        console.log('Pack reducer state', pack)
+
+    }, [])
 
     return (
         <Grid

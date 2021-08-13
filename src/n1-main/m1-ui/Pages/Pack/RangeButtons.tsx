@@ -2,12 +2,11 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
-import RangeSlider from './RangeSlider' ;
 import Typography from '@material-ui/core/Typography';
+import {ButtonGroup} from "@material-ui/core";
 import {getAllPack, setUserIdAC} from "../../../m2-bll/redux/pack-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
-import RangeButtons from "./RangeButtons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,35 +40,54 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RangeShowCard() {
+export default function RangeButtons() {
     const classes = useStyles();
 
     const pack = useSelector((state: AppStoreType) => state.pack);
+    const [hint, setHint] = React.useState<string>("Only my cards are displayed");
 
     const dispatch = useDispatch();
 
     const myButtonClickHandler=()=>{
         dispatch (setUserIdAC("6113f19767851c0004b0d0d4"))
         dispatch(getAllPack())
+        setHint("Only my cards are displayed")
     };
     const allButtonClickHandler=()=>{
         dispatch (setUserIdAC(""))
         dispatch(getAllPack())
+        setHint("All cards are displayed")
     };
-
 
     return (
         <div className={classes.root}>
             <Grid container>
-                <RangeButtons/>
                 <Typography
                     variant="h3"
-                    gutterBottom
-                    className={classes.sliderCaption}
+                    className={classes.privateModeHeader}
                 >
-                    Number of cards
+                    Show pack cards
                 </Typography>
-                <RangeSlider/>
+                <ButtonGroup
+                    variant="text"
+                    color="primary"
+                    aria-label="small outlined secondary button group"
+                    /*aria-label="outlined primary button group"*/
+                    className={classes.privateModeBlock}
+                >
+                    <Button onClick={myButtonClickHandler}
+                        className={classes.modeButton}
+                    >My</Button>
+                    <Button onClick={allButtonClickHandler}
+                        className={classes.modeButton}
+                    >ALL</Button>
+                </ButtonGroup>
+                <Typography
+                    variant="h3"
+                    className={classes.privateModeHeader}
+                >
+                    {hint}
+                </Typography>
             </Grid>
         </div>
     );

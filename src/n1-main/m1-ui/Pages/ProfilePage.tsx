@@ -34,10 +34,6 @@ export const ProfilePage: React.FC = () => {
                     <h3>Avatar <img src={userProfile.avatar} style={{width: 100}}/></h3>
                     <h3>PublicCardPacksCount= {userProfile.publicCardPacksCount}</h3>
                     <h3>created {userProfile.created}</h3>
-                    <h3>update= {userProfile.update}</h3>
-                    <h3>isAdmin= {userProfile.isAdmin}</h3>
-                    <h3>verified= {userProfile.verified}</h3>
-                    <h3>rememberMe= {userProfile.rememberMe}</h3>
                 </Grid>
             </Grid>
         )

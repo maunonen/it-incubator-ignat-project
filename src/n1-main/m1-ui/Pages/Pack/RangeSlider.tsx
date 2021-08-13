@@ -4,7 +4,7 @@ import Slider from '@material-ui/core/Slider';
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import {GetPackQueryParamsType} from "../../../m3-dal/Api";
-import {getAllPack} from "../../../m2-bll/redux/pack-reducer";
+import {setMinCardsCountAC, setMaxCardsCountAC} from "../../../m2-bll/redux/pack-reducer";
 
 const useStyles = makeStyles({
     root: {
@@ -20,10 +20,7 @@ export default function RangeSlider() {
 
     const classes = useStyles();
     const pack = useSelector((state: AppStoreType) => state.pack);
-    const [value, setValue] = React.useState<number[]>([20, 37]);
-
-
-    //------------------ вынести в отдельную компоненту ------------------------------------
+    const [value, setValue] = React.useState<number[]>([0, 103]);
 
     const dispatch = useDispatch();
 
@@ -47,13 +44,22 @@ export default function RangeSlider() {
 
     useEffect(() => {
             const setTO = setTimeout(() => {
-                getAllPacks()
+                 dispatch(setMinCardsCountAC(value[0]))
             }, 1500)
             return () => {
                 clearTimeout(setTO)
             }
-        }, [value]
+        }, [value[0]]
+    );
 
+    useEffect(() => {
+            const setTO = setTimeout(() => {
+                 dispatch(setMaxCardsCountAC(value[1]))
+            }, 1500)
+            return () => {
+                clearTimeout(setTO)
+            }
+        }, [value[1]]
     );
 
 
