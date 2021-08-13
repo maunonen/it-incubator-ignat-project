@@ -8,6 +8,7 @@ import {addNewPackTC, setPackNameAC} from "../../../m2-bll/redux/pack-reducer";
 import {NewPackFieldsType, NewPackObjectDataType} from "../../../m3-dal/Api";
 import {getAllCardsTS} from "../../../m2-bll/redux/card-reducer";
 import {AppStoreType} from "../../../m2-bll/redux/store";
+import ModalForm from "../../common/c9-Modal/ModalForm";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,14 +40,21 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
     const dispatch = useDispatch()
     const {packUserId} = useSelector((state: AppStoreType) => state.card)
     const [search, setSearch] = React.useState<string>('');
+    const {_id} = useSelector((state: AppStoreType) => state.auth);
+    const [modalAddStatus, SetModalCardStatus] = useState<boolean>(false);
+    const [answer, setAnswer] = useState<string>('');
+    const [question, setQuestion] = useState<string>('');
 
     const inputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
     };
 
-    /*const buttonClickHandler = () => {
-        addPack();
-    };*/
+    const handleAnswer = () => {
+
+    }
+    const questionAnswer = () => {
+
+    }
 
     return (
         <div
@@ -77,25 +85,59 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
                                 /*if (!search) {
                                     dispatch(getAllCardsTS(props.packId, { cardQuestion : search}))
                                 }*/
-                                dispatch(getAllCardsTS(props.packId, { cardQuestion : search}))
+                                dispatch(getAllCardsTS(props.packId, {cardQuestion: search}))
                                 setSearch('');
                             }
                         }}
                     />
                 </Grid>
-                {/*<Grid
-                    item
-                    className={classes.addDeckBlock}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={buttonClickHandler}
+                {
+                    packUserId === _id &&
+                    <Grid
+                        item
+                        className={classes.addDeckBlock}
                     >
-                        Add new pack
-                    </Button>
-                </Grid>*/}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            /*onClick={() => modalAddStatus(true)}*/
+                        >
+                            Add new pack
+                        </Button>
+                    </Grid>
+                }
             </Grid>
+            <ModalForm
+                modalTitle={"Add Card"}
+                modalText={"Please specify answer and question name"}
+                openStatus={modalAddStatus}
+                handleCloseModal={SetModalCardStatus}
+                modalActionCallback={() => {
+                    /*handleAddPAck()*/
+                }}
+                actionButtonTitle={"Add pack"}
+            >
+                <div>
+                    <TextField
+                        value={answer}
+                        onChange={handleAnswer}
+                        margin="dense"
+                        id="answer"
+                        label="Answer"
+                        type="string"
+                        fullWidth
+                    />
+                    <TextField
+                        value={question}
+                        onChange={questionAnswer}
+                        margin="dense"
+                        id="answer"
+                        label="Answer"
+                        type="string"
+                        fullWidth
+                    />
+                </div>
+            </ModalForm>
         </div>
     );
 }

@@ -49,9 +49,13 @@ const CardPage: React.FC = () => {
     const packName = () => {
         if (cardPacks.length > 0 && packId) {
             const packObjectFromState = cardPacks.find(pack => pack._id === packId)
-            return packObjectFromState?.name
+            const getObjectName: string | undefined = packObjectFromState?.name;
+            if (getObjectName) {
+                return getObjectName?.length > 20 ? getObjectName.slice(0, 20) + '...' : getObjectName
+            }
         }
     }
+
 
     return (
         <div className={classes.root}>
@@ -89,7 +93,7 @@ const CardPage: React.FC = () => {
                             >
                                 <ArrowBackIos/>
                             </IconButton>
-                            { (packName && packName() ) || 'PackName'}
+                            {(packName && packName()) || 'PackName'}
                         </Typography>
                         <SearchCard packId={packId}/>
                     </Grid>
