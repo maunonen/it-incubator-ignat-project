@@ -54,8 +54,8 @@ const initialPackState: InitialPackStateType = {
     min: null,
     max: null,
     isSortTypeAscending: false,
-    sortField: "name",
-    user_id: "6113f19767851c0004b0d0d4",
+    sortField: "updated",
+    user_id: null,
     // current page
     page: 0,
     // packs per page
@@ -69,6 +69,7 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
     /*console.log('action type', action.type)*/
     /*console.log('action payload', action.payload)*/
     switch (action.type) {
+
         case ACTIONS_TYPE.SET_CARDS_PACK:
             /*debugger*/
             return {
@@ -84,7 +85,9 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
         case ACTIONS_TYPE.SET_PACK_USER_ID:
         case ACTIONS_TYPE.SET_PACK_SORT_TYPE:
         case ACTIONS_TYPE.SET_PACK_TOTAL_COUNT:
+
             return {
+
                 ...state,
                 ...action.payload,
             }
@@ -181,7 +184,7 @@ export const getAllPack = () => {
             min, max, user_id, sortField,
             isSortTypeAscending,
         } = getState().pack;
-        let sortPacks
+              let sortPacks
         // if sortField set create sortPacks field '0created' '1updated'
         if (sortField) {
             sortPacks = +isSortTypeAscending + sortField;
@@ -257,7 +260,10 @@ export const addNewPackTC = (addNewPackObject: NewPackFieldsType) => {
 export const updateCardPack = (packId: string, packUpdateObject: PackUpdateFieldsType) => {
     return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>) => {
         const updatePackQueryObject = {
-            cardsPack: packUpdateObject
+            cardsPack: {
+                _id : packId,
+                ...packUpdateObject
+            }
         }
         dispatch(setAppStatusAC('loading'))
         acsessAPI.updateCardPacks(updatePackQueryObject)

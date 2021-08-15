@@ -4,20 +4,24 @@ import Grid from '@material-ui/core/Grid';
 import RangeShowCard from './RangeShowCard';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
+import {Card, Paper} from "@material-ui/core";
 import {Redirect} from "react-router-dom";
 import {PATH} from "../../Routes";
 import {acsessAPI, UserProfileType} from "../../../m3-dal/Api";
-import {Paper} from "@material-ui/core";
 import DeckTable from "../../common/c8-Table/DeckTable";
 import Search from './Search';
 import Typography from "@material-ui/core/Typography";
 import {authMeTC} from "../../../m2-bll/redux/auth-reducer";
+import { useHistory } from "react-router-dom";
+import {log} from "util";
+
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
         /*flexGrow: 1,*/
         marginTop: "40px",
+        marginBottom: "40px",
     },
     paper: {
         margin: 'auto',
@@ -54,28 +58,51 @@ export default function Pack() {
     const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         if (!userProfile._id) {
               dispatch(authMeTC())
            }
-    }, []);
+    }, [userProfile]);
 
+        // async function f() {
+        //             let promise = new Promise(
+        //                 (resolve, reject) => {
+        //                     if (!userProfile._id) {
+        //                             resolve(dispatch (authMeTC()) )
+        //                             console.log("dispatch start")
+        //                      } else {
+        //                         console.log("data na meste")}
+        //                 });
+        //             promise.then(()=>{
+    //                        if (!userProfile._id) {
+    //         //                console.log("steel no data")
+    //         //                console.log(result)
+    //         //             }})
+        //             await promise; // будет ждать, пока промис не выполнится (*)
+        //             if (!userProfile._id) {
+        //                console.log("steel no data")
+        //                console.log(result)
+        //             }
+        //         }
+        //         f();
 
+    //------------------------------------
     // if (!userProfile._id) {
-    //     async function f() {
-    //         dispatch(authMeTC())
-    //    }
+    //     dispatch(authMeTC())
+    // //    ждать ответа, потом
+    //     if (!userProfile._id) {
+    //         return (
+    //             <Redirect to={PATH.PACK}/>
+    //         )}
+    //         else {return (
+    //             <div> data resived</div>
+    //         )}
+    //     }
     //
-    //     f().then(
-    //      if (!userProfile._id){ Redirect from={PATH.ALL_ROUTES} to="/login"/  }
-    //      );
-    // }
+        //------------------------------------
 
 
-
-
-     if (userProfile._id) {
+    if (userProfile._id) {
         return (
             <div className={classes.root}>
                 <Paper
@@ -110,7 +137,7 @@ export default function Pack() {
                                 >
                                     Packs list
                                 </Typography>
-                                <Search/>
+                                {/*<Search/>*/}
                             </Grid>
                             <Grid
                                 item
@@ -127,8 +154,8 @@ export default function Pack() {
         )
     } else {
         return (
-            <Redirect from={PATH.ALL_ROUTES} to="/login"/>
-        )
+            <Redirect to={PATH.PACK}/>
+            )
     }
 
 }

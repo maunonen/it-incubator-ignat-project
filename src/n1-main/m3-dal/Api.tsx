@@ -4,8 +4,8 @@ const settings = {
     withCredentials: true
 };
 const instance = axios.create({
-    // baseURL: 'http://localhost:7542/2.0/',
-    baseURL: 'https://neko-back.herokuapp.com/2.0',
+    baseURL: 'http://localhost:7542/2.0/',
+    /*baseURL: 'https://neko-back.herokuapp.com/2.0/',*/
     ...settings
 })
 
@@ -82,18 +82,21 @@ export interface PostCardQueryType {
     card: PostCardFieldsType
 }
 
+// Get Card Query Fields
+export interface GetCardQueryFields {
+    cardsPack_id?: string
+    cardAnswer?: string | null
+    cardQuestion?: string | null
+    min?: number | null
+    max?: number | null
+    sortCards?: string | null
+    page?: number | null
+    pageCount?: number | null
+}
+
 // Types for Get Card Query
 export interface GetCardQueryType {
-    params: {
-        cardsPack_id: string
-        cardAnswer?: string | null
-        cardQuestion?: string | null
-        min?: number | null
-        max?: number | null
-        sortCards?: string | null
-        page?: number | null
-        pageCount?: number | null
-    }
+    params: GetCardQueryFields
 }
 
 // Types for Get Card Query
@@ -138,7 +141,8 @@ export type UserProfileType = {
     isAdmin: boolean,
     verified: boolean,
     rememberMe: boolean,
-    error: string
+    error: string,
+    isLoggedIn:boolean
 }
 
 export type UserLoginType = {

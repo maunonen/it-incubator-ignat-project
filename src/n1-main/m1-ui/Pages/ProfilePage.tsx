@@ -14,6 +14,7 @@ export const ProfilePage: React.FC = () => {
     const dispatch = useDispatch()
     const isLoggedIn = useSelector<AppStoreType, InitStateType>(state => state.auth)
     const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
+    // const history = useHistory();
 
 
     useEffect(() => {

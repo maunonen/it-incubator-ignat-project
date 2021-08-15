@@ -1,6 +1,6 @@
 import {
     acsessAPI,
-    CardType,
+    CardType, GetCardQueryFields,
     GetCardQueryType,
     GetPackQueryParamsType,
     NewPackObjectDataType,
@@ -55,7 +55,7 @@ const initialCardState: InitialCardStateType = {
     sortField: 'question',
     isSortTypeAscending: false,
     page: null,
-    pageCount: null,
+    pageCount: 5,
     cardsTotalCount: null,
     minGrade: null,
     maxGrade: null
@@ -166,7 +166,7 @@ export const setCardsArrayAC = (cards: Array<CardType>) => ({
 })
 
 
-export const getAllCardsTS = (packId: string) => {
+export const getAllCardsTS = (packId: string, searchFields?: GetCardQueryFields) => {
     return (dispatch: Dispatch, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
         // create sort field
@@ -185,12 +185,13 @@ export const getAllCardsTS = (packId: string) => {
         const cardsQueryObject: GetCardQueryType = {
             params: {
                 cardsPack_id: packId,
-                ...(page !== null && {page: page}),
-                ...(pageCount !== null && {pageCount: pageCount}),
+                ...(page !== null && {page}),
+                ...(pageCount !== null && {pageCount}),
                 ...(minGrade !== null && {min: minGrade}),
                 ...(maxGrade !== null && {max: maxGrade}),
-                ...(cardsTotalCount !== null && {cardsTotalCount: cardsTotalCount}),
-                ...(sortCards && {sortCards: sortCards}),
+                ...(cardsTotalCount !== null && {cardsTotalCount}),
+                ...(sortCards && {sortCards}),
+                ...(searchFields && searchFields)
             }
         }
         acsessAPI.getAllCards(cardsQueryObject)

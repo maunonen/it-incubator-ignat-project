@@ -6,7 +6,7 @@ import {TextField,Button} from "@material-ui/core";
 import Typography from '@material-ui/core/Typography';
 // import { DataGrid, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
 import { maxHeaderSize } from 'http';
-import Search from './Search' ;
+import Search from './SearchCard' ;
 import Table from './Table';
 import Pagination from './Pagination';
 import { red } from '@material-ui/core/colors';

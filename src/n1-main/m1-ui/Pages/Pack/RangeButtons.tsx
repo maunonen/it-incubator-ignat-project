@@ -7,6 +7,7 @@ import {ButtonGroup} from "@material-ui/core";
 import {getAllPack, setUserIdAC} from "../../../m2-bll/redux/pack-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
+import {UserProfileType} from "../../../m3-dal/Api";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +46,12 @@ export default function RangeButtons() {
 
     const pack = useSelector((state: AppStoreType) => state.pack);
     const [hint, setHint] = React.useState<string>("Only my cards are displayed");
+    const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
 
     const dispatch = useDispatch();
 
     const myButtonClickHandler=()=>{
-        dispatch (setUserIdAC("6113f19767851c0004b0d0d4"))
+        dispatch (setUserIdAC(userProfile._id))
         dispatch(getAllPack())
         setHint("Only my cards are displayed")
     };

@@ -12,15 +12,8 @@ import {
     addNewPackTC,
     deletePackByIdTC,
     getAllPack,
-    setCardsPackAC, setCardsPackTotalCountAC,
-    setMaxCardsCountAC,
-    setMinCardsCountAC,
-    setPackNameAC, setPackSortType, setPageAC,
-    setPageCountAC,
-    setUserIdAC,
     updateCardPack
 } from "../../m2-bll/redux/pack-reducer";
-import Table from "../common/c8-Table/Table";
 import DeckTable from "../common/c8-Table/DeckTable";
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
@@ -52,19 +45,6 @@ const PacksListPage: React.FC<PackListPagePropsType> = (props) => {
     const [rating, setRating] = useState<number>(0)
     const [deckCover, setDeckCover] = useState<string>('')
     const [privateDeck, setPrivateDeck] = useState<boolean>(false)
-
-    /*type? : string
-    name? : string
-    path? : string
-    grade? : number
-    shots? : number
-    rating? : number
-    deckCover? : string
-    private? : boolean*/
-
-    const getAllPacks = () => {
-        dispatch(getAllPack())
-    }
 
     const deletePackById = () => {
         let id = "610a4f0684e42f00045c32e5";
