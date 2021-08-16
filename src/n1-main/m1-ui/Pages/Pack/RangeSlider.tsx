@@ -25,7 +25,7 @@ export default function RangeSlider() {
     const dispatch = useDispatch();
 
     const getAllPacks = () => {
-        dispatch(getAllPack())
+        dispatch(getAllPacks())
     };
     //--------------------------------------------------------
 

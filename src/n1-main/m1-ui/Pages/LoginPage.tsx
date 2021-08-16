@@ -56,8 +56,8 @@ const LoginPage: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'nya-admin@nya.nya',
-            password: '1qazxcvBG',
+            email: '',
+            password: '',
             remember: false
         },
         validationSchema: restoreSchema,
@@ -67,13 +67,10 @@ const LoginPage: React.FC = () => {
         },
     })
 
-    const history = useHistory();
-
+    /*const history = useHistory();*/
 
     if (isLoggedIn) {
         return <Redirect to={'/'}/>
-        // history.push( '/pack' );
-        // history.goBack();
     }
 
     return <Grid

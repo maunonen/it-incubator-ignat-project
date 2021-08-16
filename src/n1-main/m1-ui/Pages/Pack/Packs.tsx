@@ -9,7 +9,6 @@ import {Card, Paper} from "@material-ui/core";
 import {Redirect} from "react-router-dom";
 import {PATH} from "../../Routes";
 import {acsessAPI, UserProfileType} from "../../../m3-dal/Api";
-import {Paper} from "@material-ui/core";
 import DeckTable from "../../common/c8-Table/DeckTable";
 import Search from './Search';
 import Typography from "@material-ui/core/Typography";
@@ -21,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         /*flexGrow: 1,*/
         marginTop: "40px",
         marginBottom: "40px",
+        minWidth: 750,
     },
     paper: {
         margin: 'auto',

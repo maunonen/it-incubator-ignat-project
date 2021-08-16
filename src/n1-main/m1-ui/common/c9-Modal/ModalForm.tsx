@@ -45,18 +45,15 @@ const ModalForm: React.FC<ModalPropsType> = (props) => {
     }
 
     return (
-        <div
-            /*className={classes.root}*/
-        >
+        <div>
             <Dialog
                 open={openStatus}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                /*className={classes.root}*/
             >
                 <div className={classes.root}>
-                    <DialogTitle id="alert-dialog-title">{modalTitle && modalTitle}</DialogTitle>
+                    { modalTitle && <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>}
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             {modalText && <Typography variant={"body1"}>{modalText}</Typography>}

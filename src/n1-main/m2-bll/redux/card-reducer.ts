@@ -34,7 +34,7 @@ export enum ACTIONS_TYPE {
 
 export interface InitialCardStateType {
     cards: Array<CardType>
-    // current Pack id
+    // current Pack User id
     packUserId: string
     // for sort card in table
     isSortTypeAscending: boolean
