@@ -5,10 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {addNewPackTC, setPackNameAC} from "../../../m2-bll/redux/pack-reducer";
-import {NewPackFieldsType, NewPackObjectDataType} from "../../../m3-dal/Api";
-import {getAllCardsTS} from "../../../m2-bll/redux/card-reducer";
+import {NewPackFieldsType, NewPackObjectDataType, PostCardFieldsType} from "../../../m3-dal/Api";
+import {addNewCardTC, getAllCardsTS} from "../../../m2-bll/redux/card-reducer";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import ModalForm from "../../common/c9-Modal/ModalForm";
+import {setAppErrorAC} from "../../../m2-bll/redux/app-reducer";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,19 +42,34 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
     const {packUserId} = useSelector((state: AppStoreType) => state.card)
     const [search, setSearch] = React.useState<string>('');
     const {_id} = useSelector((state: AppStoreType) => state.auth);
-    const [modalAddStatus, SetModalCardStatus] = useState<boolean>(false);
-    const [answer, setAnswer] = useState<string>('');
-    const [question, setQuestion] = useState<string>('');
+    const [modalAddStatus, setModalCardStatus] = useState<boolean>(false);
+    const [answer, setAnswer] = useState<string | null>(null);
+    const [question, setQuestion] = useState<string | null>(null);
 
     const inputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
     };
 
-    const handleAnswer = () => {
-
+    const onChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAnswer(event.target.value)
     }
-    const questionAnswer = () => {
+    const onChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQuestion(event.target.value)
+    }
 
+    const handleAddCard = () => {
+        // Create new Card object from local state
+        const newCardObject: PostCardFieldsType = {
+            ...(question !== null && {question}),
+            ...(answer !== null && {answer}),
+        }
+        if (question && answer) {
+            dispatch(addNewCardTC(props.packId, newCardObject))
+            setQuestion(null)
+            setAnswer(null)
+        } else {
+            dispatch(setAppErrorAC("Please provide answer and question"))
+        }
     }
 
     return (
@@ -100,7 +116,9 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
                         <Button
                             variant="contained"
                             color="primary"
-                            /*onClick={() => modalAddStatus(true)}*/
+                            onClick={() => {
+                                setModalCardStatus(true)
+                            }}
                         >
                             Add new pack
                         </Button>
@@ -109,18 +127,18 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
             </Grid>
             <ModalForm
                 modalTitle={"Add Card"}
-                modalText={"Please specify answer and question name"}
+                modalText={"Please specify answer and question"}
                 openStatus={modalAddStatus}
-                handleCloseModal={SetModalCardStatus}
+                handleCloseModal={setModalCardStatus}
                 modalActionCallback={() => {
-                    /*handleAddPAck()*/
+                    handleAddCard()
                 }}
                 actionButtonTitle={"Add pack"}
             >
                 <div>
                     <TextField
                         value={answer}
-                        onChange={handleAnswer}
+                        onChange={onChangeAnswer}
                         margin="dense"
                         id="answer"
                         label="Answer"
@@ -129,10 +147,10 @@ const SearchCard: React.FC<SearchCardPropsType> = (props) => {
                     />
                     <TextField
                         value={question}
-                        onChange={questionAnswer}
+                        onChange={onChangeQuestion}
                         margin="dense"
-                        id="answer"
-                        label="Answer"
+                        id="question"
+                        label="Question"
                         type="string"
                         fullWidth
                     />

@@ -21,6 +21,7 @@ import {useParams} from "react-router-dom";
 import CardTableHeader from './CardTableHeader';
 import {Button, TablePagination} from "@material-ui/core";
 import {deletePackByIdTC} from "../../../m2-bll/redux/pack-reducer";
+import CardTableRow from "./CardTableRow";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -86,18 +87,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CardTable: React.FC = () => {
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
     const [selected, setSelected] = React.useState<string[]>([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
     const {packId} = useParams<{ packId: string }>()
 
     const {card} = useSelector((state: AppStoreType) => state)
-    console.log('packId', packId)
-    console.log('card', card)
-
-    const {_id} = useSelector((state: AppStoreType) => state.auth)
     const dispatch = useDispatch()
+
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof CardType) => {
         dispatch(setSortDirectionAscAC(!card.isSortTypeAscending))
@@ -122,10 +117,6 @@ const CardTable: React.FC = () => {
         /*setPage(0);*/
     };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
-    };
-
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -147,36 +138,13 @@ const CardTable: React.FC = () => {
                             {
                                 card.cards.length > 0 && card.cards
                                     .map((card, index) => {
-                                        /*const isItemSelected = isSelected(deck.name);*/
                                         const labelId = `enhanced-table-checkbox-${index}`;
                                         return (
-                                            <TableRow
-                                                /*hover*/
-                                                /*onClick={(event) => handleClick(event, pack.name)}*/
-                                                role="checkbox"
-                                                /*aria-checked={isItemSelected}*/
-                                                tabIndex={-1}
-                                                key={index}
-                                                /*selected={isItemSelected}*/
-                                                className={classes.tableRow}
-                                            >
-                                                <TableCell component="th" id={labelId} scope="row" padding="normal">
-                                                    {card.question.length > 20 ? card.question.slice(0, 20) + '...' : card.question}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    {card.answer.length > 20 ? card.answer.slice(0, 20) + '...' : card.answer}
-                                                </TableCell>
-                                                <TableCell
-                                                    align="right">{moment(card.updated).format("DD.MM.YYYY")}
-                                                </TableCell>
-                                                <TableCell align="right">{card.grade}</TableCell>
-                                                {
-                                                    card.user_id === _id &&
-                                                    <>
-                                                        <Button>Edit</Button>
-                                                    </>
-                                                }
-                                            </TableRow>
+                                            <CardTableRow
+                                                key={card._id}
+                                                card={card}
+                                                labelId={labelId}
+                                            />
                                         );
                                     })}
                         </TableBody>

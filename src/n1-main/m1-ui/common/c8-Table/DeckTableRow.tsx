@@ -14,7 +14,6 @@ import {AppStoreType} from "../../../m2-bll/redux/store";
 import {deletePackByIdTC, updateCardPack} from "../../../m2-bll/redux/pack-reducer";
 
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -29,12 +28,11 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export interface DeckTableRowPropsType {
-    deck : PackResponseDataType
-    labelId : string
+    deck: PackResponseDataType
+    labelId: string
 }
 
-const DeckTableRow : React.FC<DeckTableRowPropsType> = ({ deck, labelId }) => {
-    debugger
+const DeckTableRow: React.FC<DeckTableRowPropsType> = ({deck, labelId}) => {
     const classes = useStyles()
     const {_id} = useSelector((state: AppStoreType) => state.auth)
     const [modalDeleteStatus, setModalDeleteStatus] = useState<boolean>(false);
@@ -47,7 +45,6 @@ const DeckTableRow : React.FC<DeckTableRowPropsType> = ({ deck, labelId }) => {
     }
 
     const handleEditDeck = (deckId: string) => {
-        debugger
         const updateObjectFields: PackUpdateFieldsType = {
             ...(packName && {name: packName}),
         }
@@ -93,17 +90,15 @@ const DeckTableRow : React.FC<DeckTableRowPropsType> = ({ deck, labelId }) => {
                         <Button
                             onClick={() => {
                                 setModalEditStatus(true)
-                            }
-                            }
-                        >Edit</Button>
+                            }}>Edit</Button>
                         <ModalForm
                             modalTitle={"Edit Pack"}
+                            actionButtonTitle={"Edit"}
                             openStatus={modalEditStatus}
                             handleCloseModal={setModalEditStatus}
                             modalActionCallback={() => {
                                 handleEditDeck(deck._id)
                             }}
-                            actionButtonTitle={"Edit"}
                         >
                             <TextField
                                 value={packName === null ? deck.name : packName}
@@ -114,7 +109,6 @@ const DeckTableRow : React.FC<DeckTableRowPropsType> = ({ deck, labelId }) => {
                                 type="string"
                                 fullWidth
                             />
-
                         </ModalForm>
                         <ModalForm
                             modalTitle={"Delete Pack"}
@@ -128,7 +122,7 @@ const DeckTableRow : React.FC<DeckTableRowPropsType> = ({ deck, labelId }) => {
                         />
                     </>
                 }
-                <Button onClick={()=>alert("learn")}>Learn</Button>
+                <Button onClick={() => alert("learn")}>Learn</Button>
             </TableCell>
         </TableRow>
     )
