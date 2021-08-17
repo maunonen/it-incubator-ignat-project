@@ -102,8 +102,9 @@ const CardTable: React.FC = () => {
     useEffect(() => {
             dispatch(getAllCardsTS(packId))
         }, [
-            card.isSortTypeAscending, card.sortField,
-            card.page, card.pageCount, card.page
+            dispatch
+            /*card.isSortTypeAscending, card.sortField,
+            card.page, card.pageCount, card.page*/
         ]
     )
 
@@ -144,6 +145,7 @@ const CardTable: React.FC = () => {
                                                 key={card._id}
                                                 card={card}
                                                 labelId={labelId}
+                                                packId={packId}
                                             />
                                         );
                                     })}

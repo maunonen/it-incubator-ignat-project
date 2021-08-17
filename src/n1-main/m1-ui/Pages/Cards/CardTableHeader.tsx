@@ -60,6 +60,7 @@ const headCells: HeadCell[] = [
     {id: 'answer', numeric: false, disablePadding: false, label: 'Answer'},
     {id: 'updated', numeric: true, disablePadding: false, label: 'Last updated'},
     {id: 'grade', numeric: true, disablePadding: false, label: 'Grade'},
+    /*{id: 'action', numeric: true, disablePadding: false, label: 'Action'},*/
 ];
 
 interface DeckTableHeaderPropsType {

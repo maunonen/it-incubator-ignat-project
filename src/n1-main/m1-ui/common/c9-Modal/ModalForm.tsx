@@ -16,6 +16,8 @@ export interface ModalPropsType {
     modalActionCallback: () => void
     actionButtonTitle: string
     children?: JSX.Element
+    // close Modal Window after action
+    closeAfterAction?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -33,14 +35,14 @@ const ModalForm: React.FC<ModalPropsType> = (props) => {
     const {
         openStatus, handleCloseModal,
         modalActionCallback, modalTitle, modalText,
-        actionButtonTitle, children
+        actionButtonTitle, closeAfterAction = true, children,
     } = props
 
     const handleClose = () => {
         handleCloseModal && handleCloseModal(false)
     };
     const handleAction = () => {
-        modalActionCallback && modalActionCallback()
+        modalActionCallback && modalActionCallback();
         handleCloseModal && handleCloseModal(false)
     }
 
@@ -53,7 +55,7 @@ const ModalForm: React.FC<ModalPropsType> = (props) => {
                 aria-describedby="alert-dialog-description"
             >
                 <div className={classes.root}>
-                    { modalTitle && <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>}
+                    {modalTitle && <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>}
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             {modalText && <Typography variant={"body1"}>{modalText}</Typography>}
