@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import RangeShowCard from './RangeShowCard';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
+
 import {Card, Paper} from "@material-ui/core";
 import {Redirect} from "react-router-dom";
 import {PATH} from "../../Routes";
@@ -12,9 +13,6 @@ import DeckTable from "../../common/c8-Table/DeckTable";
 import Search from './Search';
 import Typography from "@material-ui/core/Typography";
 import {authMeTC} from "../../../m2-bll/redux/auth-reducer";
-import { useHistory } from "react-router-dom";
-import {log} from "util";
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         /*flexGrow: 1,*/
         marginTop: "40px",
         marginBottom: "40px",
+        minWidth: 750,
     },
     paper: {
         margin: 'auto',
@@ -38,13 +37,13 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 3,
         margin: "30px",
         maxWidth: "950px",
-        boxSizing: "border-box",
+        boxSizing : "border-box",
     },
     mainSearchBlock: {
         /*flexGrow: 1,*/
         marginBottom: "20px",
     },
-    mainSearchHeader: {
+    mainSearchHeader : {
         marginBottom: "20px",
     },
     mainTableBlock: {
@@ -55,56 +54,20 @@ const useStyles = makeStyles((theme) => ({
 export default function Pack() {
     const classes = useStyles();
 
+    const {_id} = useSelector((state: AppStoreType) => state.auth);
+    const pack = useSelector((state: AppStoreType) => state.pack);
     const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     if (!userProfile._id) {
-    //           dispatch(authMeTC())
-    //        }
-    // }, [userProfile]);
 
-        // async function f() {
-        //             let promise = new Promise(
-        //                 (resolve, reject) => {
-        //                     if (!userProfile._id) {
-        //                             resolve(dispatch (authMeTC()) )
-        //                             console.log("dispatch start")
-        //                      } else {
-        //                         console.log("data na meste")}
-        //                 });
-        //-------------------------------------------
-        //             promise.then(()=>{
-    //                        if (!userProfile._id) {
-    //         //                console.log("steel no data")
-    //         //                console.log(result)
-    //         //             }})
-    //------------------------------------------
-        //             await promise; // будет ждать, пока промис не выполнится (*)
-        //             if (!userProfile._id) {
-        //                console.log("steel no data")
-        //                console.log(result)
-        //             }
-        //         }
-        //         f();
-
-    //------------------------------------
-    // if (!userProfile._id) {
-    //     dispatch(authMeTC())
-    // //    ждать ответа, потом
-    //     if (!userProfile._id) {
-    //         return (
-    //             <Redirect to={PATH.PACK}/>
-    //         )}
-    //         else {return (
-    //             <div> data resived</div>
-    //         )}
-    //     }
-    //
-        //------------------------------------
+    useEffect(() => {
+        if (!userProfile._id) {
+              dispatch(authMeTC())
+           }
+    }, []);
 
 
-    if (userProfile._id) {
+     if (userProfile._id) {
         return (
             <div className={classes.root}>
                 <Paper
@@ -152,12 +115,11 @@ export default function Pack() {
                     </Grid>
                 </Paper>
             </div>
-
         )
     } else {
         return (
-            <Redirect to={PATH.LOGIN}/>
-            )
+            <Redirect from={PATH.ALL_ROUTES} to="/login"/>
+        )
     }
 
 }

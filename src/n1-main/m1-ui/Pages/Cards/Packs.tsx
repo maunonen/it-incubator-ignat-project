@@ -56,12 +56,12 @@ export default function Cards() {
             answer: 'Test from component 2',
         }
         const _id = '610f9b6d635aff741946559a';
-        dispatch(updateCardTC(_id, updateObject))
+        /*dispatch(updateCardTC(_id, updateObject))*/
         /*acsessAPI.updateCardById(updateObject)*/
     }
     const deleteNewCard = () => {
         const cardId = "610f909322821e00045fa7ce";
-        dispatch(deleteCardByIdTC(cardId))
+        /*dispatch(deleteCardByIdTC(cardId))*/
         /*acsessAPI.deleteCardByID(cardId)*/
     }
 

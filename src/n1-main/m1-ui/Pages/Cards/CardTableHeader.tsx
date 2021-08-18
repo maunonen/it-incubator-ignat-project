@@ -5,7 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {PackDataType} from "../../../m3-dal/Api";
+import {CardType, PackDataType} from "../../../m3-dal/Api";
 import {useSelector} from "react-redux";
 import {AppStoreType} from "../../../m2-bll/redux/store";
 
@@ -50,23 +50,24 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof PackDataType;
+    id: keyof CardType;
     label: string;
     numeric: boolean;
 }
 
 const headCells: HeadCell[] = [
-    {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-    {id: 'cardsCount', numeric: true, disablePadding: false, label: 'Cards'},
+    {id: 'question', numeric: false, disablePadding: false, label: 'Question'},
+    {id: 'answer', numeric: false, disablePadding: false, label: 'Answer'},
     {id: 'updated', numeric: true, disablePadding: false, label: 'Last updated'},
-    {id: 'user_name', numeric: true, disablePadding: false, label: 'Created by'},
+    {id: 'grade', numeric: true, disablePadding: false, label: 'Grade'},
 ];
 
-interface DeckTableHeaderPropsType {
+interface CardTableHeaderPropsType {
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof PackDataType) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof CardType) => void;
     onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     rowCount: number;
+    packUserId: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -96,12 +97,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const DeckTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
+const CardTableHeader: React.FC<CardTableHeaderPropsType> = (props) => {
     const classes = useStyles()
     const {numSelected, rowCount, onRequestSort} = props;
-    const createSortHandler = (property: keyof PackDataType) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof CardType) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+    const {_id} = useSelector((state: AppStoreType) => state.auth)
     const {sortField, isSortTypeAscending} = useSelector((state: AppStoreType) => state.pack)
 
     return (
@@ -128,13 +130,18 @@ const DeckTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                {
+                    props.packUserId === _id &&
+                        (
+                            <TableCell
+                                align={'right'}
+                            >Action</TableCell>
+                        )
+                }
 
-                <TableCell
-                    align={'right'}
-                >Action</TableCell>
             </TableRow>
         </TableHead>
     );
 }
 
-export default DeckTableHeader
+export default CardTableHeader

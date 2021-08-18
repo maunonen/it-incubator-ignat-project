@@ -34,7 +34,7 @@ export enum ACTIONS_TYPE {
 
 export interface InitialCardStateType {
     cards: Array<CardType>
-    // current Pack id
+    // current Pack User id
     packUserId: string
     // for sort card in table
     isSortTypeAscending: boolean
@@ -52,7 +52,7 @@ const initialCardState: InitialCardStateType = {
     cards: [],
     packUserId: '',
     // Get card Query parameter
-    sortField: 'question',
+    sortField: 'updated',
     isSortTypeAscending: false,
     page: null,
     pageCount: 5,
@@ -216,13 +216,13 @@ export const getAllCardsTS = (packId: string, searchFields?: GetCardQueryFields)
     }
 }
 
-export const deleteCardByIdTC = (id: string) => {
+export const deleteCardByIdTC = (id: string, packId : string ) => {
     return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         dispatch(setAppStatusAC('loading'))
         acsessAPI.deleteCardByID(id)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(getAllCardsTS(getState().card.packUserId))
+                dispatch(getAllCardsTS(packId))
             })
             .catch(err => {
                 console.log(err)
@@ -253,7 +253,7 @@ export const addNewCardTC = (packId: string, newCardFields: PostCardFieldsType) 
     }
 }
 
-export const updateCardTC = (_id: string, updatedCardFields: UpdateCardFieldsType) => {
+export const updateCardTC = (_id: string, packId: string ,  updatedCardFields: UpdateCardFieldsType) => {
     return (dispatch: ThunkDispatch<AppStoreType, {}, AnyAction>, getState: () => AppStoreType) => {
         let updatedCardQuery: UpdateCardQueryType = {
             card: {
@@ -265,7 +265,7 @@ export const updateCardTC = (_id: string, updatedCardFields: UpdateCardFieldsTyp
         acsessAPI.updateCardById(updatedCardQuery)
             .then(res => {
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(getAllCardsTS(getState().card.packUserId))
+                dispatch(getAllCardsTS(packId))
             })
             .catch(err => {
                 console.log(err)
