@@ -58,11 +58,11 @@ export default function Pack() {
     const userProfile = useSelector<AppStoreType, UserProfileType>(state => state.auth)
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!userProfile._id) {
-              dispatch(authMeTC())
-           }
-    }, [userProfile]);
+    // useEffect(() => {
+    //     if (!userProfile._id) {
+    //           dispatch(authMeTC())
+    //        }
+    // }, [userProfile]);
 
         // async function f() {
         //             let promise = new Promise(
@@ -73,11 +73,13 @@ export default function Pack() {
         //                      } else {
         //                         console.log("data na meste")}
         //                 });
+        //-------------------------------------------
         //             promise.then(()=>{
     //                        if (!userProfile._id) {
     //         //                console.log("steel no data")
     //         //                console.log(result)
     //         //             }})
+    //------------------------------------------
         //             await promise; // будет ждать, пока промис не выполнится (*)
         //             if (!userProfile._id) {
         //                console.log("steel no data")
@@ -137,7 +139,7 @@ export default function Pack() {
                                 >
                                     Packs list
                                 </Typography>
-                                {/*<Search/>*/}
+                                <Search/>
                             </Grid>
                             <Grid
                                 item
@@ -154,7 +156,7 @@ export default function Pack() {
         )
     } else {
         return (
-            <Redirect to={PATH.PACK}/>
+            <Redirect to={PATH.LOGIN}/>
             )
     }
 

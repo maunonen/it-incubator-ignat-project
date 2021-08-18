@@ -10,7 +10,7 @@ const initState = {
     error: "",
     email: "",
     password: "",
-    isFetching: false,
+    isFetching: true,
     isPassRequestSent: false,
     isPassChanged: false,
     _id: "",
@@ -121,7 +121,10 @@ export const authMeTC = () => {
             .then((res) => {
                 dispatch(profileAC(res.data))
                 dispatch(loggedInAC(true, ""))
+                dispatch(setIsFetchingSignupAC(false))
             }).catch(rej => {
+                       dispatch(loggedInAC(false, ""))
+                       dispatch(setIsFetchingSignupAC(false))
             const error = rej.response
                 ? rej.response.data.error
                 : (rej.message + ', more details in the console');

@@ -142,7 +142,8 @@ export type UserProfileType = {
     verified: boolean,
     rememberMe: boolean,
     error: string,
-    isLoggedIn:boolean
+    isLoggedIn:boolean,
+    isFetching:boolean
 }
 
 export type UserLoginType = {

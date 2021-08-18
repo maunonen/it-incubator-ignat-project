@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {useFormik} from "formik";
@@ -43,7 +43,7 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     },
 }))
 
-const LoginPage: React.FC = () => {
+const LoginPage: React.FC = (location) => {
 
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -70,11 +70,12 @@ const LoginPage: React.FC = () => {
     const history = useHistory();
 
 
-    if (isLoggedIn) {
-        return <Redirect to={'/'}/>
-        // history.push( '/pack' );
-        // history.goBack();
-    }
+               if (isLoggedIn) {
+                 // return <Redirect to={'/'}/>
+                  history.push( '/pack' );
+                 // history.goBack()
+               }
+
 
     return <Grid
         container
