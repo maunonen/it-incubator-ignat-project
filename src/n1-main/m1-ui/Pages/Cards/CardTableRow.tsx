@@ -13,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import {setFlagsFromString} from "v8";
 import {updateCardPack} from "../../../m2-bll/redux/pack-reducer";
 import {setAppErrorAC} from "../../../m2-bll/redux/app-reducer";
+import {Rating} from "@material-ui/lab";
 
 export interface CardTableRowPropsType {
     card: CardType
@@ -88,10 +89,12 @@ const CardTableRow: React.FC<CardTableRowPropsType> = (props) => {
             <TableCell
                 align="right">{moment(card.updated).format("DD.MM.YYYY")}
             </TableCell>
-            <TableCell align="right">{card.grade}</TableCell>
+            <TableCell align="right">
+                <Rating name="read-only" value={card.grade} readOnly/>
+            </TableCell>
             {
                 card.user_id === _id &&
-                <>
+                <TableCell align={"right"}>
                     <Button
                         onClick={() => {
                             setModalDeleteStatus(true)
@@ -140,7 +143,7 @@ const CardTableRow: React.FC<CardTableRowPropsType> = (props) => {
                             />
                         </>
                     </ModalForm>
-                </>
+                </TableCell>
             }
         </TableRow>
     )

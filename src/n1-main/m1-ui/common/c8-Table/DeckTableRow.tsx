@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import TableCell from "@material-ui/core/TableCell";
 import {Button, Link} from "@material-ui/core";
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import {PATH} from "../../Routes";
 import moment from "moment";
 import ModalForm from "../c9-Modal/ModalForm";
@@ -91,6 +91,8 @@ const DeckTableRow: React.FC<DeckTableRowPropsType> = ({deck, labelId}) => {
                             onClick={() => {
                                 setModalEditStatus(true)
                             }}>Edit</Button>
+
+
                         <ModalForm
                             modalTitle={"Edit Pack"}
                             actionButtonTitle={"Edit"}
@@ -122,7 +124,7 @@ const DeckTableRow: React.FC<DeckTableRowPropsType> = ({deck, labelId}) => {
                         />
                     </>
                 }
-                <Button onClick={() => alert("learn")}>Learn</Button>
+                <Button component={NavLink} to={`${PATH.LEARN}/${deck._id}`}>Learn</Button>
             </TableCell>
         </TableRow>
     )

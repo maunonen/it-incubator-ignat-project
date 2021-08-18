@@ -13,6 +13,7 @@ import Cards from "./Pages/Cards/Packs";
 import SignupPage from "./Pages/SignupPage";
 import CardTable from "./Pages/Cards/CardTable";
 import CardPage from "./Pages/Cards/CardPage";
+import LearnPage from './Pages/Pack/LearnPage';
 
 
 
@@ -28,6 +29,7 @@ export const PATH = {
     CARDS: '/cards',
     TEST_PAGE: '/test_page',
     ALL_ROUTES : '*',
+    LEARN : '/learn',
 }
 
 const  Routes : React.FC = ()  => {
@@ -52,6 +54,7 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>
                 <Route path={PATH.PACK} render={() => <Packs/>}/>
                 <Route path={PATH.CARDS + '/:packId'}  component={CardPage}/>
+                <Route path={PATH.LEARN + '/:packId'}  component={LearnPage}/>
                 <Route path={"/NotFoundPage"} render={() => <NotFoundPage/>}/>
                 <Redirect from={PATH.ALL_ROUTES} to={"NotFoundPage"}/>
                 {/*<Route render={() => <LoginPage/>}/>*/}

@@ -134,21 +134,24 @@ const CardTable: React.FC = () => {
                             /*onSelectAllClick={handleSelectAllClick}*/
                             onRequestSort={handleRequestSort}
                             rowCount={card.cardsTotalCount || 0}
+                            packUserId={card.packUserId}
                         />
                         <TableBody>
                             {
                                 card.cards.length > 0 && card.cards
                                     .map((card, index) => {
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-                                        return (
-                                            <CardTableRow
-                                                key={card._id}
-                                                card={card}
-                                                labelId={labelId}
-                                                packId={packId}
-                                            />
-                                        );
-                                    })}
+                                            const labelId = `enhanced-table-checkbox-${index}`;
+                                            return (
+                                                <CardTableRow
+                                                    key={card._id}
+                                                    card={card}
+                                                    labelId={labelId}
+                                                    packId={packId}
+                                                />
+                                            );
+                                        }
+                                    )
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>

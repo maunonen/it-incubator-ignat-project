@@ -60,14 +60,14 @@ const headCells: HeadCell[] = [
     {id: 'answer', numeric: false, disablePadding: false, label: 'Answer'},
     {id: 'updated', numeric: true, disablePadding: false, label: 'Last updated'},
     {id: 'grade', numeric: true, disablePadding: false, label: 'Grade'},
-    /*{id: 'action', numeric: true, disablePadding: false, label: 'Action'},*/
 ];
 
-interface DeckTableHeaderPropsType {
+interface CardTableHeaderPropsType {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof CardType) => void;
     onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     rowCount: number;
+    packUserId: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -97,12 +97,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const CardTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
+const CardTableHeader: React.FC<CardTableHeaderPropsType> = (props) => {
     const classes = useStyles()
     const {numSelected, rowCount, onRequestSort} = props;
     const createSortHandler = (property: keyof CardType) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+    const {_id} = useSelector((state: AppStoreType) => state.auth)
     const {sortField, isSortTypeAscending} = useSelector((state: AppStoreType) => state.pack)
 
     return (
@@ -129,9 +130,15 @@ const CardTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                {/*<TableCell
-                    align={'center'}
-                >Action</TableCell>*/}
+                {
+                    props.packUserId === _id &&
+                        (
+                            <TableCell
+                                align={'right'}
+                            >Action</TableCell>
+                        )
+                }
+
             </TableRow>
         </TableHead>
     );

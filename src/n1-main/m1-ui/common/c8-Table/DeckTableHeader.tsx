@@ -128,8 +128,9 @@ const DeckTableHeader: React.FC<DeckTableHeaderPropsType> = (props) => {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+
                 <TableCell
-                    align={'center'}
+                    align={'right'}
                 >Action</TableCell>
             </TableRow>
         </TableHead>

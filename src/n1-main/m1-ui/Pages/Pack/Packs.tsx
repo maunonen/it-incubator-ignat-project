@@ -128,7 +128,6 @@ export default function Pack() {
                     </Grid>
                 </Paper>
             </div>
-
         )
     } else {
         return (
