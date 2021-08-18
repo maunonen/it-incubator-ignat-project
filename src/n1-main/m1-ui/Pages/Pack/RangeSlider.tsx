@@ -3,7 +3,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {GetPackQueryParamsType} from "../../../m3-dal/Api";
 import {setMinCardsCountAC, setMaxCardsCountAC} from "../../../m2-bll/redux/pack-reducer";
 
 const useStyles = makeStyles({
@@ -18,7 +17,6 @@ function valuetext(value: number) {
 
 export default function RangeSlider() {
 
-    const classes = useStyles();
     const pack = useSelector((state: AppStoreType) => state.pack);
     const [value, setValue] = React.useState<number[]>([0, 103]);
 
@@ -27,10 +25,10 @@ export default function RangeSlider() {
     const getAllPacks = () => {
         dispatch(getAllPacks())
     };
-    //--------------------------------------------------------
 
     const handleChange = (event: any, newValue: number | number[]) => {
         setValue(newValue as number[]);
+    //    debounding можно перенести сюда из useEffect
     };
 
 
@@ -67,6 +65,7 @@ export default function RangeSlider() {
         <>
             <Slider
                 value={value}
+                // onMouseUp...
                 onChange={handleChange}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"

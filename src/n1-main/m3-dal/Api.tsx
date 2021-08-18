@@ -141,7 +141,9 @@ export type UserProfileType = {
     isAdmin: boolean,
     verified: boolean,
     rememberMe: boolean,
-    error: string
+    error: string,
+    isLoggedIn:boolean,
+    isFetching:boolean
 }
 
 export type UserLoginType = {

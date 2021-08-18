@@ -69,6 +69,7 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
     /*console.log('action type', action.type)*/
     /*console.log('action payload', action.payload)*/
     switch (action.type) {
+
         case ACTIONS_TYPE.SET_CARDS_PACK:
             /*debugger*/
             return {
@@ -84,7 +85,9 @@ export const packReducer = (state: InitialPackStateType = initialPackState, acti
         case ACTIONS_TYPE.SET_PACK_USER_ID:
         case ACTIONS_TYPE.SET_PACK_SORT_TYPE:
         case ACTIONS_TYPE.SET_PACK_TOTAL_COUNT:
+
             return {
+
                 ...state,
                 ...action.payload,
             }
@@ -181,7 +184,7 @@ export const getAllPack = () => {
             min, max, user_id, sortField,
             isSortTypeAscending,
         } = getState().pack;
-        let sortPacks
+              let sortPacks
         // if sortField set create sortPacks field '0created' '1updated'
         if (sortField) {
             sortPacks = +isSortTypeAscending + sortField;
