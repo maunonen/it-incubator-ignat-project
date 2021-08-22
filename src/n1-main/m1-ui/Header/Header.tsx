@@ -94,13 +94,13 @@ const Header: React.FC = () => {
                         <Button
                             color="inherit"
                             className={classes.menuItem}
-                            onClick={() => history.push(PATH.VIDEO_PAGE)}
+                            onClick={() => history.push(PATH.VIDEO)}
                         >Video</Button>
                         <Button
                             color="inherit"
                             className={classes.menuItem}
-                            onClick={() => history.push(PATH.READ_DATA)}
-                        >ReadData</Button>
+                            onClick={() => history.push(PATH.FILES)}
+                        >Files</Button>
 
 
                     </div>

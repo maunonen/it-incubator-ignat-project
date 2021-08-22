@@ -85,6 +85,7 @@ const Video: React.FC<IFileInputProps> = ({fileURL}) => {
                 controls
                 <input type={'checkbox'} checked={controls} onChange={e => setControls(e.currentTarget.checked)}/>
             </label>
+
             <video
                 src={fileURL}
                 width={'300px'}
@@ -107,14 +108,7 @@ const Video: React.FC<IFileInputProps> = ({fileURL}) => {
             duration: {duration} currentTime: {currentTime}
             <hr style={{width: '100%'}}/>
 
-            <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/1P2ov_oidRQ"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-            />
+
         </div>
     );
 };

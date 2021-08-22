@@ -16,11 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function FilesOperations() {
 
         const buttonRef=useRef<HTMLInputElement>(null)
-        const videoRef=useRef<HTMLVideoElement>(null)
 
         const [file,setFile]=useState<any>()
         const [file64,setFileURL]=useState<any>({})
-        const [fileTXT,setFile64]=useState<any>({})
 
 
         const upLoad=(e:ChangeEvent<HTMLInputElement>)=>{
@@ -30,9 +28,6 @@ export default function FilesOperations() {
 
             if (newFile){setFile(newFile)
                 setFileURL(window.URL.createObjectURL(newFile))
-
-                // save in function.options what we read in file
-                reader.onloadend =()=>{setFile64(reader.result)}
             }
         }
 
@@ -46,7 +41,6 @@ export default function FilesOperations() {
     return (
         <div>
              <h1>Upload avatar</h1> <br/>
-             {/*<pre>{fileTXT}</pre>*/}
 
             <Button
                     type={'reset'}
