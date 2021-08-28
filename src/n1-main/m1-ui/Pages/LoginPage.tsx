@@ -56,8 +56,10 @@ const LoginPage: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'nya-admin@nya.nya',
-            password: '1qazxcvBG',
+            email: '',
+            // nya-admin@nya.nya
+            password: '',
+            // 1qazxcvBG
             remember: false
         },
         validationSchema: restoreSchema,

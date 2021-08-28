@@ -7,9 +7,6 @@ import {
     Button, createStyles,
     IconButton,
     LinearProgress,
-    Link, List,
-    ListItem,
-    ListItemIcon, ListItemText,
     makeStyles,
     Theme,
     Toolbar,
@@ -18,8 +15,7 @@ import {
 import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
-import CardsIcon from "../common/icons/CardsIcon";
-import ProfileIcon from "../common/icons/ProfileIcon";
+
 import { logoutTC } from '../../m2-bll/redux/auth-reducer';
 
 const useStyles = makeStyles<Theme>(theme => createStyles({
