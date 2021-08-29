@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {Grid} from '@material-ui/core'
 import {useDispatch, useSelector} from 'react-redux';
 import {authMeTC, InitStateType} from "../../m2-bll/redux/auth-reducer"
-import FilesOperations from './FilesOperations';
+/*import FilesOperations from './FilesOperations';*/
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {Redirect} from "react-router-dom";
 import {PATH} from "../Routes";
@@ -28,7 +28,7 @@ export const ProfilePage: React.FC = () => {
                     <h3>PublicCardPacksCount= {userProfile.publicCardPacksCount}</h3>
                     <h3>created {userProfile.created}</h3>
                 </Grid>
-                <FilesOperations/>
+                {/*<FilesOperations/>*/}
             </Grid>
         )
     } else {

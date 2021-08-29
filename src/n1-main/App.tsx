@@ -7,7 +7,8 @@ import {authMeTC, setIsFetchingSignupAC, InitStateType} from "./m2-bll/redux/aut
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "./m2-bll/redux/store";
 import LoginPage from "./m1-ui/Pages/LoginPage";
-import preload from "../n1-main/m1-ui/Img/Preloader.gif"
+
+/*import preload from "../n1-main/m1-ui/Img/Preloader.gif"*/
 
 
 function App() {
@@ -19,26 +20,30 @@ function App() {
     useEffect(() => {
         if (!userProfile.isLoggedIn) {
             dispatch(authMeTC())
-        } else {dispatch(setIsFetchingSignupAC(false))}
+        } else {
+            dispatch(setIsFetchingSignupAC(false))
+        }
     }, [])
 
 
-  if (!userProfile.isLoggedIn) {
-      return (
+    if (!userProfile.isLoggedIn) {
+        return (
             userProfile.isFetching
-                ? <div><img src={preload} style={{width: 150, display: "block", margin: "auto" }}/></div>
+                ? <div>
+                    <h1>Loading</h1>
+                    {/*<img src={preload} style={{width: 150, display: "block", margin: "auto" }}/>*/}
+                </div>
                 : <LoginPage/>
-      )
-  }
-  else {
-      return (
-          <div className="App">
-              <ErrorSnackbar/>
-              <Header/>
-              <Routes/>
-          </div>
-      );
-  }
+        )
+    } else {
+        return (
+            <div className="App">
+                <ErrorSnackbar/>
+                <Header/>
+                <Routes/>
+            </div>
+        );
+    }
 }
 
 export default App;

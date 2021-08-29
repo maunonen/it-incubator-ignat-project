@@ -8,6 +8,7 @@ import SuperRadio from "../common/c6-SuperRadio/SuperRadio";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 import {loggedInAC} from "../../m2-bll/redux/auth-reducer";
+import FlipPage from "./Pack/FlipPage";
 
 const TestPage: React.FC = () => {
     const isLoggedIn = useSelector((state: AppStoreType) => (state.auth.isLoggedIn))
@@ -18,8 +19,16 @@ const TestPage: React.FC = () => {
     console.log(isLoggedIn)
     return (
         <>
-            ddddddddd
-            <h1>Test page</h1>
+            <div
+                style={{
+                    /*top: "100px",
+                    left: "200px",*/
+                }}
+            >
+                <FlipPage/>
+            </div>
+
+            {/*<h1>Test page</h1>
             <p>Is Logged In : {isLoggedIn ? <span>True</span> : <span>False</span>}</p>
             <SuperInputText/>
             <br/>
@@ -31,7 +40,7 @@ const TestPage: React.FC = () => {
             </div>
             <SuperEditableSpan></SuperEditableSpan>
             <SuperSelect></SuperSelect>
-            <SuperRadio options={["options1", "options2"]}></SuperRadio>
+            <SuperRadio options={["options1", "options2"]}></SuperRadio>*/}
         </>
     )
 }

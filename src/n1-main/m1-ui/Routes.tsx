@@ -51,7 +51,8 @@ const  Routes : React.FC = ()  => {
                 <Route path={PATH.RESTORE_PASS_CHECK_EMAIL} render={() => <RestorePassCheckEmailPage/>}/>
                 <Route path={PATH.NEW_PASS + '/:token'} component={NewPassPage}/>
                 {/*<Route path={PATH.DESTINATION_LIST_PAGE + '/:id'} exact={true} component={DestinationProfileContainer} />*/}
-                <Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>
+                {/*<Route path={PATH.TEST_PAGE} render={() => <Loading message={"Wait a minute please"}/>}/>*/}
+                <Route path={PATH.TEST_PAGE} render={() => <TestPage/>}/>
                 <Route path={PATH.PACK} render={() => <Packs/>}/>
                 <Route path={PATH.CARDS + '/:packId'}  component={CardPage}/>
                 <Route path={PATH.LEARN + '/:packId'}  component={LearnPage}/>
