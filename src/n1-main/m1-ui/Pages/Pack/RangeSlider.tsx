@@ -3,7 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import {AppStoreType} from "../../../m2-bll/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {setMinCardsCountAC, setMaxCardsCountAC} from "../../../m2-bll/redux/pack-reducer";
+import {setMinCardsCountAC, setMaxCardsCountAC, getAllPack} from "../../../m2-bll/redux/pack-reducer";
 
 const useStyles = makeStyles({
     root: {
@@ -28,7 +28,7 @@ export default function RangeSlider() {
 
     const handleChange = (event: any, newValue: number | number[]) => {
         setValue(newValue as number[]);
-    //    debounding можно перенести сюда из useEffect
+     //    debounding можно перенести сюда из useEffect
     };
 
 
@@ -41,8 +41,11 @@ export default function RangeSlider() {
 
 
     useEffect(() => {
-            const setTO = setTimeout(() => {
+        console.log("min happen")
+
+        const setTO = setTimeout(() => {
                  dispatch(setMinCardsCountAC(value[0]))
+                 dispatch( getAllPack())
             }, 1500)
             return () => {
                 clearTimeout(setTO)
@@ -53,6 +56,7 @@ export default function RangeSlider() {
     useEffect(() => {
             const setTO = setTimeout(() => {
                  dispatch(setMaxCardsCountAC(value[1]))
+                 dispatch( getAllPack())
             }, 1500)
             return () => {
                 clearTimeout(setTO)

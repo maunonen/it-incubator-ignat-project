@@ -1,0 +1,38 @@
+.menu {
+    border-radius: 5px 5px;
+    text-transform: uppercase;
+    /*width: 550px;*/
+    box-sizing: border-box;
+}
+
+.menu:hover .content{
+    /*left: 0px;*/
+    border-radius: 10px;
+}
+.item {
+    background-color: #7892c2;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+.a:visited{
+    color: #c27878;
+}
+.item:hover {
+    background-color: #476e9e;
+}
+
+.waffel {
+    background-color: grey;
+    display: inline-block;
+    padding: 20px 5px;
+    width: 100px;
+    box-sizing: border-box;
+}
+.content {
+    transition: all .8s ease;
+    position: relative;
+    /*left: -430px;*/
+}

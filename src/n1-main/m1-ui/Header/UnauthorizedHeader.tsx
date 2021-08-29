@@ -16,8 +16,6 @@ import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../m2-bll/redux/store";
 
-import { logoutTC } from '../../m2-bll/redux/auth-reducer';
-
 const useStyles = makeStyles<Theme>(theme => createStyles({
     root: {
         backgroundColor: "#EBE0E9",
@@ -34,7 +32,7 @@ const useStyles = makeStyles<Theme>(theme => createStyles({
     }
 }))
 
-const Header: React.FC = () => {
+const UnauthorizedHeader: React.FC = () => {
     const {appStatus} = useSelector((state: AppStoreType) => state.app)
     const history = useHistory()
     const classes = useStyles()
@@ -63,41 +61,31 @@ const Header: React.FC = () => {
                             <Button
                                 color="inherit"
                                 className={classes.menuItem}
-                                onClick={() =>  dispatch(logoutTC())}
-                            >Log out</Button>
-                        <Button
-                            color="inherit"
-                            className={classes.menuItem}
-                            onClick={() => history.push(PATH.PROFILE)}
-                        >Profile</Button>
+                                onClick={() => history.push(PATH.LOGIN)}
+                            >Login</Button>
+
 
                         <Button
                             color="inherit"
                             className={classes.menuItem}
-                            onClick={() => history.push(PATH.TEST_PAGE)}
-                        >Test Page</Button>
+                            onClick={() => history.push(PATH.SIGNUP)}
+                        >Sign up</Button>
+
 
                         <Button
                             color="inherit"
                             className={classes.menuItem}
-                            onClick={() => history.push(PATH.PACK)}
-                        >Packs</Button>
+                            onClick={() => history.push(PATH.RESTORE_PASS)}
+                        >Restore Pass</Button>
                         <Button
                             color="inherit"
                             className={classes.menuItem}
-                            onClick={() => history.push(PATH.CARDS)}
-                        >Cards</Button>
-                        <Button
-                            color="inherit"
-                            className={classes.menuItem}
-                            onClick={() => history.push(PATH.VIDEO)}
-                        >Video</Button>
-                        <Button
-                            color="inherit"
-                            className={classes.menuItem}
-                            onClick={() => history.push(PATH.FILES)}
-                        >Files</Button>
+                            onClick={() => history.push(PATH.NEW_PASS)}
+                        >New Pass</Button>
 
+
+
+                       {/* -------------------------------------------------------------   */}
 
                     </div>
                     {/*<List
@@ -154,4 +142,4 @@ const Header: React.FC = () => {
     )
 }
 
-export default Header
+export default UnauthorizedHeader
